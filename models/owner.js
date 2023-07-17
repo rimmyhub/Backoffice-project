@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Owner.init(
     {
-      id: {
+      owner_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,

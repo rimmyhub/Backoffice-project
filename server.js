@@ -7,7 +7,7 @@ const path = require('path');
 const { Server } = require('http');
 const socketIo = require('socket.io');
 
-const renderRouter = require('./routes/render.router');
+// const renderRouter = require('./routes/render.router');
 
 const userRouter = require('./routes/users.router');
 const reviewRouter = require('./routes/reviews.router');
@@ -17,6 +17,7 @@ const orderRouter = require('./routes/orders.router');
 const orderdetailRouter = require('./routes/orderdetails.router');
 const menuRouter = require('./routes/menus.router');
 const authRouter = require('./routes/auth.router');
+// const socketRouter = require('./routes/socket.router');
 
 const HOST = '127.0.0.1';
 const PORT = 3000;
@@ -35,7 +36,7 @@ const io = socketIo(http, {
     methods: ['GET', 'POST'],
   },
 });
-socketRouter(io); // socket.router.js에서 따로 관리
+// socketRouter(io); // socket.router.js에서 따로 관리
 
 app.use(
   session({
@@ -49,16 +50,16 @@ app.use(
   })
 );
 
-app.use('/', [renderRouter]);
+// app.use('/', [renderRouter]);
 app.use('/', [
   userRouter,
-  reviewRouter,
-  restaurantRouter,
-  ownerRouter,
-  orderRouter,
-  orderdetailRouter,
-  menuRouter,
-  authRouter,
+  // reviewRouter,
+  // restaurantRouter,
+  // ownerRouter,
+  // orderRouter,
+  // orderdetailRouter,
+  // menuRouter,
+  // authRouter,
 ]);
 
 http.listen(PORT, HOST, () => {

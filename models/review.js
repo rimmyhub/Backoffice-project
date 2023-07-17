@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasMany(models.OrderDetail, {
-        sourceKey: 'order_id',
-        foreignKey: 'Order_id',
+        sourceKey: 'review_id',
+        foreignKey: 'Review_id',
       });
       this.belongsTo(models.Client, {
         targetKey: 'client_id',

@@ -3,7 +3,6 @@ const UserService = require('../services/users.service');
 
 class UserController {
   userService = new UserService();
-  authMiddleware = new AuthMiddleware();
 
   getUsers = async (req, res) => {
     try {
