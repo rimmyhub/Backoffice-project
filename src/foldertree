@@ -1,0 +1,14 @@
+# 폴더 트리를 생성합니다. (source foldertree)
+dir_array=("repositories" "services" "routes" "controllers")
+layer_array=("repository.js" "service.js" "router.js" "controller.js")
+touch_array=("users" "owners" "restaurants" "reviews" "orders" "orderdetails" "menus" "auth")
+for ((i=1; i<=${#dir_array[@]}; i++))
+do
+  mkdir "$dir_array[i]"
+  for touch_name in "${touch_array[@]}"
+  do
+    touch "$dir_array[i]/$touch_name.$layer_array[i]"
+  done
+done
+
+mkdir assets middlewares public
