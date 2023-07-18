@@ -34,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
       Menu_id: {
         type: DataTypes.INTEGER,
       },
+      count: {
+        type: DataTypes.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
