@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       phone_num: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       client_image: {
         type: Sequelize.STRING,
