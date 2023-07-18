@@ -1,4 +1,3 @@
-// 예시입니다!
 const UserService = require('../services/users.service');
 
 class UserController {
@@ -60,9 +59,9 @@ class UserController {
   modifyUserInfo = async (req, res) => {
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
-      const { introduction, address, phone_num, email } = req.body;
+      const { introduction, address, phone_num } = req.body;
 
-      await this.userService.modifyUserInfo(client_id, introduction, address, phone_num, email);
+      await this.userService.modifyUserInfo(client_id, introduction, address, phone_num);
       res.status(200).send({ message: '개인정보 수정 성공' });
     } catch (err) {
       console.error(err.name, ':', err.message);
@@ -86,7 +85,7 @@ class UserController {
       if (password === newPassword) return res.status(400).send({ message: '비밀번호가 그대로임' });
 
       const hashedPassword = await bcrypt.hash(newPassword, 10); // pw, salt_rounds
-      await this.userService.modifyUserPassword(userId, hashedPassword);
+      await this.userService.modifyUserPassword(client_id, hashedPassword);
       res.status(200).send({ message: '비밀번호 변경 성공' });
     } catch (err) {
       console.error(err.name, ':', err.message);

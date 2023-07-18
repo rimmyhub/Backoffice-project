@@ -45,6 +45,7 @@ class UserService {
       client_id: findUserData.client_id,
       email: findUserData.email,
       name: findUserData.name,
+      address: findUserData.address,
       phone_num: findUserData.phone_num,
       client_image: findUserData.client_image,
       introduction: findUserData.introduction,
@@ -63,13 +64,12 @@ class UserService {
   };
 
   // 유저 정보 수정
-  modifyUserInfo = async (client_id, introduction, address, phone_num, email) => {
+  modifyUserInfo = async (client_id, introduction, address, phone_num) => {
     const modifiedUserData = await this.userRepository.modifyUserInfo(
       client_id,
       introduction,
       address,
-      phone_num,
-      email
+      phone_num
     );
     return modifiedUserData;
   };

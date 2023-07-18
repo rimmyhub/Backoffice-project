@@ -16,13 +16,12 @@ class UserRepository {
     return findUserData;
   };
 
-  modifyUserInfo = async (client_id, introduction, address, phone_num, email) => {
-    const modifiedUserData = await User.update(
+  modifyUserInfo = async (client_id, introduction, address, phone_num) => {
+    const modifiedUserData = await Client.update(
       {
         introduction,
         address,
         phone_num,
-        email,
       },
       { where: { client_id } }
     );

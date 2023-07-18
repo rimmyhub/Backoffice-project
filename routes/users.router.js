@@ -10,10 +10,10 @@ const upload = new UploadBucket();
 const UserController = require('../controllers/users.controller');
 const userController = new UserController();
 
-userRouter.get('/users', userController.getUsers);
-userRouter.get('/mypage/users', userController.getUser);
-userRouter.put('/mypage/users', userController.modifyUserInfo);
-userRouter.put('/mypage/users/password', userController.modifyUserPassword);
+userRouter.get('/clients', userController.getUsers);
+userRouter.get('/mypage/clients', userController.getUser);
+userRouter.put('/mypage/clients', userController.modifyUserInfo);
+userRouter.put('/mypage/clients/password', userController.modifyUserPassword);
 
 // 프로필 사진 업로드
 userRouter.post(
@@ -21,6 +21,5 @@ userRouter.post(
   upload.profileImage('profileImage'),
   userController.uploadProfileImage
 );
-
 
 module.exports = userRouter;
