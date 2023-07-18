@@ -12,7 +12,7 @@ module.exports = {
       Restaurant_id: {
         type: Sequelize.INTEGER,
       },
-      client_id: {
+      Client_id: {
         type: Sequelize.INTEGER,
       },
       status: {

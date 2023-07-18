@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       Restaurant_id: {
         type: DataTypes.INTEGER,
       },
-      client_id: {
+      Client_id: {
         type: DataTypes.INTEGER,
       },
       status: {

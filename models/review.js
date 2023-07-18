@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      Clint_id: {
+      Client_id: {
         type: DataTypes.INTEGER,
       },
       Order_id: {
