@@ -56,7 +56,7 @@ app.use('/', [
   // reviewRouter,
   // restaurantRouter,
   // ownerRouter,
-  // orderRouter,
+  orderRouter,
   // orderdetailRouter,
   // menuRouter,
   // authRouter,
