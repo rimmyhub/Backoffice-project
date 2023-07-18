@@ -15,6 +15,9 @@ module.exports = {
       Menu_id: {
         type: Sequelize.INTEGER,
       },
+      count: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
