@@ -1,14 +1,16 @@
 // orders.controller.js
 const OredersService = require('../services/orders.service');
-const { Restaurant } = require('../models');
+const { Restaurant, Order } = require('../models');
 
 class OrdersController {
   ordersService = new OredersService();
 
   //-- 주문하기 (고객) --//
   order = async (req, res, next) => {
-    // const { client_id } = res.locals.user;
-    const { restaurant_id, order_items } = req.body;
+    // TO DO :: 임시
+    let { client_id, restaurant_id, order_items } = req.body;
+    client_id = 1;
+    restaurant_id = 2;
 
     // 검사 : 주문 데이터 유효
     if (!restaurant_id || !order_items) {
@@ -30,9 +32,25 @@ class OrdersController {
       return res.status(404).send({ message: '존재하지 않는 음식점입니다.' });
     }
 
-    const orderData = await this.ordersService.order(restaurant_id, order_items);
+    const orderData = await this.ordersService.order(restaurant_id, order_items, client_id);
 
     res.status(200).send({ data: orderData });
+  };
+
+  //-- 주문받기 (사장) --//
+  orderReceive = async (req, res, next) => {
+    // TO DO :: order_id 가져올것/ 테스트용
+    // const { order_id } = req.body;
+    const order_id = 35;
+
+    const order = await Order.findByPk(order_id);
+
+    if (!order) {
+      throw new Error(`${order_id}번 주문을 찾을 수 없습니다.`);
+    }
+
+    const orderMessage = await this.ordersService.orderReceive(order);
+    res.status(200).send({ orderMessage });
   };
 }
 

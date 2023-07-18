@@ -1,58 +1,67 @@
 // order.repository.js
-const { Order, OrderDetail, Client, Owner } = require('../models');
+const { Order, OrderDetail, Client, Owner, Restaurant, sequelize } = require('../models');
+const { Transaction } = require('sequelize');
 
 class OrdersRepository {
   //-- 주문하기 (고객) --//
-  createOrder = async (restaurant_id, order_items) => {
-    // 트랜잭션으로 비즈니스 로직 수행
+  createOrder = async (restaurant_id, order_items, client_id, totalPayment) => {
+    // 트랜잭션 : 설정
     const t = await sequelize.transaction({
-      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED, // 격리수준
+      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED, // 격리수준 설정
     });
 
     try {
-      // Order 테이블에 저장
-      const orderData = await Order.create({ Restaurant_id: restaurant_id }, { transaction: t });
-
+      // Order 테이블에 주문 정보 저장
+      const orderData = await Order.create(
+        { Restaurant_id: restaurant_id, Client_id: client_id },
+        { transaction: t } // 트랜잭션 적용
+      );
       const orderId = orderData.order_id;
 
-      // OrderDetail 테이블에 저장
-      for (const orderItem of order_items) {
-        await OrderDetail.create(
-          {
-            Order_id: orderId,
-            Menu_id: orderItem.menu_id,
-            count: orderItem.count,
-          },
-          { transaction: t }
-        );
-      }
+      // OrderDetail 테이블에 주문 상세정보 저장
+      const orderDetailsData = order_items.map((orderItem) => ({
+        Order_id: orderId,
+        Menu_id: orderItem.menu_id,
+        count: orderItem.count,
+      }));
 
-      // Clients 테이블의 point 차감
-      const client = await Client.findByPk(orderData.Client_id, { transaction: t });
-      const totalOrderAmount = order_items.reduce(
-        (total, item) => total + item.count * item.price,
-        0
-      );
-      client.point -= totalOrderAmount;
-      await client.save({ transaction: t });
+      await OrderDetail.bulkCreate(orderDetailsData, { transaction: t });
 
-      // Owners 테이블의 point 증가
-      const restaurant = await Owner.findOne(
-        { where: { Restaurant_id: restaurant_id } },
+      // Clients :: 포인트 차감
+      const orderClient = await Client.findByPk(client_id, { transaction: t });
+      orderClient.point -= totalPayment;
+      await orderClient.save({ transaction: t });
+
+      // Owners :: 포인트 증가
+      const restaurant = await Restaurant.findOne(
+        { where: { restaurant_id: restaurant_id } },
         { transaction: t }
       );
-      restaurant.point += totalOrderAmount;
-      await restaurant.save({ transaction: t });
+      const restaurantOwner = await Owner.findOne(
+        { where: { Owner_id: restaurant.Owner_id } },
+        { transaction: t }
+      );
+      restaurantOwner.point += totalPayment;
+      await restaurantOwner.save({ transaction: t });
 
-      // 모든 작업이 성공하면 커밋
+      // 트랜잭션 : commit
       await t.commit();
 
       return orderData;
     } catch (err) {
-      // 오류가 발생하면 롤백
+      // 트랜잭션 : rollback
       await t.rollback();
-      throw err;
+      console.error(err.name, ':', err.message);
+      return res.status(400).send({ message: `${err.message}` });
     }
+  };
+
+  //-- 주문받기 (사장) --//
+  orderReceive = async (orderData, updateStatus, orderMessage) => {
+    orderData.status = updateStatus;
+    await orderData.save();
+
+    return orderMessage;
   };
 }
 
