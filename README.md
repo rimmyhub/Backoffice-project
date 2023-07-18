@@ -21,3 +21,6 @@ npm install
 ## 지켜야할 점
 
 에러처리는 컨트롤러에서 작성합니다.
+
+## 변경사항
+- 리프레시 토큰 모델 생성(uuid4, refresh_token, user_id)
