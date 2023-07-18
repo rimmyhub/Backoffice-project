@@ -53,7 +53,7 @@ app.use(
 // app.use('/', [renderRouter]);
 app.use('/', [
   userRouter,
-  // reviewRouter,
+  reviewRouter,
   // restaurantRouter,
   // ownerRouter,
   orderRouter,
