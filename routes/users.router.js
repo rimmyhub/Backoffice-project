@@ -4,28 +4,23 @@ const userRouter = express.Router();
 // const AuthMiddleware = require('../middlewares/auth.middleware');
 // const auth = new AuthMiddleware();
 
-// const UploadBucket = require('../middlewares/bucket.middleware');
-// const upload = new UploadBucket();
+const UploadBucket = require('../middlewares/bucket.middleware');
+const upload = new UploadBucket();
 
 const UserController = require('../controllers/users.controller');
 const userController = new UserController();
 
 userRouter.get('/users', userController.getUsers);
-// userRouter.get('/users/info', auth.verifyAccessToken, userController.getUser);
-// userRouter.put('/users/info', auth.verifyAccessToken, userController.modifyUserInfo);
+userRouter.get('/mypage/users', userController.getUser);
+userRouter.put('/mypage/users', userController.modifyUserInfo);
+userRouter.put('/mypage/users/password', userController.modifyUserPassword);
 
-// // 프로필 사진 업로드
-// userRouter.post(
-//   '/users/info/images',
-//   auth.verifyAccessToken,
-//   upload.profileImage('profileImage'),
-//   userController.uploadProfileImage
-// );
-// userRouter.put('/users/info/password', auth.verifyAccessToken, userController.modifyUserPassword);
-// userRouter.delete('/users/info', auth.verifyAccessToken, userController.leave);
-// userRouter.post('/signup', userController.signup);
-// userRouter.post('/signup/mail', userController.sendVerificationMail);
-// userRouter.post('/signup/mail/verify', userController.verifyCode);
-// userRouter.post('/login', userController.login);
+// 프로필 사진 업로드
+userRouter.post(
+  '/mypage/users/images',
+  upload.profileImage('profileImage'),
+  userController.uploadProfileImage
+);
+
 
 module.exports = userRouter;

@@ -4,6 +4,7 @@ const UserService = require('../services/users.service');
 class UserController {
   userService = new UserService();
 
+  // 전체 유저 정보 조회
   getUsers = async (req, res) => {
     try {
       const users = await this.userService.findAllUsers();
@@ -16,10 +17,12 @@ class UserController {
       return res.status(400).send({ message: `${err.message}` });
     }
   };
+
+  // 유저 개인 정보 조회
   getUser = async (req, res) => {
     try {
-      const { userId } = res.locals.user;
-      const user = await this.userService.findUserCommonData(userId);
+      const { client_id } = res.locals.user; // auth에서 가져옴
+      const user = await this.userService.findUserCommonData(client_id);
 
       // 유저 정보 없음
       if (!user) return res.status(404).send({ message: '유저 정보 없음' });
@@ -30,11 +33,12 @@ class UserController {
     }
   };
 
+  // 유저 프로필 사진 업로드
   uploadProfileImage = async (req, res) => {
     try {
-      const { userId } = res.locals.user;
+      const { client_id } = res.locals.user; // auth에서 가져옴
       const imageUrl = req.file.location;
-      await this.userService.uploadProfileImage(imageUrl, userId);
+      await this.userService.uploadProfileImage(imageUrl, client_id);
       res.status(200).send({ message: '프로필 사진 업로드 완료' });
     } catch (err) {
       console.error(err.name, ':', err.message);
@@ -44,8 +48,8 @@ class UserController {
 
   getProfileImage = async (req, res) => {
     try {
-      const { userId } = res.locals.user;
-      const imageUrl = await this.userService.getProfileImage(userId);
+      const { client_id } = res.locals.user; // auth에서 가져옴
+      const imageUrl = await this.userService.getProfileImage(client_id);
       res.status(200).send({ data: imageUrl });
     } catch (err) {
       console.error(err.name, ':', err.message);
@@ -55,10 +59,10 @@ class UserController {
 
   modifyUserInfo = async (req, res) => {
     try {
-      const { userId } = res.locals.user;
-      const { nickname, email, gender, interestTopic } = req.body;
+      const { client_id } = res.locals.user; // auth에서 가져옴
+      const { introduction, address, phone_num, email } = req.body;
 
-      await this.userService.modifyUserInfo(userId, nickname, email, gender, interestTopic);
+      await this.userService.modifyUserInfo(client_id, introduction, address, phone_num, email);
       res.status(200).send({ message: '개인정보 수정 성공' });
     } catch (err) {
       console.error(err.name, ':', err.message);
@@ -68,9 +72,9 @@ class UserController {
 
   modifyUserPassword = async (req, res) => {
     try {
-      const { userId } = res.locals.user;
+      const { client_id } = res.locals.user; // auth에서 가져옴
       const { password, newPassword, confirm } = req.body;
-      const findUserAllData = await this.userService.findUserAllData(userId);
+      const findUserAllData = await this.userService.findUserAllData(client_id);
 
       // 패스워드 검증
       const isPasswordValid = await bcrypt.compare(password, findUserAllData.password);
@@ -84,44 +88,6 @@ class UserController {
       const hashedPassword = await bcrypt.hash(newPassword, 10); // pw, salt_rounds
       await this.userService.modifyUserPassword(userId, hashedPassword);
       res.status(200).send({ message: '비밀번호 변경 성공' });
-    } catch (err) {
-      console.error(err.name, ':', err.message);
-      return res.status(400).send({ message: `${err.message}` });
-    }
-  };
-
-  sendVerificationMail = async (req, res) => {
-    try {
-      const { email } = req.body;
-      const verificationMail = new VerificationMail();
-      const randomNumber = await verificationMail.sendEmail(email); // 인증번호 메일 전송 후 난수 리턴
-      req.session.verificationCode = randomNumber;
-
-      res.status(200).send({ message: '인증 메일 전송 완료' });
-    } catch (err) {
-      console.error(err.name, ':', err.message);
-      return res.status(400).send({ message: `${err.message}` });
-    }
-  };
-
-  // 인증 메일 발송 시 인증 번호 입력 form + 인증 확인 button 기능에 부여되는 함수
-  verifyCode = async (req, res) => {
-    try {
-      const { inputVerificationCode } = req.body;
-      const verificationCode = req.session.verificationCode;
-      console.log(verificationCode);
-
-      if (!verificationCode) return res.status(404).send({ message: '인증 메일을 먼저 발송할 것' });
-      // 인증 번호 입력 유효성 검증 필요
-
-      // 인증 번호 일치 여부 검증
-      if (verificationCode !== Number(inputVerificationCode))
-        return res.status(412).send({ message: '인증 번호 일치하지 않음' });
-
-      // 인증 번호 일치 시
-      req.session.isVerified = true;
-
-      return res.status(200).send({ message: '인증 번호 확인 완료' });
     } catch (err) {
       console.error(err.name, ':', err.message);
       return res.status(400).send({ message: `${err.message}` });

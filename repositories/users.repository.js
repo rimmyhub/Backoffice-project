@@ -1,62 +1,37 @@
-const { User } = require('../models');
+const { Client } = require('../models');
 
 class UserRepository {
   findAllUsers = async () => {
-    const findUserData = await User.findAll();
+    const findUserData = await Client.findAll();
     return findUserData;
   };
 
-  findUserById = async (userId) => {
-    const findUserData = await User.findByPk(userId);
+  findUserById = async (client_id) => {
+    const findUserData = await Client.findByPk(client_id);
     return findUserData;
   };
 
   findUserByEmail = async (email) => {
-    const findUserData = await User.findOne({ where: { email } });
+    const findUserData = await Client.findOne({ where: { email } });
     return findUserData;
   };
 
-  modifyUserInfo = async (userId, nickname, email, gender, interestTopic) => {
+  modifyUserInfo = async (client_id, introduction, address, phone_num, email) => {
     const modifiedUserData = await User.update(
       {
-        nickname,
+        introduction,
+        address,
+        phone_num,
         email,
-        gender,
-        interestTopic,
       },
-      { where: { userId } }
+      { where: { client_id } }
     );
     return modifiedUserData;
   };
 
-  modifyUserPassword = async (userId, password) => {
-    const modifiedUserPassword = await User.update({ password }, { where: { userId } });
+  modifyUserPassword = async (client_id, password) => {
+    const modifiedUserPassword = await Client.update({ password }, { where: { client_id } });
     return modifiedUserPassword;
-  };
-
-  deleteUserInfo = async (userId) => {
-    const deletedUserInfo = await User.destroy({ where: { userId } });
-    return deletedUserInfo;
-  };
-
-  findRefreshTokenByUserId = async (UserId) => {
-    const findRefreshTokenData = await RefreshToken.findOne({ UserId });
-    return findRefreshTokenData;
-  };
-
-  createRefreshToken = async (refreshToken, UserId) => {
-    const createdRefreshToken = await RefreshToken.create({ refreshToken, UserId });
-    return createdRefreshToken;
-  };
-
-  updateRefreshToken = async (refreshToken, UserId) => {
-    const updatedRefreshToken = await RefreshToken.update({ refreshToken }, { where: { UserId } });
-    return updatedRefreshToken;
-  };
-
-  deleteRefreshToken = async (UserId) => {
-    const deletedRefreshToken = await RefreshToken.destroy({ where: { UserId } });
-    return deletedRefreshToken;
   };
 }
 
