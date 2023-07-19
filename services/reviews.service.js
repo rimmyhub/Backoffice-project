@@ -1,6 +1,6 @@
 // reviews.service.js
 const ReviewsRepository = require('../repositories/reviews.repository');
-const { Review, Order, OrderDetail } = require('../models');
+const { Order } = require('../models');
 
 class ReviewsService {
   reviewsRepository = new ReviewsRepository();

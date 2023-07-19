@@ -1,10 +1,10 @@
 // reviews.repository.js
-const { Review } = require('../models');
+const { Review, Client } = require('../models');
 class ReviewsRepository {
   //-- 리뷰 작성 --//
   createReview = async (Restaurant_id, Order_id, Client_id, content, rating) => {
     try {
-      // 이미 해당하는 리뷰가 있는지 확인
+      // 기존 리뷰
       const existingReview = await Review.findOne({
         where: {
           Restaurant_id,
@@ -18,7 +18,6 @@ class ReviewsRepository {
         return { error: true, message: '이미 해당하는 리뷰가 존재합니다.' };
       }
 
-      // 리뷰가 존재하지 않는 경우 새 리뷰를 생성
       const reviewData = await Review.create({
         Restaurant_id,
         Order_id,
@@ -39,6 +38,10 @@ class ReviewsRepository {
       const reviews = await Review.findAll({
         where: {
           Restaurant_id: Restaurant_id,
+        },
+        include: {
+          model: Client,
+          attributes: ['name'],
         },
       });
 
