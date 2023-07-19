@@ -7,12 +7,16 @@ class OrdersController {
 
   //-- 주문하기 (고객) --//
   order = async (req, res, next) => {
-    // TO DO :: 임시
-    if (res.locals.user.division !== 'Client') return res.status(412).send({ message: '너는 고객이 아니다.' })
-    
+    // 검사 : 사장/유저 여부 확인
+    if (res.locals.user.division !== 'Client')
+      return res.status(412).send({ message: '너는 고객이 아니다.' });
+
     const { client_id } = res.locals.user;
     const { restaurant_id, order_items } = req.body;
-    // order_items 는 [{menu_id:1, count:3}, {menu_id:2, count:2}, {menu_id:3, count:4}]
+
+    /**
+     * @param {Array} order_items - [{menu_id:1, count:3}, {menu_id:2, count:2}, {menu_id:3, count:4}]
+     */
 
     try {
       // 검사 : 주문 데이터 유효
@@ -32,7 +36,7 @@ class OrdersController {
 
   //-- 주문받기 (사장) --//
   orderReceive = async (req, res, next) => {
-    // TO DO :: order_id 가져올것/ 테스트용
+    // 검사 : 사장/유저 여부 확인
     if (res.locals.user.division !== 'Owner')
       return res.status(412).send({ message: '너는 사장이 아니다.' });
     const { order_id } = req.params;

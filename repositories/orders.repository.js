@@ -67,6 +67,7 @@ class OrdersRepository {
       // 트랜잭션 : commit
       await t.commit();
 
+      orderData.Owner_id = restaurant.Owner_id;
       return orderData;
     } catch (err) {
       // 트랜잭션 : rollback
@@ -77,8 +78,31 @@ class OrdersRepository {
   };
 
   //-- 주문받기 (사장) --//
-  updateOrderStatus = async (orderData, updateStatus, orderMessage) => {
+  updateOrderStatus = async (orderData, updateStatus) => {
     try {
+      const orderData = await Order.findByPk(order_id);
+
+      // 검사 : 데이터 유효 여부 확인
+      if (!orderData) {
+        return { error: true, message: `${order_id}번 주문을 찾을 수 없습니다.` };
+      }
+
+      // 검사 : 주문상태에 따른 처리분리
+      let updateStatus = 0;
+      let orderMessage = '';
+      if (orderData.status === 0) {
+        orderMessage = '주문접수 했습니다';
+        updateStatus = 1;
+      } else if (orderData.status === 1) {
+        orderMessage = '배달완료 했습니다';
+        updateStatus = 2;
+      } else if (orderData.status === 2) {
+        orderMessage = '완료된 주문입니다.';
+        return orderMessage;
+      } else {
+        return { error: true, message: '잘못된 주문 상태 값입니다.' };
+      }
+
       orderData.status = updateStatus;
       await orderData.save();
 
