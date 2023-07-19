@@ -23,8 +23,9 @@ class OrdersController {
 
       const orderData = await this.ordersService.order(restaurant_id, order_items, client_id);
       // orderData -> { restaurant_id, order_items, client_id, totalPayment }
-
-      res.status(200).send({ data: orderData });
+      const responseData = { ...orderData.dataValues, Owner_id: orderData.Owner_id };
+      // responseData -> { restaurant_id, order_items, client_id, totalPayment, Owner_id}
+      res.status(200).send({ data: responseData });
     } catch (err) {
       console.error(err.stack);
       return res.status(400).send({ message: `${err.message}` });

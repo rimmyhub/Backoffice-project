@@ -1,6 +1,5 @@
 // order.service.js
 const OrdersRepository = require('../repositories/orders.repository');
-const { Order, Menu } = require('../models');
 
 class OrdersService {
   ordersRepository = new OrdersRepository();
@@ -13,14 +12,13 @@ class OrdersService {
        * @param {number} restaurant_id - 레스토랑 ID
        * @param {Array} order_items - 주문 아이템 목록
        * @param {number} client_id - 고객 ID
-       * @param {number} totalPayment - 총 주문 금액
        */
       const orderData = await this.ordersRepository.createOrder(
         restaurant_id,
         order_items,
-        client_id,
-        totalPayment
+        client_id
       );
+      return orderData;
     } catch (err) {
       console.error(err.stack);
       throw new Error(`${err.message}`);
