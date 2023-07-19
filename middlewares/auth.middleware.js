@@ -46,12 +46,13 @@ module.exports = async (req, res, next) => {
     let user;
     if (division === 'Owner') {
       user = await Owner.findOne({ where: { owner_id: userId } });
-      res.locals.owner = user;
+      res.locals.user = { owner_id: user.owner_id };
+      res.locals.user.division = division;
     } else if (division === 'Client') {
       user = await Client.findOne({ where: { client_id: userId } });
-      res.locals.client = user;
+      res.locals.user = { client_id: user.client_id }
+      res.locals.user.division = division;
     }
-
     if (!user) return res.status(412).json({ errMessage: '존재하지 않는 회원입니다.' });
     next();
   } catch (error) {

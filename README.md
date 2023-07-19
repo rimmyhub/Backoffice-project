@@ -24,3 +24,6 @@ npm install
 
 ## 변경사항
 - 리프레시 토큰 모델 생성(uuid4, refresh_token, user_id)
+
+## 수정사항
+menu 모델의 price를 integer로 변경할 것!!!
