@@ -16,7 +16,7 @@ userRouter.put('/mypage/clients/password', userController.modifyUserPassword);
 userRouter.post(
   '/mypage/users/images',
   upload.profileImage('profileImage'), // 업로드할 사진 경로를 ('profile', 사진경로) 형태의 formData로 받는다.
-  userController.uploadProfileImag
+  userController.uploadProfileImage
 );
 
 module.exports = userRouter;
