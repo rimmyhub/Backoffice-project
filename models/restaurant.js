@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       phone_num: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
       },
       biz_hours: {
         type: DataTypes.STRING,
