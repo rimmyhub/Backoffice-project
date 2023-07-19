@@ -17,9 +17,8 @@ class OrdersController {
      */
     try {
       // 검사 : 주문 데이터 유효
-      if (!restaurant_id || !order_items || order_items.length === 0) {
+      if (!restaurant_id || !order_items || order_items.length === 0)
         return res.status(400).send({ message: '주문 데이터가 올바르지 않습니다.' });
-      }
 
       const orderData = await this.ordersService.order(restaurant_id, order_items, client_id);
       // orderData -> { restaurant_id, order_items, client_id, totalPayment }
