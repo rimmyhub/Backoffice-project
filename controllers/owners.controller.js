@@ -33,10 +33,13 @@ class OwnerController {
     }
   };
 
+  // 유저 개인 정보 수정
   modifyUserInfo = async (req, res) => {
     try {
       const { owner_id } = res.locals.user; // auth에서 가져옴
       const { owner_name, owner_number } = req.body;
+
+      // NOTE: 유효성 검증 코드 아래에 추가할 것
 
       await this.ownerService.modifyUserInfo(owner_id, owner_name, owner_number);
       res.status(200).send({ message: '개인정보 수정 성공' });
@@ -46,6 +49,8 @@ class OwnerController {
     }
   };
 
+
+  // 패스워드 수정
   modifyUserPassword = async (req, res) => {
     try {
       const { owner_id } = res.locals.user; // auth에서 가져옴

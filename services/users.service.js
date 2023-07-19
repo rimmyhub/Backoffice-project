@@ -15,7 +15,7 @@ class UserService {
     return getProfileImage[getProfileImage.length - 1]; // 가장 최신에 업로드한 사진만 가져옴
   };
 
-  // 전체 유저 정보 공개(테스트용)
+  // 전체 유저 정보 공개(테스트용, 원래는 비밀번호를 조회할 수 있으면 안됩니다.)
   findAllUsers = async () => {
     const findUserData = await this.userRepository.findAllUsers();
     return findUserData.map((user) => {
@@ -33,7 +33,7 @@ class UserService {
     });
   };
 
-  // 일반 정보 공개 (민감 정보, 불필요한 정보 제외, 외부 유출이 불필요한 정보)
+  // 지정 유저의 정보 공개 (민감 정보, 불필요한 정보 제외)
   findUserCommonData = async (userInfo) => {
     // id와 email 둘 중 하나라도 찾으면 해당하는 유저 정보 보냄
     const findUserData =
@@ -53,7 +53,7 @@ class UserService {
     };
   };
 
-  // 모든 정보 공개
+  // 지정 유저의 모든 정보 공개(비밀번호도 공개됨)
   findUserAllData = async (userInfo) => {
     const findUserData =
       (await this.userRepository.findUserById(userInfo)) ??

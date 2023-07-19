@@ -19,7 +19,7 @@ class OwnerService {
     });
   };
 
-  // 일반 정보 공개 (민감 정보, 불필요한 정보 제외, 외부 유출이 불필요한 정보 제외)
+  // 지정 유저의 일반 정보 공개 (민감 정보, 불필요한 정보 제외)
   findUserCommonData = async (userInfo) => {
     // id와 email 둘 중 하나라도 찾으면 해당하는 유저 정보 보냄
     const findUserData =
@@ -37,7 +37,7 @@ class OwnerService {
     };
   };
 
-  // 모든 정보 공개
+  // 지정 유저의 모든 정보 공개 (비밀번호 포함)
   findUserAllData = async (userInfo) => {
     const findUserData =
       (await this.ownerRepository.findUserById(userInfo)) ??

@@ -45,6 +45,7 @@ class UserController {
     }
   };
 
+  // 등록된 유저 프로필 사진 중 가장 최근에 업로드한 사진 획득
   getProfileImage = async (req, res) => {
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
@@ -56,10 +57,13 @@ class UserController {
     }
   };
 
+  // 유저 개인 정보 수정
   modifyUserInfo = async (req, res) => {
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
       const { introduction, address, phone_num } = req.body;
+
+      // NOTE: 유효성 검증 코드 아래에 추가할 것
 
       await this.userService.modifyUserInfo(client_id, introduction, address, phone_num);
       res.status(200).send({ message: '개인정보 수정 성공' });
@@ -69,6 +73,7 @@ class UserController {
     }
   };
 
+  // 패스워드 변경
   modifyUserPassword = async (req, res) => {
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
