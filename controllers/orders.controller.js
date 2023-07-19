@@ -16,16 +16,6 @@ class OrdersController {
         return res.status(400).send({ message: '주문 데이터가 올바르지 않습니다.' });
       }
 
-      // 검사 : 레스토랑 존재 여부
-      const restaurant = await Restaurant.findOne({
-        where: {
-          restaurant_id: restaurant_id,
-        },
-      });
-      if (!restaurant) {
-        return res.status(404).send({ message: '존재하지 않는 음식점입니다.' });
-      }
-
       const orderData = await this.ordersService.order(restaurant_id, order_items, client_id);
 
       res.status(200).send({ data: orderData });

@@ -11,6 +11,43 @@ class OrdersRepository {
     });
 
     try {
+      // Client
+      const orderClient = await Client.findByPk(client_id, { transaction: t });
+
+      // Restaurant
+      const restaurant = await Restaurant.findOne(
+        { where: { restaurant_id: restaurant_id } },
+        { transaction: t }
+      );
+
+      // 검사 : 클라이언트 유저 존재 여부
+      if (!orderClient) {
+        throw new Error('존재하지 않는 유저입니다.');
+      }
+
+      // 검사 :: 잔액 확인
+      if (orderClient.point < totalPayment) {
+        throw new Error('잔액이 없습니다.');
+      }
+
+      // 검사 :: 음식점 존재 여부
+      if (!restaurant) {
+        return res.status(404).send({ message: '존재하지 않는 음식점입니다.' });
+      }
+
+      // Client :: 포인트 차감
+      orderClient.point -= totalPayment;
+      await orderClient.save({ transaction: t });
+
+      // Owner :: 포인트 증가
+      const restaurantOwner = await Owner.findOne(
+        { where: { Owner_id: restaurant.Owner_id } },
+        { transaction: t }
+      );
+
+      restaurantOwner.point += totalPayment;
+      await restaurantOwner.save({ transaction: t });
+
       // Order 테이블에 주문 정보 저장
       const orderData = await Order.create(
         { Restaurant_id: restaurant_id, Client_id: client_id },
@@ -26,34 +63,6 @@ class OrdersRepository {
       }));
 
       await OrderDetail.bulkCreate(orderDetailsData, { transaction: t });
-
-      // Client
-      const orderClient = await Client.findByPk(client_id, { transaction: t });
-
-      // 검사 : 클라이언트 유저 존재 여부
-      if (!orderClient) {
-        throw new Error('존재하지 않는 유저입니다.');
-      }
-
-      // 검사 :: 잔액 확인
-      if (orderClient.point < totalPayment) {
-        throw new Error('잔액이 없습니다.');
-      }
-      // Client :: 포인트 차감
-      orderClient.point -= totalPayment;
-      await orderClient.save({ transaction: t });
-
-      // Owner :: 포인트 증가
-      const restaurant = await Restaurant.findOne(
-        { where: { restaurant_id: restaurant_id } },
-        { transaction: t }
-      );
-      const restaurantOwner = await Owner.findOne(
-        { where: { Owner_id: restaurant.Owner_id } },
-        { transaction: t }
-      );
-      restaurantOwner.point += totalPayment;
-      await restaurantOwner.save({ transaction: t });
 
       // 트랜잭션 : commit
       await t.commit();
