@@ -15,7 +15,7 @@ class OrdersService {
         if (!menu) {
           return { error: true, message: '해당하는 메뉴를 찾을 수 없습니다.' };
         }
-        const menuPrice = menu.price.replace(/\D/g, '');
+        const menuPrice = Number(menu.price.replace(/\D/g, ''));
         totalPayment += menuPrice * orderItem.count;
       }
 

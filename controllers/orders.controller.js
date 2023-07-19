@@ -8,7 +8,11 @@ class OrdersController {
   //-- 주문하기 (고객) --//
   order = async (req, res, next) => {
     // TO DO :: 임시
-    let { client_id, restaurant_id, order_items } = req.body;
+    if (res.locals.user.division !== 'Client') return res.status(412).send({ message: '너는 고객이 아니다.' })
+    
+    const { client_id } = res.locals.user;
+    const { restaurant_id, order_items } = req.body;
+    // order_items 는 [{menu_id:1, count:3}, {menu_id:2, count:2}, {menu_id:3, count:4}]
 
     try {
       // 검사 : 주문 데이터 유효
@@ -17,6 +21,7 @@ class OrdersController {
       }
 
       const orderData = await this.ordersService.order(restaurant_id, order_items, client_id);
+      // orderData -> { restaurant_id, order_items, client_id, totalPayment }
 
       res.status(200).send({ data: orderData });
     } catch (err) {
@@ -28,6 +33,8 @@ class OrdersController {
   //-- 주문받기 (사장) --//
   orderReceive = async (req, res, next) => {
     // TO DO :: order_id 가져올것/ 테스트용
+    if (res.locals.user.division !== 'Owner')
+      return res.status(412).send({ message: '너는 사장이 아니다.' });
     const { order_id } = req.params;
 
     try {
