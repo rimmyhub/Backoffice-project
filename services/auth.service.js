@@ -18,7 +18,6 @@ class AuthService {
   getOwner = async (email, password) => {
     // owner정보 가져오기
     const ownerInfo = await this.authRepository.getOwner(email);
-    console.log('ownerInfo = ', ownerInfo);
     // 일치하는 회원이 없을 때
     if (!ownerInfo) throw new Error('일치하는 회원정보가 없습니다. ');
 

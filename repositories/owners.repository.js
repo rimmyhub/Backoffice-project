@@ -1,6 +1,6 @@
 const { Owner } = require('../models');
 
-class OwnersRepository {
+class OwnerRepository {
   findAllUsers = async () => {
     const findUserData = await Owner.findAll();
     return findUserData;
@@ -47,4 +47,4 @@ class OwnersRepository {
   };
 }
 
-module.exports = OwnersRepository;
+module.exports = OwnerRepository;

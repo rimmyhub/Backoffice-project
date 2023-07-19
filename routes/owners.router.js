@@ -7,10 +7,9 @@ const ownerController = new OwnerController();
 const authMiddleware = require('../middlewares/auth.middleware');
 
 // ownerRouter.get('/owners', ownerController.getUsers); // 테스트용: 서비스 제공할 필요 없음
-ownerRouter.get('/mypage/owners', ownerController.getUser);
-ownerRouter.put('/mypage/owners', ownerController.modifyUserInfo);
-ownerRouter.put('/mypage/owners/password', ownerController.modifyUserPassword);
 ownerRouter.post('/signup/owner', ownerController.signupOwner);
-ownerRouter.put('/owner/:ownerId', authMiddleware, ownerController.updateOwner);
+ownerRouter.get('/mypage/owners', authMiddleware, ownerController.getUser);
+ownerRouter.put('/mypage/owners', authMiddleware, ownerController.modifyUserInfo);
+ownerRouter.put('/mypage/owners/password', authMiddleware, ownerController.modifyUserPassword);
 
 module.exports = ownerRouter;

@@ -19,6 +19,8 @@ class UserController {
 
   // 유저 개인 정보 조회
   getUser = async (req, res) => {
+    if (res.locals.user.division !== 'Client')
+      return res.status(412).send({ message: '당신은 고객이 아닙니다.' });
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
       const user = await this.userService.findUserCommonData(client_id);
@@ -34,6 +36,8 @@ class UserController {
 
   // 유저 프로필 사진 업로드
   uploadProfileImage = async (req, res) => {
+    if (res.locals.user.division !== 'Client')
+      return res.status(412).send({ message: '당신은 고객이 아닙니다.' });
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
       const imageUrl = req.file.location;
@@ -47,6 +51,8 @@ class UserController {
 
   // 등록된 유저 프로필 사진 중 가장 최근에 업로드한 사진 획득
   getProfileImage = async (req, res) => {
+    if (res.locals.user.division !== 'Client')
+      return res.status(412).send({ message: '당신은 고객이 아닙니다.' });
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
       const imageUrl = await this.userService.getProfileImage(client_id);
@@ -59,6 +65,8 @@ class UserController {
 
   // 유저 개인 정보 수정
   modifyUserInfo = async (req, res) => {
+    if (res.locals.user.division !== 'Client')
+      return res.status(412).send({ message: '당신은 고객이 아닙니다.' });
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
       const { introduction, address, phone_num } = req.body;
@@ -75,6 +83,8 @@ class UserController {
 
   // 패스워드 변경
   modifyUserPassword = async (req, res) => {
+    if (res.locals.user.division !== 'Client')
+      return res.status(412).send({ message: '당신은 고객이 아닙니다.' });
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
       const { password, newPassword, confirm } = req.body;
@@ -97,7 +107,7 @@ class UserController {
       return res.status(400).send({ message: `${err.message}` });
     }
   };
-  
+
   signupClient = async (req, res) => {
     try {
       const {
@@ -139,17 +149,6 @@ class UserController {
       return res.status(200).json({ message: '회원가입이 완료되었습니다.' });
     } catch (error) {
       return res.status(400).json(error.message);
-    }
-  };
-
-  updateClient = async (req, res) => {
-    try {
-      const client = res.locals.client;
-      console.log('client = ', client);
-      if (!client)
-        return res.status(412).json({ errMessage: '고객님만 이용할 수 있는 기능입니다.' });
-    } catch (error) {
-      return res.status(400).json({ errMessage: error });
     }
   };
 }

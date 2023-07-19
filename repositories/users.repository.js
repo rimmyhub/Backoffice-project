@@ -1,7 +1,6 @@
 const { Client } = require('../models');
 
 class UserRepository {
-
   // 모든 유저를 찾습니다.
   findAllUsers = async () => {
     const findUserData = await Client.findAll();
@@ -39,9 +38,9 @@ class UserRepository {
     return modifiedUserPassword;
   };
 
+  // 유저를 생성합니다.
   createUser = async (payload) => {
     const { email, name, password, point, address, phone_num, clint_image, introduction } = payload;
-
     const client = await Client.create({
       email,
       name,
@@ -55,6 +54,8 @@ class UserRepository {
 
     return client;
   };
+
+  // 이메일 중복 검증 함수
   checkEmailDup = async (email) => {
     const exEmail = await Client.findOne({
       where: { email },
