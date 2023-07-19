@@ -55,11 +55,11 @@ app.use('/', [
   userRouter,
   reviewRouter,
   // restaurantRouter,
-  // ownerRouter,
+  ownerRouter,
   orderRouter,
   // orderdetailRouter,
   // menuRouter,
-  // authRouter,
+  authRouter,
 ]);
 
 http.listen(PORT, HOST, () => {
