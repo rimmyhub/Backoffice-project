@@ -50,10 +50,10 @@ app.use(
   })
 );
 
-//ejs 생성
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
-app.use(express.static(__dirname + '/views/static'));
+// //ejs 생성
+// app.set('view engine', 'ejs');
+// app.set('views', __dirname + '/views');
+// app.use(express.static(__dirname + '/views/static'));
 
 // app.use('/', viewRouter);
 

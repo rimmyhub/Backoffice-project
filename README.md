@@ -22,8 +22,12 @@ npm install
 
 에러처리는 컨트롤러에서 작성합니다.
 
-## 변경사항
-- 리프레시 토큰 모델 생성(uuid4, refresh_token, user_id)
+## 변경사항(공유)
 
-## 수정사항
-menu 모델의 price를 integer로 변경할 것!!!
+- 리프레시 토큰 모델 생성(uuid4, refresh_token, user_id)
+- OrderDetail 테이블에서 수량 컬럼 추가
+- Client와 Restaurant 테이블의 phone_num을 String으로 수정
+
+## 수정해야할 부분
+
+- 모델에 allowNull 설정 필요(현재 모든 테이블에서 날짜와 id를 제외하고는 대부분 null을 허용하고 있음)

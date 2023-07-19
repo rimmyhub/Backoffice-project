@@ -6,7 +6,7 @@ class MenusService {
   // 음식점 메뉴 조회
   getMenu = async ({ restaurant_id }) => {
     try {
-      const get = await this.menusRepository.getRestaurant({ restaurant_id });
+      const get = await this.menusRepository.getMenu({ restaurant_id });
 
       return { code: 200, data: get };
     } catch (error) {
@@ -15,12 +15,12 @@ class MenusService {
   };
 
   // 음식점 메뉴 등록
-  postMenu = async ({ restaurant_id, name, image, price, sold_out }) => {
+  postMenu = async ({ restaurant_id, name, menu_image, price, sold_out }) => {
     try {
       const postMenu = await this.menusRepository.postMenu({
         restaurant_id,
         name,
-        image,
+        menu_image,
         price,
         sold_out,
       });
@@ -35,14 +35,7 @@ class MenusService {
   };
 
   // 메뉴 수정
-  putMenu = async ({
-    menu_id,
-    // owner_id,
-    name,
-    image,
-    price,
-    sold_out,
-  }) => {
+  putMenu = async ({ menu_id, name, menu_image, price, sold_out }) => {
     // 댓글을 조회합니다.
 
     try {
@@ -53,9 +46,6 @@ class MenusService {
       if (!existsMenu) {
         return { code: 404, data: ' 메뉴가 존재하지 않습니다.' };
       }
-      // } else if (existsMenu.Owner_id !== owner_id) {
-      //   return { code: 401, data: '댓글을 수정할 권한이 없습니다.' };
-      // }
     } catch (error) {
       return { code: 500, data: error.message };
     }
@@ -63,9 +53,8 @@ class MenusService {
     try {
       await this.menusRepository.putMenu({
         menu_id,
-        // owner_id,
         name,
-        image,
+        menu_image,
         price,
         sold_out,
       });
@@ -75,14 +64,7 @@ class MenusService {
     }
   };
 
-  deleteMenu = async ({
-    menu_id,
-    // owner_id,
-    name,
-    image,
-    price,
-    sold_out,
-  }) => {
+  deleteMenu = async ({ menu_id }) => {
     try {
       const existsMenu = await this.menusRepository.findById({
         menu_id,
@@ -91,8 +73,6 @@ class MenusService {
       if (!existsMenu) {
         return { code: 404, data: ' 메뉴가 존재하지 않습니다.' };
       }
-      // } else if (existsMenu.Owner_id !== owner_id) {
-      //   return { code: 401, data: '메뉴를 삭제할 권한이 없습니다.' };
     } catch (error) {
       return { code: 500, data: error.message };
     }
@@ -100,7 +80,6 @@ class MenusService {
     try {
       await this.menusRepository.deleteMenu({
         menu_id,
-        // owner_id,
       });
       return { code: 200, data: '메뉴를 삭제하였습니다.' };
     } catch (error) {

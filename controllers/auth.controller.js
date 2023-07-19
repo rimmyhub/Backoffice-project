@@ -46,7 +46,6 @@ class AuthController {
     } catch (error) {
       return res.status(400).json(error.message);
     }
-    // console.log('loginOwner');
   };
 
   // accessToken생성

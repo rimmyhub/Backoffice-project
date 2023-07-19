@@ -22,16 +22,10 @@ class RestaurantsRepository {
   };
 
   // 음식점 등록
-  postRestaurant = async ({
-    // owner_id,
-    name,
-    address,
-    phone_num,
-    biz_hours,
-    category,
-  }) => {
+  postRestaurant = async ({ Owner_id, name, address, phone_num, biz_hours, category }) => {
+    console.log(Owner_id);
     return await Restaurant.create({
-      // Owner_id:owner_id,
+      Owner_id,
       name,
       address,
       phone_num,
@@ -48,7 +42,7 @@ class RestaurantsRepository {
   // 음식점 수정
   putRestaurant = async ({
     restaurant_id,
-    // owner_id,
+    owner_id,
     name,
     address,
     phone_num,
@@ -59,22 +53,17 @@ class RestaurantsRepository {
       { name, address, phone_num, biz_hours, category }, // 수정 사항
       {
         where: {
-          [Op.and]: [{ restaurant_id }],
-          // [Op.and]: [{ restaurant_id }, { Owner_id:owner_id }],
+          [Op.and]: [{ restaurant_id }, { Owner_id: owner_id }],
         },
       }
     );
   };
 
   // 음식점 삭제
-  deleteRestaurant = async ({
-    restaurant_id,
-    // owner_id
-  }) => {
+  deleteRestaurant = async ({ restaurant_id, owner_id }) => {
     await Restaurant.destroy({
       where: {
-        [Op.and]: [{ restaurant_id }],
-        // [Op.and]: [{ restaurant_id }, { Owner_id: owner_id }],
+        [Op.and]: [{ restaurant_id }, { Owner_id: owner_id }],
       },
     });
   };

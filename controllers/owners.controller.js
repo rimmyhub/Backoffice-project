@@ -1,7 +1,8 @@
-const OwnersService = require('../services/owners.service');
+const OwnerService = require('../services/owners.service');
 const bcrypt = require('bcrypt');
-class OwnersController {
-  ownersService = new OwnersService();
+
+class OwnerController {
+  ownerService = new OwnerService();
 
   signupOwner = async (req, res) => {
     try {
@@ -31,24 +32,89 @@ class OwnersController {
         point,
       };
 
-      await this.ownersService.createOwner(payLoad);
+      await this.ownerService.createOwner(payLoad);
       res.status(200).json({ message: '회원가입이 완료되었습니다.' });
     } catch (error) {
       return res.status(400).send(error.message);
     }
   };
 
-  updateOwner = async (req, res) => {
+  // 전체 유저 정보 조회
+  getUsers = async (req, res) => {
     try {
-      const Owner = res.locals.owner;
-      // const division = res.locals.division;
-      console.log('Owner = ', Owner);
-      if (!Owner)
-        return res.status(412).json({ errMessage: '사장님만 이용할 수 있는 기능입니다.' });
-    } catch (error) {
-      return res.status(400).json({ errMessage: error });
+      const users = await this.ownerService.findAllUsers();
+
+      // 유저 정보 없음
+      if (users.length === 0) return res.status(404).send({ message: '유저 정보 없음' });
+      res.status(200).send({ data: users });
+    } catch (err) {
+      console.error(err.name, ':', err.message);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
+
+  // 유저 개인 정보 조회
+  getUser = async (req, res) => {
+    if (res.locals.user.division !== 'Owner')
+      return res.status(412).send({ message: '당신은 사장이 아닙니다.' });
+    try {
+      const { owner_id } = res.locals.user; // auth에서 가져옴
+
+      const user = await this.ownerService.findUserCommonData(owner_id);
+
+      // 유저 정보 없음
+      if (!user) return res.status(404).send({ message: '유저 정보 없음' });
+      res.status(200).send({ data: user });
+    } catch (err) {
+      console.error(err.name, ':', err.message);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
+
+  // 유저 개인 정보 수정
+  modifyUserInfo = async (req, res) => {
+    if (res.locals.user.division !== 'Owner')
+      return res.status(412).send({ message: '당신은 사장이 아닙니다.' });
+    try {
+      const { owner_id } = res.locals.user; // auth에서 가져옴
+      const { owner_name, owner_number } = req.body;
+
+      // NOTE: 유효성 검증 코드 아래에 추가할 것
+
+      await this.ownerService.modifyUserInfo(owner_id, owner_name, owner_number);
+      res.status(200).send({ message: '개인정보 수정 성공' });
+    } catch (err) {
+      console.error(err.name, ':', err.message);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
+
+  // 패스워드 수정
+  modifyUserPassword = async (req, res) => {
+    if (res.locals.user.division !== 'Owner')
+      return res.status(412).send({ message: '당신은 사장이 아닙니다.' });
+    try {
+      const { owner_id } = res.locals.user; // auth에서 가져옴
+      const { password, newPassword, confirm } = req.body;
+      const findUserAllData = await this.ownerService.findUserAllData(owner_id);
+
+      // 패스워드 검증
+      const isPasswordValid = await bcrypt.compare(password, findUserAllData.password);
+      if (!isPasswordValid) return res.status(412).send({ message: '비밀번호 틀렸음' });
+
+      if (newPassword !== confirm)
+        return res.status(412).send({ message: '암호와 암호확인 불일치' });
+
+      if (password === newPassword) return res.status(400).send({ message: '비밀번호가 그대로임' });
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10); // pw, salt_rounds
+      await this.ownerService.modifyUserPassword(owner_id, hashedPassword);
+      res.status(200).send({ message: '비밀번호 변경 성공' });
+    } catch (err) {
+      console.error(err.name, ':', err.message);
+      return res.status(400).send({ message: `${err.message}` });
     }
   };
 }
 
-module.exports = OwnersController;
+module.exports = OwnerController;

@@ -1,6 +1,6 @@
 const express = require('express');
 const restaurantRouter = express.Router();
-// const authMiddleware = require('../middlewares/auth-middleware');
+const authMiddleware = require('../middlewares/auth.middleware');
 // 사장님 추가되면 미들웨어 추가하기!
 const RestaurantsController = require('../controllers/restaurants.controller');
 
@@ -10,12 +10,20 @@ const restaurantsController = new RestaurantsController();
 restaurantRouter.get('/restaurant/:restaurant_id', restaurantsController.getRestaurant);
 
 // 음식점 등록
-restaurantRouter.post('/restaurant', restaurantsController.postRestaurant);
+restaurantRouter.post('/restaurant', authMiddleware, restaurantsController.postRestaurant);
 
 // 음식점 수정
-restaurantRouter.put('/restaurant/:restaurant_id', restaurantsController.putRestaurant);
+restaurantRouter.put(
+  '/restaurant/:restaurant_id',
+  authMiddleware,
+  restaurantsController.putRestaurant
+);
 
 // 음식점 삭제
-restaurantRouter.delete('/restaurant/:restaurant_id', restaurantsController.deleteRestaurant);
+restaurantRouter.delete(
+  '/restaurant/:restaurant_id',
+  authMiddleware,
+  restaurantsController.deleteRestaurant
+);
 
 module.exports = restaurantRouter;
