@@ -86,6 +86,51 @@ class OrdersRepository {
     }
   };
 
+  //-- 주문조회 (고객) --//
+  getOrderClient = async (client_id) => {
+    const orderStatus = {
+      0: '접수대기',
+      1: '접수완료',
+      2: '배달완료',
+    };
+    try {
+      // 불러온 주문데이터
+      const orders = await Order.findAll({
+        where: { Client_id: client_id },
+        include: [
+          { model: Client, attributes: ['name'] },
+          { model: Restaurant, attributes: ['name'] },
+          {
+            model: OrderDetail,
+            include: [{ model: Menu, attributes: ['name', 'price', 'menu_id'] }],
+          },
+        ],
+      });
+
+      // console.log(orders);
+
+      // 내보낼 주문데이터
+      const orderData = orders.map((order) => {
+        const { name: restaurant_name } = order.Restaurant;
+        const { createdAt: order_time, status } = order;
+        const order_status = orderStatus[status];
+
+        const menuDetails = order.OrderDetails.map(({ Menu, count }) => {
+          const { menu_id: menu_number, name: menu_name, price: item_price } = Menu;
+          const totalPayment = item_price * count;
+          return { menu_number, menu_name, count, item_price, totalPayment };
+        });
+
+        return { order_id: order.order_id, restaurant_name, order_time, order_status, menuDetails };
+      });
+
+      return orderData;
+    } catch (err) {
+      console.error(err.stack);
+      throw new Error(`${err.message}`);
+    }
+  };
+
   //-- 주문받기 (사장) --//
   updateOrderStatus = async (orderData, updateStatus) => {
     try {

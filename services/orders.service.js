@@ -25,6 +25,11 @@ class OrdersService {
     }
   };
 
+  //-- 주문조회 (고객) --//
+  getOrderClient = async (client_id) => {
+    return await this.ordersRepository.getOrderClient(client_id);
+  };
+
   //-- 주문받기 (사장) --//
   orderReceive = async (order_id) => {
     try {

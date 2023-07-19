@@ -32,6 +32,22 @@ class OrdersController {
     }
   };
 
+  //-- 주문조회 (고객) --//
+  getOrderClient = async (req, res, next) => {
+    try {
+      if (res.locals.user.division !== 'Client')
+        return res.status(412).send({ message: '너는 고객이 아니다.' });
+
+      const { client_id } = res.locals.user;
+
+      const orderData = await this.ordersService.getOrderClient(client_id);
+      res.status(200).send({ data: orderData });
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
+
   //-- 주문받기 (사장) --//
   orderReceive = async (req, res, next) => {
     // 검사 : 사장/유저 여부 확인

@@ -8,6 +8,9 @@ const ordersController = new OrdersController();
 //-- 주문하기 (고객) --//
 router.post('/order', authMiddleware, ordersController.order);
 
+//-- 주문조회 (고객)--//
+router.get('/order/:client_id', authMiddleware, ordersController.getOrderClient);
+
 //-- 주문받기 (사장) --//
 router.patch('/order-receive/:order_id', authMiddleware, ordersController.orderReceive);
 
