@@ -8,7 +8,7 @@ class ReviewsController {
   createReview = async (req, res, next) => {
     // TO DO :: 임시
     let { Client_id, content, rating } = req.body;
-    Client_id = 1;
+    Client_id = 131;
     const { Order_id } = req.params;
     const { Restaurant_id } = req.params;
 

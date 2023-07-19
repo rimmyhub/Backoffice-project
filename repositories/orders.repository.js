@@ -27,12 +27,12 @@ class OrdersRepository {
 
       await OrderDetail.bulkCreate(orderDetailsData, { transaction: t });
 
-      // Clients :: 포인트 차감
+      // Client :: 포인트 차감
       const orderClient = await Client.findByPk(client_id, { transaction: t });
       orderClient.point -= totalPayment;
       await orderClient.save({ transaction: t });
 
-      // Owners :: 포인트 증가
+      // Owner :: 포인트 증가
       const restaurant = await Restaurant.findOne(
         { where: { restaurant_id: restaurant_id } },
         { transaction: t }
@@ -52,7 +52,7 @@ class OrdersRepository {
       // 트랜잭션 : rollback
       await t.rollback();
       console.error(err.stack);
-      return res.status(400).send({ message: `${err.message}` });
+      throw new Error(`${err.message}`);
     }
   };
 
@@ -65,7 +65,7 @@ class OrdersRepository {
       return orderMessage;
     } catch (err) {
       console.error(err.stack);
-      return res.status(400).send({ message: `${err.message}` });
+      throw new Error(`${err.message}`);
     }
   };
 }
