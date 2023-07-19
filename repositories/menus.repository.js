@@ -6,23 +6,26 @@ class MenusRepository {
   getMenu = async ({ restaurant_id }) => {
     return await Menu.findAll({
       where: { restaurant_id },
-      attributes: ['restaurant_id', 'name', 'price', 'sold_out', 'createdAt', 'updatedAt'],
-      // include: [
-      //   {
-      //     // model: ReviewImages,
-      //     // attributes: ['menu_image'],
-      //   },
-      // ],
+      attributes: [
+        'menu_id',
+        'restaurant_id',
+        'name',
+        'menu_image',
+        'price',
+        'sold_out',
+        'createdAt',
+        'updatedAt',
+      ],
       order: [['createdAt', 'DESC']],
     });
   };
 
   // 음식점 메뉴 등록
-  postMenu = async ({ restaurant_id, name, image, price, sold_out }) => {
+  postMenu = async ({ restaurant_id, name, menu_image, price, sold_out }) => {
     return await Menu.create({
       Restaurant_id: restaurant_id,
       name,
-      image,
+      menu_image,
       price,
       sold_out,
     });
@@ -35,19 +38,16 @@ class MenusRepository {
 
   putMenu = async ({
     menu_id,
-    // owner_id,
     name,
-    image,
+    menu_image,
     price,
     sold_out,
   }) => {
     await Menu.update(
-      { name, image, price, sold_out },
+      { name, menu_image, price, sold_out },
       {
         where: {
           [Op.and]: [{ menu_id }],
-          // where: {
-          //   [Op.and]: [{ menu_id }, { Owner_id: owner_id }],
         },
       }
     );
@@ -55,12 +55,10 @@ class MenusRepository {
 
   deleteMenu = async ({
     menu_id,
-    // owner_id
   }) => {
     await Menu.destroy({
       where: {
         [Op.and]: [{ menu_id }],
-        // [Op.and]: [{ menu_id }, { Owner_id: owner_id }],
       },
     });
   };

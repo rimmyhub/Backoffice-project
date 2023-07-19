@@ -19,17 +19,10 @@ class RestaurantsService {
   };
 
   // 음식점 등록
-  postRestaurant = async ({
-    // owner_id,
-    name,
-    address,
-    phone_num,
-    biz_hours,
-    category,
-  }) => {
+  postRestaurant = async ({ owner_id, name, address, phone_num, biz_hours, category }) => {
     try {
       const post = await this.restaurantsRepository.postRestaurant({
-        // owner_id,
+        Owner_id: owner_id,
         name,
         address,
         phone_num,
@@ -45,32 +38,31 @@ class RestaurantsService {
   // 음식점 수정
   putRestaurant = async ({
     restaurant_id,
-    // owner_id,
+    owner_id,
     name,
     address,
     phone_num,
     biz_hours,
     category,
   }) => {
-    // try {
-    const existsRestaurant = await this.restaurantsRepository.findById({
-      restaurant_id,
-    });
+    try {
+      const existsRestaurant = await this.restaurantsRepository.findById({
+        restaurant_id,
+      });
 
-    if (!existsRestaurant) {
-      return { code: 404, data: ' 음식점이 존재하지 않습니다.' };
+      if (!existsRestaurant) {
+        return { code: 404, data: ' 음식점이 존재하지 않습니다.' };
+      } else if (existsRestaurant.Owner_id !== owner_id) {
+        return { code: 401, data: '음식점을 수정할 권한이 없습니다.' };
+      }
+    } catch (error) {
+      return { code: 500, data: error.message };
     }
-    // } else if (existsRestaurant.Owner_id !== owner_id) {
-    //   return { code: 401, data: '음식점을 수정할 권한이 없습니다.' };
-    // }
-    // } catch (error) {
-    //   return { code: 500, data: error.message };
-    // }
 
     try {
       await this.restaurantsRepository.putRestaurant({
         restaurant_id,
-        // owner_id,
+        owner_id,
         name,
         address,
         phone_num,
@@ -84,9 +76,7 @@ class RestaurantsService {
   };
 
   // 음식점 삭제
-  deleteRestaurant = async ({
-    restaurant_id, // owner_id,
-  }) => {
+  deleteRestaurant = async ({ restaurant_id, owner_id }) => {
     try {
       const existsRestaurant = await this.restaurantsRepository.findById({
         restaurant_id,
@@ -94,9 +84,8 @@ class RestaurantsService {
 
       if (!existsRestaurant) {
         return { code: 404, data: '음식점이 존재하지 않습니다' };
-        // } else if (existsRestaurant.Owner_id !== owner_id) {
-        //   return { code: 401, data: '음식점을 삭제할 권한이 없습니다.' };
-        // }
+      } else if (existsRestaurant.Owner_id !== owner_id) {
+        return { code: 401, data: '음식점을 삭제할 권한이 없습니다.' };
       }
     } catch (error) {
       return { code: 500, data: error.message };
@@ -104,7 +93,8 @@ class RestaurantsService {
 
     try {
       await this.restaurantsRepository.deleteRestaurant({
-        restaurant_id, // owner_id
+        restaurant_id,
+        owner_id,
       });
       return { code: 200, data: '음식점을 삭제하였습니다.' };
     } catch (error) {

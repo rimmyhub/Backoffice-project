@@ -6,7 +6,7 @@ const express = require('express');
 const path = require('path');
 const { Server } = require('http');
 const socketIo = require('socket.io');
-const viewRouter = require('./views/routes'); // view 연결
+// const viewRouter = require('./views/routes'); // view 연결
 
 // const renderRouter = require('./routes/render.router');
 
@@ -50,12 +50,12 @@ app.use(
   })
 );
 
-//ejs 생성
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
-app.use(express.static(__dirname + '/views/static'));
+// //ejs 생성
+// app.set('view engine', 'ejs');
+// app.set('views', __dirname + '/views');
+// app.use(express.static(__dirname + '/views/static'));
 
-app.use('/', viewRouter);
+// app.use('/', viewRouter);
 
 // app.use('/', [renderRouter]);
 app.use('/', [
