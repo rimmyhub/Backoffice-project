@@ -1,6 +1,6 @@
 // orders.controller.js
 const OredersService = require('../services/orders.service');
-const { Restaurant } = require('../models');
+const { Restaurant, Client } = require('../models');
 
 class OrdersController {
   ordersService = new OredersService();

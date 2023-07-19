@@ -27,8 +27,19 @@ class OrdersRepository {
 
       await OrderDetail.bulkCreate(orderDetailsData, { transaction: t });
 
-      // Client :: 포인트 차감
+      // Client
       const orderClient = await Client.findByPk(client_id, { transaction: t });
+
+      // 검사 : 클라이언트 유저 존재 여부
+      if (!orderClient) {
+        throw new Error('존재하지 않는 유저입니다.');
+      }
+
+      // 검사 :: 잔액 확인
+      if (orderClient.point < totalPayment) {
+        throw new Error('잔액이 없습니다.');
+      }
+      // Client :: 포인트 차감
       orderClient.point -= totalPayment;
       await orderClient.save({ transaction: t });
 
