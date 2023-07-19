@@ -6,6 +6,7 @@ const express = require('express');
 const path = require('path');
 const { Server } = require('http');
 const socketIo = require('socket.io');
+const viewRouter = require('./views/routes'); // view 연결
 
 // const renderRouter = require('./routes/render.router');
 
@@ -24,7 +25,6 @@ const PORT = 3000;
 const maxAge = 5 * 60 * 1000; // 5분
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ limit: '1mb', extended: false }));
 app.use(cookieParser());
@@ -50,15 +50,22 @@ app.use(
   })
 );
 
+//ejs 생성
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/views/static'));
+
+app.use('/', viewRouter);
+
 // app.use('/', [renderRouter]);
 app.use('/', [
   userRouter,
   reviewRouter,
-  // restaurantRouter,
+  restaurantRouter,
   ownerRouter,
   orderRouter,
   // orderdetailRouter,
-  // menuRouter,
+  menuRouter,
   authRouter,
 ]);
 
