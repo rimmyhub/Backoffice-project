@@ -2,8 +2,8 @@ const { Owner } = require('../models');
 
 class OwnersRepository {
   createOwner = async (payload) => {
-    const { email, name, password, owner_name, owner_number } = payload;
-    const owner = await Owner.create({ email, name, password, owner_name, owner_number });
+    const { email, name, password, owner_name, owner_number, point } = payload;
+    const owner = await Owner.create({ email, name, password, owner_name, owner_number, point });
 
     return owner;
   };
