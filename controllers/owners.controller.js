@@ -1,4 +1,3 @@
-// 예시입니다!
 const OwnersService = require('../services/owners.service');
 const bcrypt = require('bcrypt');
 class OwnersController {
@@ -36,6 +35,18 @@ class OwnersController {
       res.status(200).json({ message: '회원가입이 완료되었습니다.' });
     } catch (error) {
       return res.status(400).send(error.message);
+    }
+  };
+
+  updateOwner = async (req, res) => {
+    try {
+      const Owner = res.locals.owner;
+      // const division = res.locals.division;
+      console.log('Owner = ', Owner);
+      if (!Owner)
+        return res.status(412).json({ errMessage: '사장님만 이용할 수 있는 기능입니다.' });
+    } catch (error) {
+      return res.status(400).json({ errMessage: error });
     }
   };
 }

@@ -5,6 +5,8 @@ require('dotenv').config();
 
 module.exports = async (req, res, next) => {
   const { authorization } = req.cookies;
+  console.log(req.cookies);
+  // console.log(authorization);
   // token 없으면
   if (!authorization) {
     return res.status(401).json({ errorMessage: '로그인 후에 이용가능합니다.' });
@@ -41,19 +43,21 @@ module.exports = async (req, res, next) => {
     // 사용자가 owner인지 client인지 판별하기
     const division = decodedToken.division;
     const userId = decodedToken.userId;
+
+    console.log('decodedToken  = ', decodedToken);
+    let user;
     if (division === 'Owner') {
-      const owner = await Owner.findOne({ where: { owner_id: userId } });
-      res.locals.owner = owner;
+      user = await Owner.findOne({ where: { owner_id: userId } });
+      res.locals.owner = user;
     } else if (division === 'Client') {
-      const client = await Client.findOne({ where: { client_id: userId } });
-      res.locals.client = client;
+      user = await Client.findOne({ where: { client_id: userId } });
+      res.locals.client = user;
     }
 
-    if (!user) {
-      return res.status(401).json({ errorMessage: '해당 유저가 존재하지 않습니다.' });
-    }
+    if (!user) return res.status(412).json({ errMessage: '존재하지 않는 회원입니다.' });
     next();
   } catch (error) {
+    console.log('error = ', error);
     return res.status(401).json({
       errorMessage: '비정상적인 접근입니다.',
     });

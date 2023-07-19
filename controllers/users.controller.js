@@ -46,6 +46,17 @@ class UserController {
       return res.status(400).json(error.message);
     }
   };
+
+  updateClient = async (req, res) => {
+    try {
+      const client = res.locals.client;
+      console.log('client = ', client);
+      if (!client)
+        return res.status(412).json({ errMessage: '고객님만 이용할 수 있는 기능입니다.' });
+    } catch (error) {
+      return res.status(400).json({ errMessage: error });
+    }
+  };
 }
 
 module.exports = UserController;
