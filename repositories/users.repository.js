@@ -1,6 +1,7 @@
 const { Client } = require('../models');
 
 class UserRepository {
+
   // 모든 유저를 찾습니다.
   findAllUsers = async () => {
     const findUserData = await Client.findAll();
@@ -36,6 +37,29 @@ class UserRepository {
   modifyUserPassword = async (client_id, password) => {
     const modifiedUserPassword = await Client.update({ password }, { where: { client_id } });
     return modifiedUserPassword;
+  };
+
+  createUser = async (payload) => {
+    const { email, name, password, point, address, phone_num, clint_image, introduction } = payload;
+
+    const client = await Client.create({
+      email,
+      name,
+      password,
+      point,
+      address,
+      phone_num,
+      clint_image,
+      introduction,
+    });
+
+    return client;
+  };
+  checkEmailDup = async (email) => {
+    const exEmail = await Client.findOne({
+      where: { email },
+    });
+    return exEmail;
   };
 }
 
