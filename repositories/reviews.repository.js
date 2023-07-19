@@ -1,6 +1,5 @@
 // reviews.repository.js
-const { Review, Client } = require('../models');
-const { Order } = require('../models');
+const { Review, Client, Order } = require('../models');
 class ReviewsRepository {
   //-- 리뷰 작성 --//
   createReview = async (Order_id, Client_id, content, rating) => {
@@ -8,24 +7,18 @@ class ReviewsRepository {
       const order = await Order.findByPk(Order_id);
 
       // 검사 : 주문 데이터 여부
-      if (!order) {
-        return { error: true, message: '해당하는 주문을 찾을 수 없습니다.' };
-      }
+      if (!order) return { error: true, message: '해당하는 주문을 찾을 수 없습니다.' };
 
       // 검사 : 주문상태가 배달완료인지
-      if (order.status === 0 || order.status === 1) {
+      if (order.status === 0 || order.status === 1)
         return { error: true, message: '주문이 접수중입니다.' };
-      }
 
       // 검사 : 주문상태가 배달완료인지
-      if (order.status !== 2) {
-        return { error: true, message: '배달이 완료되지 않았습니다.' };
-      }
+      if (order.status !== 2) return { error: true, message: '배달이 완료되지 않았습니다.' };
 
       // 검사 : 주문자 정보와 동일한지
-      if (order.Client_id !== Client_id) {
+      if (order.Client_id !== Client_id)
         return { error: true, message: '주문자 정보와 동일하지 않습니다.' };
-      }
 
       // 기존 리뷰
       const existingReview = await Review.findOne({
@@ -36,9 +29,7 @@ class ReviewsRepository {
       });
 
       // 검사 : 리뷰 한개 이상시 오류
-      if (existingReview) {
-        return { error: true, message: '이미 해당 주문의 리뷰를 작성했습니다.' };
-      }
+      if (existingReview) return { error: true, message: '이미 해당 주문의 리뷰를 작성했습니다.' };
 
       // Restaurant_id 가져오기
       const Restaurant_id = order.Restaurant_id;
@@ -59,11 +50,12 @@ class ReviewsRepository {
   };
 
   //-- 리뷰 보기 --//
-  getReviews = async (Restaurant_id, Client_id, content, rating) => {
+  getReviews = async (restaurant_id) => {
+    // console.log(restaurant_id);
     try {
       const reviews = await Review.findAll({
         where: {
-          Restaurant_id: Restaurant_id,
+          Restaurant_id: restaurant_id,
         },
         include: {
           model: Client,
@@ -71,6 +63,8 @@ class ReviewsRepository {
         },
       });
 
+      if (!reviews.length) return { error: true, message: '해당 음식점의 리뷰가 없습니다.' };
+      console.log(reviews);
       return reviews;
     } catch (err) {
       console.error(err.stack);

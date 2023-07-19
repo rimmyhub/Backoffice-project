@@ -39,17 +39,10 @@ class ReviewsController {
   //-- 리뷰 보기 --//
   getReviews = async (req, res, next) => {
     // TO DO :: 임시
-    const { content, rating } = req.body;
-    const { Restaurant_id } = req.params;
-    const Client_id = 1;
+    const { restaurant_id } = req.params;
 
     try {
-      const reviewData = await this.reviewService.getReviews(
-        Restaurant_id,
-        Client_id,
-        content,
-        rating
-      );
+      const reviewData = await this.reviewService.getReviews(restaurant_id);
 
       res.status(200).send({ data: reviewData });
     } catch (err) {

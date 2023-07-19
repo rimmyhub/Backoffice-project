@@ -10,19 +10,8 @@ class ReviewsService {
   };
 
   //-- 리뷰 보기 --//
-  getReviews = async (Restaurant_id, Client_id, content, rating) => {
-    try {
-      const reviewData = await this.reviewsRepository.getReviews(
-        Restaurant_id,
-        Client_id,
-        content,
-        rating
-      );
-      return reviewData;
-    } catch (err) {
-      console.error(err.stack);
-      return res.status(400).send({ message: `${err.message}` });
-    }
+  getReviews = async (restaurant_id) => {
+    return await this.reviewsRepository.getReviews(restaurant_id);
   };
 
   //-- 리뷰 수정 --//
