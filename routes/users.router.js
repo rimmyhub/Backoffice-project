@@ -1,5 +1,11 @@
+const UserController = require('../controllers/users.controller');
+const userController = new UserController();
+const authMiddleware = require('../middlewares/auth.middleware');
 const express = require('express');
 const userRouter = express.Router();
+
+userRouter.post('/signup/client', userController.signupClient);
+userRouter.put('/client/:clientId', authMiddleware, userController.updateClient);
 
 // const AuthMiddleware = require('../middlewares/auth.middleware');
 // const auth = new AuthMiddleware();
@@ -7,10 +13,9 @@ const userRouter = express.Router();
 // const UploadBucket = require('../middlewares/bucket.middleware');
 // const upload = new UploadBucket();
 
-const UserController = require('../controllers/users.controller');
-const userController = new UserController();
+// userRouter.post('/signup/owner', userController);
 
-userRouter.get('/users', userController.getUsers);
+// userRouter.get('/users', userController.getUsers);
 // userRouter.get('/users/info', auth.verifyAccessToken, userController.getUser);
 // userRouter.put('/users/info', auth.verifyAccessToken, userController.modifyUserInfo);
 

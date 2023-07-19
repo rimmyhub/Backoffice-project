@@ -20,7 +20,7 @@ const authRouter = require('./routes/auth.router');
 // const socketRouter = require('./routes/socket.router');
 
 const HOST = '127.0.0.1';
-const PORT = 3000;
+const PORT = 3001;
 const maxAge = 5 * 60 * 1000; // 5분
 const app = express();
 
@@ -55,11 +55,11 @@ app.use('/', [
   userRouter,
   // reviewRouter,
   // restaurantRouter,
-  // ownerRouter,
+  ownerRouter,
   // orderRouter,
   // orderdetailRouter,
   // menuRouter,
-  // authRouter,
+  authRouter,
 ]);
 
 http.listen(PORT, HOST, () => {
