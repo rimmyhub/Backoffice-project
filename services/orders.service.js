@@ -8,19 +8,6 @@ class OrdersService {
   //-- 주문하기 (고객) --//
   order = async (restaurant_id, order_items, client_id) => {
     try {
-      // 주문 금액 계산
-      let totalPayment = 0;
-      for (const orderItem of order_items) {
-        const menu = await Menu.findOne({ where: { menu_id: orderItem.menu_id } });
-        if (!menu) {
-          return { error: true, message: '해당하는 메뉴를 찾을 수 없습니다.' };
-        }
-        const menuPrice = Number(menu.price.replace(/\D/g, ''));
-        totalPayment += menuPrice * orderItem.count;
-      }
-
-      console.log(totalPayment);
-
       /**
        * 주문 생성 (고객)
        * @param {number} restaurant_id - 레스토랑 ID

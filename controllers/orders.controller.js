@@ -1,6 +1,5 @@
 // orders.controller.js
 const OredersService = require('../services/orders.service');
-const { Restaurant, Client } = require('../models');
 
 class OrdersController {
   ordersService = new OredersService();
@@ -13,11 +12,9 @@ class OrdersController {
 
     const { client_id } = res.locals.user;
     const { restaurant_id, order_items } = req.body;
-
     /**
      * @param {Array} order_items - [{menu_id:1, count:3}, {menu_id:2, count:2}, {menu_id:3, count:4}]
      */
-
     try {
       // 검사 : 주문 데이터 유효
       if (!restaurant_id || !order_items || order_items.length === 0) {

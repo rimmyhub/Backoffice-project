@@ -1,16 +1,15 @@
 // order.repository.js
-const { Order, OrderDetail, Client, Owner, Restaurant, sequelize } = require('../models');
+const { Order, OrderDetail, Client, Owner, Restaurant, sequelize, Meunu } = require('../models');
 const { Transaction } = require('sequelize');
 
 class OrdersRepository {
   //-- 주문하기 (고객) --//
   createOrder = async (restaurant_id, order_items, client_id, totalPayment) => {
-    // 트랜잭션 : 설정
-    const t = await sequelize.transaction({
-      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED, // 격리수준 설정
-    });
-
     try {
+      // 트랜잭션 : 설정
+      const t = await sequelize.transaction({
+        isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED, // 격리수준 설정
+      });
       // Client
       const orderClient = await Client.findByPk(client_id, { transaction: t });
 
@@ -33,6 +32,17 @@ class OrdersRepository {
       // 검사 :: 음식점 존재 여부
       if (!restaurant) {
         return res.status(404).send({ message: '존재하지 않는 음식점입니다.' });
+      }
+
+      // 주문 금액 계산
+      let totalPayment = 0;
+      for (const orderItem of order_items) {
+        const menu = await Menu.findOne({ where: { menu_id: orderItem.menu_id } });
+        if (!menu) {
+          return { error: true, message: '해당하는 메뉴를 찾을 수 없습니다.' };
+        }
+        const menuPrice = Number(menu.price.replace(/\D/g, ''));
+        totalPayment += menuPrice * orderItem.count;
       }
 
       // Client :: 포인트 차감
