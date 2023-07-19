@@ -59,6 +59,23 @@ class ReviewsController {
       return res.status(400).send({ message: `${err.message}` });
     }
   };
+
+  //-- 리뷰 수정 --//
+  modifyReview = async (req, res, next) => {
+    // TO DO :: 임시
+    let { Client_id } = req.params;
+    Client_id = 1;
+    const { content, rating } = req.body;
+
+    try {
+      const modifiedReview = await this.reviewService.modifyReview(Client_id, content, rating);
+
+      res.status(200).sedn({ data: modifiedReview });
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
 }
 
 module.exports = ReviewsController;

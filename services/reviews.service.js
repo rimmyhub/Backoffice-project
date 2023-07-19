@@ -58,6 +58,25 @@ class ReviewsService {
       return res.status(400).send({ message: `${err.message}` });
     }
   };
+
+  //-- 리뷰 수정 --//
+  modifyReview = async (Client_id, content, rating) => {
+    // 유효성 검사
+    if (!content || !rating) {
+      return res.status(400).json({
+        errorMessage: '수정 데이터.',
+      });
+    }
+
+    // 유효성 검사
+    if (content === '') {
+      return res.status(400).json({
+        errorMessage: '댓글 내용을 입력해주세요.',
+      });
+    }
+
+    return this.CommentsRepository.updateComments(postId, commentId, title, content);
+  };
 }
 
 module.exports = ReviewsService;

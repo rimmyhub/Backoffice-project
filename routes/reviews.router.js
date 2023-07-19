@@ -8,11 +8,12 @@ const ReviewsController = require('../controllers/reviews.controller');
 const reviewsController = new ReviewsController();
 
 //-- 리뷰 작성 --//
-// TO DO :: authMiddleware ???
 router.post('/review/:Restaurant_id/:Order_id', reviewsController.createReview);
 
 //-- 리뷰 보기 --//
-// TO DO :: authMiddleware ???
 router.get('/review/:Restaurant_id', reviewsController.getReviews);
+
+//-- 리뷰 수정 --//
+router.put('/review/:Restaurant_id/:Order_id', reviewsController.modifyReview);
 
 module.exports = router;
