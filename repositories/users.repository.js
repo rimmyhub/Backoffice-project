@@ -1,62 +1,27 @@
-const { User } = require('../models');
+const { Client } = require('../models');
 
 class UserRepository {
-  findAllUsers = async () => {
-    const findUserData = await User.findAll();
-    return findUserData;
-  };
+  createUser = async (payload) => {
+    const { email, name, password, point, address, phone_num, clint_image, introduction } = payload;
 
-  findUserById = async (userId) => {
-    const findUserData = await User.findByPk(userId);
-    return findUserData;
-  };
+    const client = await Client.create({
+      email,
+      name,
+      password,
+      point,
+      address,
+      phone_num,
+      clint_image,
+      introduction,
+    });
 
-  findUserByEmail = async (email) => {
-    const findUserData = await User.findOne({ where: { email } });
-    return findUserData;
+    return client;
   };
-
-  modifyUserInfo = async (userId, nickname, email, gender, interestTopic) => {
-    const modifiedUserData = await User.update(
-      {
-        nickname,
-        email,
-        gender,
-        interestTopic,
-      },
-      { where: { userId } }
-    );
-    return modifiedUserData;
-  };
-
-  modifyUserPassword = async (userId, password) => {
-    const modifiedUserPassword = await User.update({ password }, { where: { userId } });
-    return modifiedUserPassword;
-  };
-
-  deleteUserInfo = async (userId) => {
-    const deletedUserInfo = await User.destroy({ where: { userId } });
-    return deletedUserInfo;
-  };
-
-  findRefreshTokenByUserId = async (UserId) => {
-    const findRefreshTokenData = await RefreshToken.findOne({ UserId });
-    return findRefreshTokenData;
-  };
-
-  createRefreshToken = async (refreshToken, UserId) => {
-    const createdRefreshToken = await RefreshToken.create({ refreshToken, UserId });
-    return createdRefreshToken;
-  };
-
-  updateRefreshToken = async (refreshToken, UserId) => {
-    const updatedRefreshToken = await RefreshToken.update({ refreshToken }, { where: { UserId } });
-    return updatedRefreshToken;
-  };
-
-  deleteRefreshToken = async (UserId) => {
-    const deletedRefreshToken = await RefreshToken.destroy({ where: { UserId } });
-    return deletedRefreshToken;
+  checkEmailDup = async (email) => {
+    const exEmail = await Client.findOne({
+      where: { email },
+    });
+    return exEmail;
   };
 }
 

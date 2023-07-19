@@ -60,13 +60,13 @@ app.use('/', viewRouter);
 // app.use('/', [renderRouter]);
 app.use('/', [
   userRouter,
-  // reviewRouter,
+  reviewRouter,
   restaurantRouter,
-  // ownerRouter,
-  // orderRouter,
+  ownerRouter,
+  orderRouter,
   // orderdetailRouter,
   menuRouter,
-  // authRouter,
+  authRouter,
 ]);
 
 http.listen(PORT, HOST, () => {
