@@ -18,7 +18,6 @@ class AuthController {
       }
 
       const token = await this.accessToken(clientInfo.client_id, email, division);
-      console.log('token = ', token);
       // refresh토큰 DB에 저장
       // bearer타입으로 클라이언트에 token을 전달
       res.cookie('authorization', `Bearer ${token}`);

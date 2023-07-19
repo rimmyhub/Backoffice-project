@@ -43,8 +43,6 @@ module.exports = async (req, res, next) => {
     // 사용자가 owner인지 client인지 판별하기
     const division = decodedToken.division;
     const userId = decodedToken.userId;
-
-    console.log('decodedToken  = ', decodedToken);
     let user;
     if (division === 'Owner') {
       user = await Owner.findOne({ where: { owner_id: userId } });
