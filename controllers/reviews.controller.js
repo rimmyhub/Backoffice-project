@@ -6,12 +6,11 @@ class ReviewsController {
 
   //-- 리뷰 작성 --//
   createReview = async (req, res, next) => {
-    // TO DO :: 임시
-    let { Client_id, content, rating } = req.body;
-    Client_id = 131;
-    const { Order_id } = req.params;
-    const { Restaurant_id } = req.params;
-
+    const { content, rating } = req.body;
+    const { client_id: Client_id } = res.locals.user;
+    const { order_id: Order_id } = req.params;
+    // console.log(Client_id);
+    console.log(Order_id);
     try {
       // 검사 : 데이터 검사
       if (!Order_id || !Client_id) {
@@ -24,7 +23,6 @@ class ReviewsController {
       }
 
       const reviewData = await this.reviewService.createReview(
-        Restaurant_id,
         Order_id,
         Client_id,
         content,

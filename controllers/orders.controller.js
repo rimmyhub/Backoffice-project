@@ -47,15 +47,15 @@ class OrdersController {
 
   //-- 주문받기 (사장) --//
   orderReceive = async (req, res, next) => {
-    // 검사 : 사장/유저 여부 확인
     if (res.locals.user.division !== 'Owner')
       return res.status(412).send({ message: '너는 사장이 아니다.' });
+
     const { order_id } = req.params;
 
     try {
-      const orderMessage = await this.ordersService.orderReceive(order_id);
+      const orderData = await this.ordersService.orderReceive(order_id);
 
-      res.status(200).send({ orderMessage });
+      res.status(200).send({ data: orderData });
     } catch (err) {
       console.error(err.stack);
       return res.status(400).send({ message: `${err.message}` });

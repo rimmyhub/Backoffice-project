@@ -88,13 +88,13 @@ class OrdersRepository {
 
   //-- 주문조회 (고객) --//
   getOrderClient = async (client_id) => {
-    const orderStatus = {
+    const orderStatusMessage = {
       0: '접수대기',
       1: '접수완료',
       2: '배달완료',
     };
     try {
-      // 불러온 주문데이터
+      // 주문데이터
       const orders = await Order.findAll({
         where: { Client_id: client_id },
         include: [
@@ -109,16 +109,16 @@ class OrdersRepository {
 
       // 내보낼 주문데이터
       const orderData = orders.map((order) => {
-        const { name: restaurant_name } = order.Restaurant;
+        const { name: restaurant_name } = order.Restaurant; // 레스토랑 이름
         const order_time = new Date(order.createdAt).toLocaleString('ko-KR', {
           timeZone: 'Asia/Seoul',
-        });
-        const { status } = order;
-        const order_status = orderStatus[status];
+        }); // 주문 시각
+        const { status } = order; // 주문상태
+        const order_status = orderStatusMessage[status];
 
         const menuDetails = order.OrderDetails.map(({ Menu, count }) => {
-          const { menu_id: menu_number, name: menu_name, price: item_price } = Menu;
-          const totalPayment = item_price * count;
+          const { menu_id: menu_number, name: menu_name, price: item_price } = Menu; // 메뉴 주분번호,이름,개당 가격
+          const totalPayment = item_price * count; // 총 결제금액
           return { menu_number, menu_name, count, item_price, totalPayment };
         });
 
@@ -133,7 +133,7 @@ class OrdersRepository {
   };
 
   //-- 주문받기 (사장) --//
-  updateOrderStatus = async (orderData, updateStatus) => {
+  updateOrderStatus = async (order_id) => {
     try {
       const orderData = await Order.findByPk(order_id);
 
@@ -143,19 +143,23 @@ class OrdersRepository {
       }
 
       // 검사 : 주문상태에 따른 처리분리
-      let updateStatus = 0;
       let orderMessage = '';
-      if (orderData.status === 0) {
-        orderMessage = '주문접수 했습니다';
-        updateStatus = 1;
-      } else if (orderData.status === 1) {
-        orderMessage = '배달완료 했습니다';
-        updateStatus = 2;
-      } else if (orderData.status === 2) {
-        orderMessage = '완료된 주문입니다.';
-        return orderMessage;
-      } else {
-        return { error: true, message: '잘못된 주문 상태 값입니다.' };
+      let updateStatus;
+      switch (orderData.status) {
+        case 0:
+          orderMessage = '주문접수 했습니다';
+          updateStatus = 1;
+          break;
+        case 1:
+          orderMessage = '배달완료 했습니다';
+          updateStatus = 2;
+          break;
+        case 2:
+          orderMessage = '완료된 주문입니다.';
+          updateStatus = 2;
+          break;
+        default:
+          return { error: true, message: '잘못된 주문 상태 값입니다.' };
       }
 
       orderData.status = updateStatus;

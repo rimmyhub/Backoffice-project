@@ -33,13 +33,7 @@ class OrdersService {
   //-- 주문받기 (사장) --//
   orderReceive = async (order_id) => {
     try {
-      /**
-       * @param {data} orderData - Order 데이터
-       * @param {number} restaurant_id - 레스토랑 ID
-       * @param {number:0,1,2} updateStatus - 업데이트 된 주문상태
-       */
-
-      await this.ordersRepository.updateOrderStatus(orderData, updateStatus);
+      return this.ordersRepository.updateOrderStatus(order_id);
     } catch (err) {
       console.error(err.stack);
       throw new Error(`${err.message}`);

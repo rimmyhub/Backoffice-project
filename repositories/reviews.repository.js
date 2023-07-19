@@ -1,22 +1,47 @@
 // reviews.repository.js
 const { Review, Client } = require('../models');
+const { Order } = require('../models');
 class ReviewsRepository {
   //-- 리뷰 작성 --//
-  createReview = async (Restaurant_id, Order_id, Client_id, content, rating) => {
+  createReview = async (Order_id, Client_id, content, rating) => {
     try {
+      const order = await Order.findByPk(Order_id);
+
+      // 검사 : 주문 데이터 여부
+      if (!order) {
+        return { error: true, message: '해당하는 주문을 찾을 수 없습니다.' };
+      }
+
+      // 검사 : 주문상태가 배달완료인지
+      if (order.status === 0 || order.status === 1) {
+        return { error: true, message: '주문이 접수중입니다.' };
+      }
+
+      // 검사 : 주문상태가 배달완료인지
+      if (order.status !== 2) {
+        return { error: true, message: '배달이 완료되지 않았습니다.' };
+      }
+
+      // 검사 : 주문자 정보와 동일한지
+      if (order.Client_id !== Client_id) {
+        return { error: true, message: '주문자 정보와 동일하지 않습니다.' };
+      }
+
       // 기존 리뷰
       const existingReview = await Review.findOne({
         where: {
-          Restaurant_id,
           Order_id,
           Client_id,
         },
       });
 
-      // 검사 : 리뷰 한개이상시 오류
+      // 검사 : 리뷰 한개 이상시 오류
       if (existingReview) {
-        return { error: true, message: '이미 해당하는 리뷰가 존재합니다.' };
+        return { error: true, message: '이미 해당 주문의 리뷰를 작성했습니다.' };
       }
+
+      // Restaurant_id 가져오기
+      const Restaurant_id = order.Restaurant_id;
 
       const reviewData = await Review.create({
         Restaurant_id,
@@ -25,6 +50,7 @@ class ReviewsRepository {
         content,
         rating,
       });
+
       return reviewData;
     } catch (err) {
       console.error(err.stack);
