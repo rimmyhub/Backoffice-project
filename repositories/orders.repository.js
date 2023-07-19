@@ -107,12 +107,13 @@ class OrdersRepository {
         ],
       });
 
-      // console.log(orders);
-
       // 내보낼 주문데이터
       const orderData = orders.map((order) => {
         const { name: restaurant_name } = order.Restaurant;
-        const { createdAt: order_time, status } = order;
+        const order_time = new Date(order.createdAt).toLocaleString('ko-KR', {
+          timeZone: 'Asia/Seoul',
+        });
+        const { status } = order;
         const order_status = orderStatus[status];
 
         const menuDetails = order.OrderDetails.map(({ Menu, count }) => {

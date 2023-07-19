@@ -35,9 +35,6 @@ class OrdersController {
   //-- 주문조회 (고객) --//
   getOrderClient = async (req, res, next) => {
     try {
-      if (res.locals.user.division !== 'Client')
-        return res.status(412).send({ message: '너는 고객이 아니다.' });
-
       const { client_id } = res.locals.user;
 
       const orderData = await this.ordersService.getOrderClient(client_id);
