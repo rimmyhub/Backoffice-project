@@ -57,7 +57,7 @@ class AuthController {
       { userId: userId, email: email, division: division },
       process.env.ACCESS_TOKEN_KEY,
       {
-        expiresIn: '1h',
+        expiresIn: '1m',
       }
     );
     return token;
