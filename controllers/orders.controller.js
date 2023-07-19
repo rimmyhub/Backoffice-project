@@ -1,6 +1,6 @@
 // orders.controller.js
 const OredersService = require('../services/orders.service');
-const { Restaurant, Order } = require('../models');
+const { Restaurant } = require('../models');
 
 class OrdersController {
   ordersService = new OredersService();
@@ -40,17 +40,16 @@ class OrdersController {
   //-- 주문받기 (사장) --//
   orderReceive = async (req, res, next) => {
     // TO DO :: order_id 가져올것/ 테스트용
-    // const { order_id } = req.body;
-    const order_id = 35;
+    const { order_id } = req.params;
 
-    const order = await Order.findByPk(order_id);
+    try {
+      const orderMessage = await this.ordersService.orderReceive(order_id);
 
-    if (!order) {
-      throw new Error(`${order_id}번 주문을 찾을 수 없습니다.`);
+      res.status(200).send({ orderMessage });
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
     }
-
-    const orderMessage = await this.ordersService.orderReceive(order);
-    res.status(200).send({ orderMessage });
   };
 }
 

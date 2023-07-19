@@ -51,17 +51,22 @@ class OrdersRepository {
     } catch (err) {
       // 트랜잭션 : rollback
       await t.rollback();
-      console.error(err.name, ':', err.message);
+      console.error(err.stack);
       return res.status(400).send({ message: `${err.message}` });
     }
   };
 
   //-- 주문받기 (사장) --//
-  orderReceive = async (orderData, updateStatus, orderMessage) => {
-    orderData.status = updateStatus;
-    await orderData.save();
+  updateOrderStatus = async (orderData, updateStatus, orderMessage) => {
+    try {
+      orderData.status = updateStatus;
+      await orderData.save();
 
-    return orderMessage;
+      return orderMessage;
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
+    }
   };
 }
 

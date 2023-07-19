@@ -9,6 +9,10 @@ const reviewsController = new ReviewsController();
 
 //-- 리뷰 작성 --//
 // TO DO :: authMiddleware ???
-router.post('/review/:order_id', reviewsController.createReview);
+router.post('/review/:Restaurant_id/:Order_id', reviewsController.createReview);
+
+//-- 리뷰 보기 --//
+// TO DO :: authMiddleware ???
+router.get('/review/:Restaurant_id', reviewsController.getReviews);
 
 module.exports = router;

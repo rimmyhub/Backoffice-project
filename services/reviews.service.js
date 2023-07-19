@@ -1,29 +1,61 @@
 // reviews.service.js
 const ReviewsRepository = require('../repositories/reviews.repository');
-const { Review, Order } = require('../models');
+const { Review, Order, OrderDetail } = require('../models');
 
 class ReviewsService {
   reviewsRepository = new ReviewsRepository();
 
-  createReview = async (Order_id, Client_id, content, rating) => {
-    const order = await Order.findByPk(Order_id);
+  //-- 리뷰 작성 --//
+  createReview = async (Restaurant_id, Order_id, Client_id, content, rating) => {
+    try {
+      const order = await Order.findByPk(Order_id);
 
-    // 검사 : 주문 데이터 여부
-    if (!order) {
-      throw new Error('해당하는 주문을 찾을 수 없습니다.');
+      // 검사 : 주문 데이터 여부
+      if (!order) {
+        return { error: true, message: '해당하는 주문을 찾을 수 없습니다.' };
+      }
+
+      // 검사 : 주문상태가 배달완료인지
+      if (order.status === 0 || order.status === 1) {
+        return { error: true, message: '주문이 접수중입니다.' };
+      }
+
+      if (order.status !== 2) {
+        return { error: true, message: '주문 상태를 확인해주세요.' };
+      }
+
+      // 검사 : 주문자 정보와 동일한지
+      if (order.Client_id === Client_id) {
+        const reviewData = await this.reviewsRepository.createReview(
+          Restaurant_id,
+          Order_id,
+          Client_id,
+          content,
+          rating
+        );
+        return reviewData;
+      } else {
+        return { error: true, message: '주문자와 리뷰 작성자가 일치하지 않습니다.' };
+      }
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
     }
+  };
 
-    // Orders 테이블의 Client_id와 현재 Client_id를 비교하여 일치하는 경우에만 리뷰 생성
-    if (order.Client_id === Client_id) {
-      const reviewData = await this.reviewsRepository.createReview(
-        Order_id,
+  //-- 리뷰 보기 --//
+  getReviews = async (Restaurant_id, Client_id, content, rating) => {
+    try {
+      const reviewData = await this.reviewsRepository.getReviews(
+        Restaurant_id,
         Client_id,
         content,
         rating
       );
       return reviewData;
-    } else {
-      throw new Error(`주문자와 리뷰 작성자가 일치하지 않습니다.`);
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
     }
   };
 }

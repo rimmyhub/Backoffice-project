@@ -20,6 +20,6 @@ router.post('/order', ordersController.order);
 // });
 
 // 주문받기 (사장)
-router.patch('/order-receive', ordersController.orderReceive);
+router.patch('/order-receive/:order_id', ordersController.orderReceive);
 
 module.exports = router;
