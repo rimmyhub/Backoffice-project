@@ -34,6 +34,12 @@ class MenusService {
     }
   };
 
+  // 메뉴 사진 업로드
+  uploadMenuImage = async (imageUrl, owner_id) => {
+    const uploadedMenuImage = await this.menusRepository.createMenuImage(imageUrl, owner_id);
+    return uploadedMenuImage;
+  };
+
   // 메뉴 수정
   putMenu = async ({ menu_id, name, menu_image, price, sold_out }) => {
     // 댓글을 조회합니다.

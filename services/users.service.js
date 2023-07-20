@@ -64,9 +64,10 @@ class UserService {
   };
 
   // 유저 정보 수정
-  modifyUserInfo = async (client_id, introduction, address, phone_num) => {
+  modifyUserInfo = async (client_id, client_image, introduction, address, phone_num) => {
     const modifiedUserData = await this.userRepository.modifyUserInfo(
       client_id,
+      client_image,
       introduction,
       address,
       phone_num

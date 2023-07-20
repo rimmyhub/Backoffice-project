@@ -16,3 +16,7 @@ npx sequelize model:generate --name Menu --attributes Restaurant_id:string,name:
 npx sequelize model:generate --name Restaurant --attributes Owner_id:integer,name:string,address:string,phone_num:integer,biz_hours:string,category:string
 # 리프레시 토큰
 npx sequelize model:generate --name RefreshToken --attributes refresh_token:string,user_id:integer
+# 프로필 이미지
+npx sequelize model:generate --name ProfileImage --attributes imageUrl:string,Client_id:integer
+# 메뉴 이미지
+npx sequelize model:generate --name MenuImage --attributes imageUrl:string,Menu_id:integer

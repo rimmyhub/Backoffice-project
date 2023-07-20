@@ -1,4 +1,4 @@
-const { Menu } = require('../models');
+const { Menu, MenuImage } = require('../models');
 const { Op } = require('sequelize');
 
 class MenusRepository {
@@ -31,18 +31,18 @@ class MenusRepository {
     });
   };
 
+  // 메뉴 이미지 등록
+  createMenuImage = async (imageUrl, Owner_id) => {
+    const createdMenuImage = await MenuImage.create({ imageUrl, Owner_id });
+    return createdMenuImage;
+  };
+
   // 수정 및 삭제를 위한 메뉴 권한 확인
   findById = async ({ menu_id }) => {
     return await Menu.findOne({ where: { menu_id } });
   };
 
-  putMenu = async ({
-    menu_id,
-    name,
-    menu_image,
-    price,
-    sold_out,
-  }) => {
+  putMenu = async ({ menu_id, name, menu_image, price, sold_out }) => {
     await Menu.update(
       { name, menu_image, price, sold_out },
       {
@@ -53,9 +53,8 @@ class MenusRepository {
     );
   };
 
-  deleteMenu = async ({
-    menu_id,
-  }) => {
+  // 메뉴 삭제
+  deleteMenu = async ({ menu_id }) => {
     await Menu.destroy({
       where: {
         [Op.and]: [{ menu_id }],

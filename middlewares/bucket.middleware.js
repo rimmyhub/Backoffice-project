@@ -17,14 +17,14 @@ class UploadBucket {
   }
 
   // 버킷 업로드 틀
-  upload = (saveDir, email) =>
+  upload = (saveDir) =>
     multer({
       storage: multerS3({
         s3: s3,
         bucket: process.env.S3_BUCKET_NAME,
         shouldTransform: true, // 뭘 트랜스폼 한다는거지?
         key: (req, file, callback) => {
-          callback(null, `${saveDir}/${email}/${Date.now()}_${uuidv4()}`);
+          callback(null, `${saveDir}/${Date.now()}_${uuidv4()}`);
         },
         acl: 'public-read-write',
         limits: { fileSize: 1 * 1024 * 1024 }, // 이미지 용량을 5MB이하로 제한
@@ -36,9 +36,9 @@ class UploadBucket {
     });
 
   // 프로필 사진 버킷 업로드
-  profileImage = (targetFile, email) => this.upload(this.profileImageDir, email).single(targetFile);
+  profileImage = (targetFile) => this.upload(this.profileImageDir).single(targetFile);
   // 메뉴 사진 버킷 업로드
-  menuImage = (targetFile, email) => this.upload(this.menuImageDir, email).single(targetFile);
+  menuImage = (targetFile) => this.upload(this.menuImageDir).single(targetFile);
 }
 
 module.exports = UploadBucket;
