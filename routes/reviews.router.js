@@ -2,17 +2,20 @@
 
 const express = require('express');
 const router = express.Router();
-// const AuthMiddleware = require('../middlewares/auth.middleware');
-// const authMiddleware = new AuthMiddleware();
+const authMiddleware = require('../middlewares/auth.middleware');
 const ReviewsController = require('../controllers/reviews.controller');
 const reviewsController = new ReviewsController();
 
 //-- 리뷰 작성 --//
-// TO DO :: authMiddleware ???
-router.post('/review/:Restaurant_id/:Order_id', reviewsController.createReview);
+router.post('/review/:order_id', authMiddleware, reviewsController.createReview);
 
 //-- 리뷰 보기 --//
-// TO DO :: authMiddleware ???
-router.get('/review/:Restaurant_id', reviewsController.getReviews);
+router.get('/review/:restaurant_id', reviewsController.getReviews);
+
+//-- 리뷰 수정 --//
+router.put('/review/:order_id', authMiddleware, reviewsController.modifyReview);
+
+//-- 리뷰 삭제 --//
+// router.delete('/review/:order_id', authMiddleware, reviewsController.deleteReview);
 
 module.exports = router;

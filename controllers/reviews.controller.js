@@ -6,11 +6,9 @@ class ReviewsController {
 
   //-- 리뷰 작성 --//
   createReview = async (req, res, next) => {
-    // TO DO :: 임시
-    let { Client_id, content, rating } = req.body;
-    Client_id = 131;
-    const { Order_id } = req.params;
-    const { Restaurant_id } = req.params;
+    const { content, rating } = req.body;
+    const { client_id: Client_id } = res.locals.user;
+    const { order_id: Order_id } = req.params;
 
     try {
       // 검사 : 데이터 검사
@@ -24,7 +22,6 @@ class ReviewsController {
       }
 
       const reviewData = await this.reviewService.createReview(
-        Restaurant_id,
         Order_id,
         Client_id,
         content,
@@ -41,19 +38,45 @@ class ReviewsController {
   //-- 리뷰 보기 --//
   getReviews = async (req, res, next) => {
     // TO DO :: 임시
-    const { content, rating } = req.body;
-    const { Restaurant_id } = req.params;
-    const Client_id = 1;
+    const { restaurant_id } = req.params;
 
     try {
-      const reviewData = await this.reviewService.getReviews(
-        Restaurant_id,
+      // const reviewData = await this.reviewService.getReviews(restaurant_id);
+
+      res.status(200).send({ data: reviewData });
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
+
+  //-- 리뷰 수정 --//
+  modifyReview = async (req, res, next) => {
+    const { content, rating } = req.body;
+    const { client_id: Client_id } = res.locals.user;
+    const { order_id: Order_id } = req.params;
+
+    try {
+      // 유효성 검사
+      if (!content || !rating || !Client_id || !Order_id)
+        return res.status(400).json({
+          errorMessage: '수정 데이터를 확인해주세요.',
+        });
+
+      // 유효성 검사
+      if (content === '')
+        return res.status(400).json({
+          errorMessage: '댓글 내용을 입력해주세요.',
+        });
+
+      const modifiedReview = await this.reviewService.modifyReview(
+        Order_id,
         Client_id,
         content,
         rating
       );
 
-      res.status(200).send({ data: reviewData });
+      res.status(200).sedn({ data: modifiedReview });
     } catch (err) {
       console.error(err.stack);
       return res.status(400).send({ message: `${err.message}` });
