@@ -9,8 +9,7 @@ class ReviewsController {
     const { content, rating } = req.body;
     const { client_id: Client_id } = res.locals.user;
     const { order_id: Order_id } = req.params;
-    // console.log(Client_id);
-    console.log(Order_id);
+
     try {
       // 검사 : 데이터 검사
       if (!Order_id || !Client_id) {
@@ -42,7 +41,7 @@ class ReviewsController {
     const { restaurant_id } = req.params;
 
     try {
-      const reviewData = await this.reviewService.getReviews(restaurant_id);
+      // const reviewData = await this.reviewService.getReviews(restaurant_id);
 
       res.status(200).send({ data: reviewData });
     } catch (err) {
@@ -53,13 +52,29 @@ class ReviewsController {
 
   //-- 리뷰 수정 --//
   modifyReview = async (req, res, next) => {
-    // TO DO :: 임시
-    let { Client_id } = req.params;
-    Client_id = 1;
     const { content, rating } = req.body;
+    const { client_id: Client_id } = res.locals.user;
+    const { order_id: Order_id } = req.params;
 
     try {
-      const modifiedReview = await this.reviewService.modifyReview(Client_id, content, rating);
+      // 유효성 검사
+      if (!content || !rating || !Client_id || !Order_id)
+        return res.status(400).json({
+          errorMessage: '수정 데이터를 확인해주세요.',
+        });
+
+      // 유효성 검사
+      if (content === '')
+        return res.status(400).json({
+          errorMessage: '댓글 내용을 입력해주세요.',
+        });
+
+      const modifiedReview = await this.reviewService.modifyReview(
+        Order_id,
+        Client_id,
+        content,
+        rating
+      );
 
       res.status(200).sedn({ data: modifiedReview });
     } catch (err) {

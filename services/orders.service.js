@@ -12,12 +12,7 @@ class OrdersService {
      * @param {Array} order_items - 주문 아이템 목록
      * @param {number} client_id - 고객 ID
      */
-    const orderData = await this.ordersRepository.createOrder(
-      restaurant_id,
-      order_items,
-      client_id
-    );
-    return orderData;
+    return await this.ordersRepository.createOrder(restaurant_id, order_items, client_id);
   };
 
   //-- 주문조회 (고객) --//

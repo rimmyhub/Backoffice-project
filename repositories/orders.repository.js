@@ -9,6 +9,7 @@ class OrdersRepository {
     const t = await sequelize.transaction({
       isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED, // 격리수준 설정
     });
+
     try {
       // Client
       const orderClient = await Client.findByPk(client_id, { transaction: t });
@@ -22,6 +23,9 @@ class OrdersRepository {
       // 검사 : 클라이언트 유저 존재 여부
       if (!orderClient) throw new Error('존재하지 않는 유저입니다.');
 
+      // 검사 :: 음식점 존재 여부
+      if (!restaurant) return res.status(404).send({ message: '존재하지 않는 음식점입니다.' });
+
       // 주문 금액 계산
       let totalPayment = 0;
       for (const orderItem of order_items) {
@@ -34,9 +38,6 @@ class OrdersRepository {
 
       // 검사 :: 잔액 확인
       if (orderClient.point < totalPayment) throw new Error('잔액이 없습니다.');
-
-      // 검사 :: 음식점 존재 여부
-      if (!restaurant) return res.status(404).send({ message: '존재하지 않는 음식점입니다.' });
 
       // Client :: 포인트 차감
       orderClient.point -= totalPayment;
