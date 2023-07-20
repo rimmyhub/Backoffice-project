@@ -30,12 +30,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       Order_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       Menu_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       count: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

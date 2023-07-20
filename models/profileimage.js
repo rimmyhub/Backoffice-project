@@ -26,9 +26,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       imageUrl: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       Client_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
     },
     {

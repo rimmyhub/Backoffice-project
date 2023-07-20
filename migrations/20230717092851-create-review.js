@@ -11,18 +11,23 @@ module.exports = {
       },
       Client_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       Order_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       Restaurant_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       rating: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       content: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

@@ -11,12 +11,15 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       password: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       address: {
         type: Sequelize.STRING,
@@ -26,12 +29,17 @@ module.exports = {
       },
       client_image: {
         type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue:
+          'https://issuebombom-awsbucket.s3.ap-northeast-2.amazonaws.com/images/profile/1689841609097_22bc8ad7-0051-4572-8597-616fdb618776',
       },
       introduction: {
         type: Sequelize.STRING,
       },
       point: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1000000,
       },
       createdAt: {
         allowNull: false,

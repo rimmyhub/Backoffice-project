@@ -11,9 +11,11 @@ module.exports = {
       },
       imageUrl: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
-      Menu_id: {
+      Restaurant_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
     });
   },

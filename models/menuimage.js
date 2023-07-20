@@ -25,9 +25,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       imageUrl: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
-      Menu_id: {
+      Restaurant_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
     },
     {
