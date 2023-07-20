@@ -53,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
       category: {
         type: DataTypes.STRING,
       },
+      total_income: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
