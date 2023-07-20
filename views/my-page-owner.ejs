@@ -88,13 +88,14 @@
                 <button type="button" class="btn-more">더보기></button>
               </p>
               <p><span class="content-title">주문시간</span><%= order.order_time %></p>
-              <p>
-                <span class="content-title">주문시간</span><%= order.order_status %><% if
-                (order.order_status === '접수완료') { %> 30분 소요됨 <% } %>
-              </p>
+              <p><span class="content-title">주문상태</span><%= order.order_status %></p>
             </div>
-            <% if (order.order_status === '배달완료') { %>
-            <button>리뷰쓰기</button>
+            <% if (order.order_status === '접수대기') { %>
+            <button>접수 승낙하기</button>
+            <% } %> <% if (order.order_status === '접수완료') { %>
+            <button>배달 완료하기</button>
+            <% } %><% if (order.order_status === '배달완료') { %>
+            <span>배달완료</span>
             <% } %>
           </li>
           <% }) %>

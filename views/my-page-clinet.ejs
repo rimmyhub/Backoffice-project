@@ -42,7 +42,8 @@
             <p><span class="content-title">전화번호</span><%= user.phone_num %></p>
             <p><span class="content-title">이메일</span><%= user.email %></p>
           </div>
-          <button>정보 수정</button>
+          <!-- TO DO :: 모달 작동되는지 확인, 모달 연결 필요 -->
+          <button type="button" onClick="openModal(modal-user-edit)">정보 수정</button>
         </div>
       </section>
       <hr />
@@ -62,7 +63,7 @@
               </p>
               <p><span class="content-title">주문시간</span><%= order.order_time %></p>
               <p>
-                <span class="content-title">주문시간</span><%= order.order_status %><% if
+                <span class="content-title">주문상태</span><%= order.order_status %><% if
                 (order.order_status === '접수완료') { %> 30분 소요됨 <% } %>
               </p>
             </div>
