@@ -1,0 +1,57 @@
+<!-- 검색 영역 -->
+<style>
+
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 50px;
+  }
+
+  #searchBox {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+} 
+</style>
+</head>
+<body>
+  <header>
+    <div class="search">
+    <form action="/" method="GET">
+      <input placeholder="음식, 음식 카테고리를 검색해보세요" id="searchBox" type="text" />
+      <i class="fa fa-search searchBtn" aria-hidden="true"></i>
+    </form>
+    </div>
+  </header>
+
+  <script>
+  const searchBtn = document.querySelector(".searchBtn");
+  const searchBox = document.getElementById("searchBox");
+  
+
+  const search = async () => {   
+    if (!searchBox.value) return alert("검색어를 입력해 주세요.");
+    // window.location.href = `/search?data=${searchBox.value}&page=1`;
+
+    let foodNameResult = await fetch(`/restaurant?foodName=${searchBox.value}`)
+    foodNameResult = await foodNameResult.json()
+    console.log({foodNameResult})
+
+    let categoryResult = await fetch(`/restaurant?category=${searchBox.value}`)
+    categoryResult = await categoryResult.json()
+    console.log({categoryResult})
+  };
+
+  searchBtn.addEventListener("click", search);
+  searchBox.addEventListener("keypress", (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") search();
+  });
+  searchBox.focus();
+
+  
+  </script>
+</body>
+</html>

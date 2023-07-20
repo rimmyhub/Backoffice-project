@@ -3,6 +3,14 @@ const RestaurantsService = require('../services/restaurants.service');
 class RestaurantsController {
   restaurantsService = new RestaurantsService();
 
+  // 음식점 전체 조회
+  getAllRestaurant = async (req, res) => {
+    const { foodName, category } = req.query;
+    console.log({ foodName });
+    const { code, data } = await this.restaurantsService.getAllRestaurant(foodName, category);
+    res.status(code).json({ data });
+  };
+
   // 음식점 조회
   getRestaurant = async (req, res) => {
     const { restaurant_id } = req.params;

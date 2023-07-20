@@ -1,25 +1,18 @@
-// 예시입니다!
 const express = require('express');
 const router = express.Router();
-const path = require('path');
+const RestaurantsRepository = require('../repositories/restaurants.repository');
 
-const AuthMiddleware = require('../middlewares/auth.middleware');
-const auth = new AuthMiddleware();
+const restaurantsRepository = new RestaurantsRepository();
 
-router.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
+// 음식점 전체 조회
+router.get('/', async (req, res) => {
+  // /restaurants?foodName=오리지널 버거 콤보
+  const data = await restaurantsRepository.getAllRestaurant();
+  res.render('index', { data });
 });
 
-router.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'signup.html'));
-});
+// 특정 음식점 조회
 
-router.get('/mypage', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'mypage.html'));
-});
-
-router.get('/chat', auth.verifyAccessToken, (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'chat.html'));
-});
+//검색할때 쿼리 스트링
 
 module.exports = router;

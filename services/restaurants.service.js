@@ -3,6 +3,17 @@ const RestaurantsRepository = require('../repositories/restaurants.repository');
 class RestaurantsService {
   restaurantsRepository = new RestaurantsRepository();
 
+  // 음식점 전체 조회
+  getAllRestaurant = async (foodName, category) => {
+    try {
+      console.log({ foodName });
+      const getAll = await this.restaurantsRepository.getAllRestaurant(foodName);
+      return { code: 200, data: getAll };
+    } catch (error) {
+      return { code: 500, data: error.message };
+    }
+  };
+
   // 음식점 조회
   getRestaurant = async ({ restaurant_id }) => {
     try {
