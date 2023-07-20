@@ -27,28 +27,55 @@
       <!-- 유저 템플릿 -->
       <section class="profile-container">
         <div class="profile-wrap">
-          <div class="img-wrap">
-            <img src="<%= user.client_image %>" alt="" />
-          </div>
           <div class="text-wrap">
-            <p><%= user.name %>님 반갑습니다!</p>
-            <p><%= user.introduction %></p>
-          </div>
-        </div>
-        <div class="profile-content-wrap">
-          <div class="text-wrap">
+            <!-- user : 사장 데이터 -->
+            <h2><%= user.name %>사장님 반갑습니다!</h2>
             <p><span class="content-title">포인트</span><%= user.point %></p>
-            <p><span class="content-title">주소</span><%= user.address %></p>
-            <p><span class="content-title">전화번호</span><%= user.phone_num %></p>
-            <p><span class="content-title">이메일</span><%= user.email %></p>
+            <p><span class="content-title">상호명</span><%= user.owner_name %></p>
+            <p><span class="content-title">사업자 등록번호</span><%= user.owner_number %></p>
           </div>
           <button>정보 수정</button>
         </div>
+        <div class="profile-content-wrap">
+          <h3>나의 가게</h3>
+          <div class="text-wrap">
+            <!-- data : 레스토랑 데이터임 (이름바꾸??) -->
+            <p><span class="content-title">가게명</span><%= data.name %></p>
+            <p><span class="content-title">주소</span><%= data.address %></p>
+            <p><span class="content-title">전화번호</span><%= data.phone_num %></p>
+            <p><span class="content-title">영업시간</span><%= data.biz_hours %></p>
+          </div>
+          <button>가게정보 수정</button>
+        </div>
+      </section>
+      <hr />
+      <section class="menu-container">
+        <!-- get : 메뉴 조회 데이터임 (이름바꾸??) -->
+        <h2>메뉴</h2>
+        <ul>
+          <% get.forEach((menu)=>{ %>
+          <li>
+            <div class="img-wrap">
+              <img src="menu_image" alt="" />
+            </div>
+            <div class="text-wrap">
+              <p><%= menu.name %></p>
+              <p><%= menu.price %></p>
+            </div>
+          </li>
+          <% }) %>
+        </ul>
+        <% if (get.length) { %>
+        <button>메뉴 수정</button>
+        <% } %> <% if (!get.length) { %>
+        <p>등록된 메뉴가 없습니다.</p>
+        <% } %>
       </section>
       <hr />
       <section class="order-container">
         <h2>주문 내역</h2>
         <ul class="order-list">
+          <!-- data : 주문 데이터임 (이름 바꾸야할듯) -->
           <% data.forEach((order) => { %>
           <li class="order-item">
             <div class="text-wrap">
@@ -76,5 +103,6 @@
     </main>
     <!-- footer -->
     <%- include('includes/footer') %>
+    <script></script>
   </body>
 </html>

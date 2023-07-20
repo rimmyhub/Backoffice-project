@@ -64,14 +64,7 @@ app.get('/sign-in/:userType', (req, res) => {
   res.render('sign-in', data);
 });
 
-// 마이 페이지
-app.get('/my-page/:userType', (req, res) => {
-  const { userType } = req.params;
-  const data = {
-    userType,
-  };
-  res.render('my-page', data);
-});
+
 
 // 회원가입 페이지
 

@@ -28,7 +28,8 @@ class UserController {
 
       // 유저 정보 없음
       if (!user) return res.status(404).send({ message: '유저 정보 없음' });
-      res.status(200).send({ data: user });
+
+      return res.render('my-page-client', { user });
     } catch (err) {
       console.error(err.name, ':', err.message);
       return res.status(400).send({ message: `${err.message}` });
