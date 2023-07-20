@@ -24,15 +24,13 @@ class OrdersRepository {
       if (!orderClient) throw new Error('존재하지 않는 유저입니다.');
 
       // 검사 :: 음식점 존재 여부
-      if (!restaurant) return res.status(404).send({ message: '존재하지 않는 음식점입니다.' });
+      if (!restaurant) throw new Error('존재하지 않는 음식점입니다.');
 
       // 주문 금액 계산
       let totalPayment = 0;
       for (const orderItem of order_items) {
         const menu = await Menu.findOne({ where: { menu_id: orderItem.menu_id } });
-        if (!menu) {
-          return { error: true, message: '해당하는 메뉴를 찾을 수 없습니다.' };
-        }
+        if (!menu) throw new Error('해당하는 메뉴를 찾을 수 없습니다.');
         totalPayment += menu.price * orderItem.count;
       }
 
@@ -48,14 +46,17 @@ class OrdersRepository {
         { where: { Owner_id: restaurant.Owner_id } },
         { transaction: t }
       );
-
       restaurantOwner.point += totalPayment;
       await restaurantOwner.save({ transaction: t });
+
+      // Restaurant :: 가게 총 매출 증가
+      restaurant.total_income += totalPayment;
+      await restaurant.save({ transaction: t });
 
       // Order 테이블에 주문 정보 저장
       const orderData = await Order.create(
         { Restaurant_id: restaurant_id, Client_id: client_id },
-        { transaction: t } // 트랜잭션 적용
+        { transaction: t }
       );
       const orderId = orderData.order_id;
 
@@ -65,13 +66,14 @@ class OrdersRepository {
         Menu_id: orderItem.menu_id,
         count: orderItem.count,
       }));
-
       await OrderDetail.bulkCreate(orderDetailsData, { transaction: t });
+
+      // owner_id 추가
+      orderData.dataValues.owner_id = restaurant.Owner_id;
 
       // 트랜잭션 : commit
       await t.commit();
 
-      orderData.Owner_id = restaurant.Owner_id;
       return orderData;
     } catch (err) {
       // 트랜잭션 : rollback
