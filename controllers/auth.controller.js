@@ -1,10 +1,105 @@
-// 예시입니다!
+const nodemailer = require('nodemailer');
 const AuthService = require('../services/auth.service');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 class AuthController {
   authService = new AuthService();
+  // 이메일 인증
+  authMailer = async (req, res) => {
+    const { email, division } = req.body;
+    const emailRegex =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+    try {
+      // 메일형식이 맞지않으면
+      if (!emailRegex.test(email))
+        return res.status(412).json({ errMessage: '이메일형식이 올바르지 않습니다.' });
+      let authNum = Math.random().toString().substr(2, 6);
+
+      // 이메일이 이미 존재하는지 확인을 위해 authService에 email과 division을 전달
+      await this.authService.validateEmail(email, division);
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.NODEMAILER_USER,
+          pass: process.env.NODEMAILER_PASS,
+        },
+      });
+      // send mail with defined transport object
+      let mailOptions = {
+        from: `Backoffice 이메일 인증하기`,
+        to: email,
+        subject: '인증번호입니다.',
+        text: authNum,
+      };
+      transporter.verify((error) => {
+        if (error) {
+          console.log(
+            `[ERROR] - Nodemailer (${process.env.NODEMAILER_USER}:${process.env.NODEMAILER_PASS})`
+          );
+        } else {
+          console.log('[SUCCESS] - Nodemailer');
+        }
+      });
+      console.log('transporter = ');
+      await transporter.sendMail(mailOptions);
+      // authNumber = authNum;
+      // 쿠키로 담아서 보내주자
+      const authNumber = jwt.sign({ authNumber: authNum }, process.env.AUTHNUM_KEY, {
+        expiresIn: '5m',
+      });
+      res.cookie('authNumber', `Bearer ${authNumber}`);
+      // 인증번호를 jwt로 숨기자
+      return res.status(200).json({ message: '인증번호가 전송되었습니다.' });
+    } catch (error) {
+      return res.status(400).json(error.message);
+    }
+  };
+
+  // 인증번호 확인을 눌렀을때 실행되는 controller
+  validAuthNum = async (req, res) => {
+    const { inputAuthNum } = req.body;
+    const { authNumber } = req.cookies;
+    if (!inputAuthNum || !authNumber) {
+      return res.status(401).json({ errorMessage: '인증번호를 입력해주세요.' });
+    }
+    const [tokenType, token] = authNumber.split(' ');
+
+    if (tokenType !== 'Bearer' || !token) {
+      return res.status(401).json({ errorMessage: '인증번호를 입력해주세요.' });
+    }
+    try {
+      let tokenErr = false;
+      const checkAuthNum = await jwt.verify(token, process.env.AUTHNUM_KEY, (err, decoded) => {
+        if (err) {
+          tokenErr = true;
+
+          switch (err.name) {
+            // 인증번호token이 만료됨.
+            case 'TokenExpiredError':
+              // 클라이언트에 있는 jwt삭제
+              res.clearCookie('authNumber');
+              return res.status(200).json({ message: '인증시간이 만료되었습니다.' });
+            default:
+              //? token decoded 에러
+              return res.status(400).json(`invalid token. error name: ${err.name}`);
+          }
+        }
+        return decoded;
+      });
+      if (inputAuthNum !== checkAuthNum.authNumber)
+        return res.status(412).json({ errMesasge: '인증번호가 일치하지 않습니다.', data: false });
+      return res.status(200).json({ message: '인증되었습니다.', data: true });
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  };
+
   loginClient = async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -45,6 +140,21 @@ class AuthController {
       return res.status(200).json({ message: '로그인되었습니다.' });
     } catch (error) {
       return res.status(400).json(error.message);
+    }
+  };
+
+  logout = async (req, res) => {
+    try {
+      const { authorization } = req.cookies;
+      // authorization가 없으면
+      if (!authorization) {
+        return res.status(401).json({ errorMessage: '로그인상태가 아닙니다.' });
+      }
+      // 클라이언트에 있는 jwt삭제
+      res.clearCookie('authorization');
+      return res.status(200).json({ message: '로그아웃되었습니다.' });
+    } catch (error) {
+      return res.status(400).json({ errorMessage: '로그인상태가 아닙니다.' });
     }
   };
 
