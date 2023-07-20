@@ -51,19 +51,13 @@ class RestaurantsRepository {
   getRestaurant = async ({ restaurant_id }) => {
     return await Restaurant.findAll({
       where: { restaurant_id },
-      attributes: [
-        'restaurant_id',
-        'Owner_id',
-        'name',
-        'address',
-        'phone_num',
-        'biz_hours',
-        'category',
-        'createdAt',
-        'updatedAt',
-      ],
       order: [['createdAt', 'DESC']],
     });
+  };
+
+  // 음식점 조회 (owner_id 기준)
+  getRestaurantByOwner = async (Owner_id) => {
+    return await Restaurant.findOne({ where: { Owner_id } });
   };
 
   // 음식점 등록
