@@ -34,6 +34,16 @@ class AuthService {
     return pwVerification;
   };
 
+  // 이메일인증시 해당 이메일이 이미 존재하는지 확인
+  validateEmail = async (email, division) => {
+    let result;
+    if (division === 'Owner') {
+      result = await this.authRepository.ownerEmail(email);
+    } else if (division === 'Client') {
+      result = await this.authRepository.clientEmail(email);
+    }
+    if (result) throw new Error('이미 존재하는 회원입니다.');
+  };
   // // refresh토큰저장
   // saveRefreshToken = async (token, ClientId) => {
   //   console.log(token, ClientId);

@@ -1,5 +1,6 @@
 const UserService = require('../services/users.service');
 const bcrypt = require('bcrypt');
+
 class UserController {
   userService = new UserService();
 
@@ -126,6 +127,7 @@ class UserController {
       const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,25}$/;
       if (!emailRegex.test(email))
         return res.status(412).json({ errMessage: '이메일형식이 올바르지 않습니다.' });
+      console.log('result = ', result);
       if (password !== confirm)
         return res.status(412).json({ errMessage: '패스워드확인이 일치하지 않습니다.' });
       if (!passwordRegex.test(password))
