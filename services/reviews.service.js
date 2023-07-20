@@ -18,6 +18,11 @@ class ReviewsService {
   modifyReview = async (Order_id, Client_id, content, rating) => {
     return this.reviewsRepository.modifyReviewUpdate(Order_id, Client_id, content, rating);
   };
+
+  //-- 리뷰 삭제 --//
+  deleteReview = async (Order_id, Client_id) => {
+    return this.reviewsRepository.deleteReview(Order_id, Client_id);
+  };
 }
 
 module.exports = ReviewsService;

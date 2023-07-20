@@ -82,6 +82,21 @@ class ReviewsController {
       return res.status(400).send({ message: `${err.message}` });
     }
   };
+
+  //-- 리뷰 삭제 --//
+  deleteReview = async (req, res, next) => {
+    const { client_id: Client_id } = res.locals.user;
+    const { order_id: Order_id } = req.params;
+
+    try {
+      const deleteReviewMessage = await this.reviewService.deleteReview(Order_id, Client_id);
+
+      res.status(200).send({ data: deleteReviewMessage });
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
 }
 
 module.exports = ReviewsController;

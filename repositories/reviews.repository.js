@@ -100,6 +100,24 @@ class ReviewsRepository {
       return res.status(400).send({ message: `${err.message}` });
     }
   };
+
+  //-- 리뷰 삭제 --//
+  deleteReview = async (Order_id, Client_id) => {
+    const review = await Review.findOne({
+      where: {
+        Order_id,
+        Client_id,
+      },
+    });
+
+    // 검사: 리뷰가 없을 때 오류
+    if (!review) return { error: true, message: '삭제할 리뷰가 없습니다.' };
+
+    // 리뷰 삭제
+    await review.destroy();
+
+    return { success: true, message: '리뷰가 삭제되었습니다.' };
+  };
 }
 
 module.exports = ReviewsRepository;
