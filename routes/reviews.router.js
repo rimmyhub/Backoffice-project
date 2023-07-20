@@ -1,5 +1,4 @@
 // reviews.router.js
-
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/auth.middleware');
@@ -16,6 +15,6 @@ router.get('/review/:restaurant_id', reviewsController.getReviews);
 router.put('/review/:order_id', authMiddleware, reviewsController.modifyReview);
 
 //-- 리뷰 삭제 --//
-// router.delete('/review/:order_id', authMiddleware, reviewsController.deleteReview);
+router.delete('/review/:order_id', authMiddleware, reviewsController.deleteReview);
 
 module.exports = router;

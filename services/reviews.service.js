@@ -16,8 +16,12 @@ class ReviewsService {
 
   //-- 리뷰 수정 --//
   modifyReview = async (Order_id, Client_id, content, rating) => {
+    return this.reviewsRepository.modifyReviewUpdate(Order_id, Client_id, content, rating);
+  };
 
-    return this.CommentsRepository.updateComments(postId, commentId, title, content);
+  //-- 리뷰 삭제 --//
+  deleteReview = async (Order_id, Client_id) => {
+    return this.reviewsRepository.deleteReview(Order_id, Client_id);
   };
 }
 

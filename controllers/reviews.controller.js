@@ -1,9 +1,7 @@
 // reviews.controller.js
 const ReviewsService = require('../services/reviews.service');
-const { Reviews } = require('../models');
 class ReviewsController {
   reviewService = new ReviewsService();
-
   //-- 리뷰 작성 --//
   createReview = async (req, res, next) => {
     const { content, rating } = req.body;
@@ -18,7 +16,7 @@ class ReviewsController {
 
       // 검사 : 내용,평점 여부
       if (!content || !rating) {
-        return res.status(400).send({ message: '내용과 별점 내용을 추가해주세요.' });
+        return res.status(400).send({ message: '내용과 평점을 입력해주세요.' });
       }
 
       const reviewData = await this.reviewService.createReview(
@@ -69,14 +67,29 @@ class ReviewsController {
           errorMessage: '댓글 내용을 입력해주세요.',
         });
 
-      const modifiedReview = await this.reviewService.modifyReview(
+      const modifyReviewMessage = await this.reviewService.modifyReview(
         Order_id,
         Client_id,
         content,
         rating
       );
 
-      res.status(200).sedn({ data: modifiedReview });
+      res.status(200).send({ data: modifyReviewMessage });
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
+
+  //-- 리뷰 삭제 --//
+  deleteReview = async (req, res, next) => {
+    const { client_id: Client_id } = res.locals.user;
+    const { order_id: Order_id } = req.params;
+
+    try {
+      const deleteReviewMessage = await this.reviewService.deleteReview(Order_id, Client_id);
+
+      res.status(200).send({ data: deleteReviewMessage });
     } catch (err) {
       console.error(err.stack);
       return res.status(400).send({ message: `${err.message}` });
