@@ -1,9 +1,7 @@
 // reviews.controller.js
 const ReviewsService = require('../services/reviews.service');
-const { Reviews } = require('../models');
 class ReviewsController {
   reviewService = new ReviewsService();
-
   //-- 리뷰 작성 --//
   createReview = async (req, res, next) => {
     const { content, rating } = req.body;
@@ -18,7 +16,7 @@ class ReviewsController {
 
       // 검사 : 내용,평점 여부
       if (!content || !rating) {
-        return res.status(400).send({ message: '내용과 별점 내용을 추가해주세요.' });
+        return res.status(400).send({ message: '내용과 평점을 입력해주세요.' });
       }
 
       const reviewData = await this.reviewService.createReview(
