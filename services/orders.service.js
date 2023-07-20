@@ -20,6 +20,11 @@ class OrdersService {
     return await this.ordersRepository.getOrderClient(client_id);
   };
 
+  //-- 주문조회 (사장) --//
+  getOrderOwner = async (owner_id) => {
+    return await this.ordersRepository.getOrderOwner(owner_id);
+  };
+
   //-- 주문받기 (사장) --//
   orderReceive = async (order_id) => {
     return this.ordersRepository.updateOrderStatus(order_id);

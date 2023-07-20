@@ -129,6 +129,58 @@ class OrdersRepository {
     }
   };
 
+  //-- 주문조회 (사장) --//
+  getOrderOwner = async (Owner_id) => {
+    const orderStatusMessage = {
+      0: '접수대기',
+      1: '접수완료',
+      2: '배달완료',
+    };
+
+    try {
+      // 음식점 조회로 음식점 id 얻기
+      const restaurant = await Restaurant.findOne({
+        where: { Owner_id },
+      });
+      const Restaurant_id = restaurant.restaurant_id;
+      // 주문데이터 (식당 기준으로 찾기)
+      const orders = await Order.findAll({
+        where: { Restaurant_id },
+        include: [
+          { model: Client, attributes: ['name'] },
+          { model: Restaurant, attributes: ['name'] },
+          {
+            model: OrderDetail,
+            include: [{ model: Menu, attributes: ['name', 'price', 'menu_id'] }],
+          },
+        ],
+      });
+
+      // 내보낼 주문데이터
+      const orderData = orders.map((order) => {
+        const { name: restaurant_name } = order.Restaurant; // 레스토랑 이름
+        const order_time = new Date(order.createdAt).toLocaleString('ko-KR', {
+          timeZone: 'Asia/Seoul',
+        }); // 주문 시각
+        const { status } = order; // 주문상태
+        const order_status = orderStatusMessage[status];
+
+        const menuDetails = order.OrderDetails.map(({ Menu, count }) => {
+          const { menu_id: menu_number, name: menu_name, price: item_price } = Menu; // 메뉴 주분번호,이름,개당 가격
+          const totalPayment = item_price * count; // 총 결제금액
+          return { menu_number, menu_name, count, item_price, totalPayment };
+        });
+
+        return { order_id: order.order_id, restaurant_name, order_time, order_status, menuDetails };
+      });
+
+      return orderData;
+    } catch (err) {
+      console.error(err.stack);
+      throw new Error(`${err.message}`);
+    }
+  };
+
   //-- 주문받기 (사장) --//
   updateOrderStatus = async (order_id) => {
     try {
