@@ -1,6 +1,18 @@
-const { Client } = require('../models');
+const { Client, ProfileImage } = require('../models');
 
 class UserRepository {
+  // 이미지 등록
+  createProfileImage = async (imageUrl, Client_id) => {
+    const createdProfileImage = await ProfileImage.create({ imageUrl, Client_id });
+    return createdProfileImage;
+  };
+
+  // 이미지 가져오기
+  findProfileImage = async (Client_id) => {
+    const findProfileImage = await ProfileImage.findAll({ where: { Client_id } });
+    return findProfileImage;
+  };
+
   // 모든 유저를 찾습니다.
   findAllUsers = async () => {
     const findUserData = await Client.findAll();
@@ -20,9 +32,10 @@ class UserRepository {
   };
 
   // 유저 정보를 수정합니다.
-  modifyUserInfo = async (client_id, introduction, address, phone_num) => {
+  modifyUserInfo = async (client_id, client_image, introduction, address, phone_num) => {
     const modifiedUserData = await Client.update(
       {
+        client_image,
         introduction,
         address,
         phone_num,

@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'menu_id',
         foreignKey: 'Menu_id',
       });
+      this.hasMany(models.MenuImage, {
+        sourceKey: 'menu_id',
+        foreignKey: 'Menu_id',
+      });
       this.belongsTo(models.Restaurant, {
         targetKey: 'restaurant_id',
         foreignKey: 'Restaurant_id',

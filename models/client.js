@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'client_id',
         foreignKey: 'Client_id',
       });
+      this.hasMany(models.ProfileImage, {
+        sourceKey: 'client_id',
+        foreignKey: 'Client_id',
+      });
     }
   }
   Client.init(

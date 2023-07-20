@@ -42,7 +42,7 @@ class UserController {
       const { client_id } = res.locals.user; // auth에서 가져옴
       const imageUrl = req.file.location;
       await this.userService.uploadProfileImage(imageUrl, client_id);
-      res.status(200).send({ message: '프로필 사진 업로드 완료' });
+      res.status(200).send({ imageUrl, client_id });
     } catch (err) {
       console.error(err.name, ':', err.message);
       return res.status(400).send({ message: `${err.message}` });
@@ -69,11 +69,17 @@ class UserController {
       return res.status(412).send({ message: '당신은 고객이 아닙니다.' });
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
-      const { introduction, address, phone_num } = req.body;
+      const { client_image, introduction, address, phone_num } = req.body;
 
       // NOTE: 유효성 검증 코드 아래에 추가할 것
 
-      await this.userService.modifyUserInfo(client_id, introduction, address, phone_num);
+      await this.userService.modifyUserInfo(
+        client_id,
+        client_image,
+        introduction,
+        address,
+        phone_num
+      );
       res.status(200).send({ message: '개인정보 수정 성공' });
     } catch (err) {
       console.error(err.name, ':', err.message);

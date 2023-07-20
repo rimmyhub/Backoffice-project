@@ -49,12 +49,26 @@ class MenusController {
     }
   };
 
+  // 메뉴 사진 업로드
+  uploadMenuImage = async (req, res) => {
+    if (res.locals.user.division !== 'Owner')
+      return res.status(412).send({ message: '당신은 사장이 아닙니다.' });
+    try {
+      const { owner_id } = res.locals.user; // auth에서 가져옴
+      const imageUrl = req.file.location;
+      await this.menusService.uploadMenuImage(imageUrl, owner_id);
+      res.status(200).send({ imageUrl, owner_id });
+    } catch (err) {
+      console.error(err.name, ':', err.message);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
+
   // 메뉴 수정
   putMenu = async (req, res) => {
     if (res.locals.user.division !== 'Owner')
       return res.status(412).send({ message: '너는 사장이 아니다.' });
-    const { menu_id } = req.params;
-    const { restaurant_id } = req.params;
+    const { menu_id, restaurant_id } = req.params;
     const { owner_id } = res.locals.user;
 
     // 메뉴 수정 권한 확인 (음식점 사장과 미들웨어 사장 id 비교)
