@@ -1,0 +1,36 @@
+<!-- 헤더 영역 -->
+<style>
+  header .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<header>
+  <nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="/images/logo.png" alt="" width="146" height="48" />
+      </a>
+
+      <!-- 마이페이지, 로그인(로그아웃) -->
+      <a class="mypagebtn"> 내 정보 </a>
+      <a class="login" href="...">로그아웃</a>
+      <a class="login" href="...">로그인</a>
+    </div>
+  </nav>
+  <script>
+    const myPage = document.querySelector('.mypagebtn');
+    myPage.addEventListener('click', () => {
+      // 새로운 화면으로 이동하는 로직을 추가
+      window.location.href = '/mypage/clients'; // 이동할 URL을 지정
+    });
+
+    const logIn = document.querySelector('.login');
+    logIn.addEventListener('click', () => {
+      // 새로운 화면으로 이동하는 로직을 추가
+      window.location.href = '/signup/client'; // 이동할 URL을 지정
+    });
+  </script>
+</header>

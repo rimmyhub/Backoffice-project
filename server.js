@@ -6,9 +6,9 @@ const express = require('express');
 const path = require('path');
 const { Server } = require('http');
 const socketIo = require('socket.io');
-// const viewRouter = require('./views/routes'); // view 연결
+// const viewRouter = require('./views/routes');
 
-// const renderRouter = require('./routes/render.router');
+const renderRouter = require('./routes/render.router');
 
 const userRouter = require('./routes/users.router');
 const reviewRouter = require('./routes/reviews.router');
@@ -50,14 +50,11 @@ app.use(
   })
 );
 
-// //ejs 생성
-// app.set('view engine', 'ejs');
-// app.set('views', __dirname + '/views');
-// app.use(express.static(__dirname + '/views/static'));
+//ejs 생성
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/views/static'));
 
-// app.use('/', viewRouter);
-
-// app.use('/', [renderRouter]);
 app.use('/', [
   userRouter,
   reviewRouter,
@@ -67,7 +64,13 @@ app.use('/', [
   // orderdetailRouter,
   menuRouter,
   authRouter,
+  renderRouter,
 ]);
+
+app.use((error, req, res, next) => {
+  console.log('error middle ware');
+  console.log(error.stack);
+});
 
 http.listen(PORT, HOST, () => {
   console.log(PORT, '포트에 접속하였습니다.');

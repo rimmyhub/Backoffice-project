@@ -1,7 +1,52 @@
-const { Restaurant } = require('../models');
+const { Restaurant, Menu } = require('../models');
 const { Op } = require('sequelize');
 
 class RestaurantsRepository {
+  getAllRestaurant = async (foodName, category) => {
+    console.log('repository');
+    console.log({ foodName });
+
+    // foodName search
+    if (foodName) {
+      return await Restaurant.findAll({
+        include: [
+          {
+            model: Menu,
+            where: {
+              name: { [Op.like]: '%' + foodName + '%' },
+            },
+          },
+        ],
+        order: [['createdAt', 'DESC']],
+      });
+    }
+
+    // category search
+    if (category) {
+      return await Restaurant.findAll({
+        where: {
+          category: { [Op.like]: '%' + category + '%' },
+        },
+        order: [['createdAt', 'DESC']],
+      });
+    }
+
+    return await Restaurant.findAll({
+      attributes: [
+        'restaurant_id',
+        'Owner_id',
+        'name',
+        'address',
+        'phone_num',
+        'biz_hours',
+        'category',
+        'createdAt',
+        'updatedAt',
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+  };
+
   // 음식점 조회
   getRestaurant = async ({ restaurant_id }) => {
     return await Restaurant.findAll({

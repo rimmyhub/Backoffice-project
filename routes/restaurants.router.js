@@ -1,10 +1,12 @@
 const express = require('express');
 const restaurantRouter = express.Router();
 const authMiddleware = require('../middlewares/auth.middleware');
-// 사장님 추가되면 미들웨어 추가하기!
 const RestaurantsController = require('../controllers/restaurants.controller');
 
 const restaurantsController = new RestaurantsController();
+
+// 음식점 전체 조회
+restaurantRouter.get('/restaurant', restaurantsController.getAllRestaurant);
 
 // 음식점 조회
 restaurantRouter.get('/restaurant/:restaurant_id', restaurantsController.getRestaurant);
