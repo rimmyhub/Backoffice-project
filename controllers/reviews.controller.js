@@ -39,7 +39,7 @@ class ReviewsController {
     const { restaurant_id } = req.params;
 
     try {
-      // const reviewData = await this.reviewService.getReviews(restaurant_id);
+      const reviewData = await this.reviewService.getReviews(restaurant_id);
 
       res.status(200).send({ data: reviewData });
     } catch (err) {
