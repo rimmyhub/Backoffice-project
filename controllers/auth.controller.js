@@ -3,6 +3,8 @@ const AuthService = require('../services/auth.service');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+let authNumber = '';
+
 class AuthController {
   authService = new AuthService();
   // 이메일 인증
@@ -48,11 +50,20 @@ class AuthController {
       });
       console.log('transporter = ');
       await transporter.sendMail(mailOptions);
-
-      return res.status(200).json({ data: authNum });
+      authNumber = authNum;
+      // 인증번호를 jwt로 숨기자
+      return res.status(200).json({ message: '인증번호가 전송되었습니다.' });
     } catch (error) {
       return res.status(400).json(error.message);
     }
+  };
+
+  // 인증번호 확인을 눌렀을때 실행되는 controller
+  validAuthNum = async (req, res) => {
+    const { inputAuthNum } = req.body;
+    if (inputAuthNum !== authNumber)
+      return res.status(412).json({ errMesasge: '인증번호가 일치하지 않습니다.', data: false });
+    return res.status(200).json({ message: '인증되었습니다.', data: true });
   };
 
   loginClient = async (req, res) => {
