@@ -69,14 +69,14 @@ class ReviewsController {
           errorMessage: '댓글 내용을 입력해주세요.',
         });
 
-      const modifiedReview = await this.reviewService.modifyReview(
+      const modifyReviewMessage = await this.reviewService.modifyReview(
         Order_id,
         Client_id,
         content,
         rating
       );
 
-      res.status(200).sedn({ data: modifiedReview });
+      res.status(200).send({ data: modifyReviewMessage });
     } catch (err) {
       console.error(err.stack);
       return res.status(400).send({ message: `${err.message}` });

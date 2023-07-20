@@ -71,6 +71,35 @@ class ReviewsRepository {
       return res.status(400).send({ message: `${err.message}` });
     }
   };
+
+  //-- 리뷰 수정 --//
+  modifyReviewUpdate = async (Order_id, Client_id, content, rating) => {
+    try {
+      const review = await Review.findOne({
+        where: {
+          Order_id,
+          Client_id,
+        },
+      });
+
+      // 검사 : 주문 데이터 여부
+      if (!review) return { error: true, message: '해당하는 주문을 찾을 수 없습니다.' };
+
+      // 검사 : 주문자 정보와 동일한지
+      if (review.Client_id !== Client_id)
+        return { error: true, message: '주문자 정보와 동일하지 않습니다.' };
+
+      // 리뷰 수정
+      review.content = content;
+      review.rating = rating;
+      await review.save();
+
+      return { success: true, message: '리뷰가 수정되었습니다.' };
+    } catch (err) {
+      console.error(err.stack);
+      return res.status(400).send({ message: `${err.message}` });
+    }
+  };
 }
 
 module.exports = ReviewsRepository;

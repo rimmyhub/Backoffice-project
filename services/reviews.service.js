@@ -16,8 +16,7 @@ class ReviewsService {
 
   //-- 리뷰 수정 --//
   modifyReview = async (Order_id, Client_id, content, rating) => {
-
-    return this.CommentsRepository.updateComments(postId, commentId, title, content);
+    return this.reviewsRepository.modifyReviewUpdate(Order_id, Client_id, content, rating);
   };
 }
 
