@@ -65,8 +65,14 @@ class AuthController {
   validAuthNum = async (req, res) => {
     const { inputAuthNum } = req.body;
     const { authNumber } = req.cookies;
+    if (!inputAuthNum || !authNumber) {
+      return res.status(401).json({ errorMessage: '인증번호를 입력해주세요.' });
+    }
     const [tokenType, token] = authNumber.split(' ');
 
+    if (tokenType !== 'Bearer' || !token) {
+      return res.status(401).json({ errorMessage: '인증번호를 입력해주세요.' });
+    }
     try {
       let tokenErr = false;
       const checkAuthNum = await jwt.verify(token, process.env.AUTHNUM_KEY, (err, decoded) => {
