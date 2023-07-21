@@ -71,10 +71,10 @@
           <% orders.forEach((order) => { %>
           <li class="order-item">
             <div class="text-wrap">
-              <p><span class="content-title">주문번호</span><%= order.order_id %></p>
-              <p><span class="content-title">음식점명</span><%= order.restaurant_name %></p>
+              <p><span class="content-title">주문 번호</span><%= order.order_id %></p>
+              <p><span class="content-title">음식점 명</span><%= order.restaurant_name %></p>
               <p>
-                <span class="content-title">주문메뉴</span>
+                <span class="content-title">주문 메뉴</span>
                 <%= order.menuDetails[0].menu_name %> <% if (order.menuDetails.length > 1) { %> 외
                 <%= order.menuDetails.length - 1 %>개 <% } %>
 
@@ -199,10 +199,10 @@
             ></button>
           </div>
           <div class="modal-body">
-            <p><span class="content-title">주문번호</span> <span id="orderNumber"></span></p>
+            <p><span class="content-title">주문 번호</span> <span id="orderNumber"></span></p>
             <p><span class="content-title">주문자 명</span> <span id="orderUserName"></span></p>
             <p>
-              <span class="content-title">음식점명</span> <span id="orderRestaurantName"></span>
+              <span class="content-title">음식점 명</span> <span id="orderRestaurantName"></span>
             </p>
             <div>
               <p><span class="content-title">주문 메뉴</span></p>

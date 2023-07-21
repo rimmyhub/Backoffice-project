@@ -35,7 +35,12 @@ section {
 
 h2 {
   padding: 10px 0 35px;
+  font-size: 24px;
   font-weight: 700;
+}
+
+.red-text {
+  color: red !important;
 }
 
 .btn-right {
@@ -66,7 +71,7 @@ h2 {
 }
 
 .content-title {
-  padding-right: 10px;
+  padding-right: 20px;
   font-size: 18px;
   font-weight: 600;
 }
@@ -79,8 +84,8 @@ h2 {
 }
 
 .text-wrap p {
-  padding-bottom: 15px;
-  font-size: 15px;
+  padding-bottom: 5px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -91,7 +96,7 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 30px 5% 20px;
+  padding: 30px 2% 20px 5%;
   border-radius: 20px;
   background-color: rgba(252, 248, 209, 0.8);
 }
@@ -102,7 +107,7 @@ h2 {
 .menu-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 1.5%;
+  gap: 40px 1.5%;
 }
 
 .menu-list li {
@@ -118,4 +123,18 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.menu-edit-list .img-wrap {
+  width: 200px;
+  height: 150px;
+}
+
+.menu-edit-list h3 {
+  padding-bottom: 10px;
+}
+
+.menu-edit-list .form-label {
+  font-size: 18px;
+  font-weight: 600;
 }
