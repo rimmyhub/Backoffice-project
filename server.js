@@ -25,8 +25,8 @@ const PORT = 3000;
 const maxAge = 5 * 60 * 1000; // 5분
 const app = express();
 
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ limit: '1mb', extended: false }));
+app.use(express.json({}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const http = Server(app);
