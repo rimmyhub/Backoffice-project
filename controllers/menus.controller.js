@@ -58,8 +58,14 @@ class MenusController {
     try {
       const { owner_id } = res.locals.user; // auth에서 가져옴
       const imageUrl = req.file.location;
-      await this.menusService.uploadMenuImage(imageUrl, owner_id);
-      res.status(200).send({ imageUrl, owner_id });
+
+      // 음식점 정보 획득
+      const restaurant = await this.restaurantsService.getRestaurantByOwner(owner_id);
+      const restaurant_id = restaurant.data.dataValues.restaurant_id;
+
+      // 이미지 업로드
+      await this.menusService.uploadMenuImage(imageUrl, restaurant_id);
+      res.status(200).send({ imageUrl, restaurant_id });
     } catch (err) {
       console.error(err.name, ':', err.message);
       return res.status(400).send({ message: `${err.message}` });

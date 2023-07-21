@@ -27,7 +27,7 @@ class UploadBucket {
           callback(null, `${saveDir}/${Date.now()}_${uuidv4()}`);
         },
         acl: 'public-read-write',
-        limits: { fileSize: 1 * 1024 * 1024 }, // 이미지 용량을 5MB이하로 제한
+        limits: { fileSize: 5 * 1024 * 1024 }, // 이미지 용량을 5MB이하로 제한
         contentType: multerS3.AUTO_CONTENT_TYPE, // 파일의 Content-Type 자동 설정
         metadata: (req, file, callback) => {
           callback(null, { fieldName: file.fieldname });
