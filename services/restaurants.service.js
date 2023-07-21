@@ -30,6 +30,21 @@ class RestaurantsService {
     }
   };
 
+  // 음식점 조회
+  getRestaurantByOwner = async (owner_id) => {
+    try {
+      const get = await this.restaurantsRepository.getRestaurantByOwner(owner_id);
+
+      if (!get) {
+        return { code: 404, data: '해당 음식점을 찾을 수 없습니다.' };
+      }
+
+      return { code: 200, data: get };
+    } catch (error) {
+      return { code: 500, data: error.message };
+    }
+  };
+
   // 음식점 등록
   postRestaurant = async ({ owner_id, name, address, phone_num, biz_hours, category }) => {
     try {

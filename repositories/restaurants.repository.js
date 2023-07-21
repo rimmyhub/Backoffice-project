@@ -76,6 +76,11 @@ class RestaurantsRepository {
     });
   };
 
+  // 음식점 조회 (owner_id 기준)
+  getRestaurantByOwner = async (Owner_id) => {
+    return await Restaurant.findOne({ where: { Owner_id } });
+  };
+
   // 음식점 등록
   postRestaurant = async ({ Owner_id, name, address, phone_num, biz_hours, category }) => {
     return await Restaurant.create({
