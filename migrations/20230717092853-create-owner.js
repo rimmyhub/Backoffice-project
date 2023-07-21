@@ -11,21 +11,28 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       password: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       owner_name: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       owner_number: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       point: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

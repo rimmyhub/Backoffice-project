@@ -39,18 +39,23 @@ module.exports = (sequelize, DataTypes) => {
       },
       Client_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       Order_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       Restaurant_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       rating: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       content: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

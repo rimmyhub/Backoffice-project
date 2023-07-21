@@ -11,21 +11,28 @@ module.exports = {
       },
       Owner_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       address: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       phone_num: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       biz_hours: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       category: {
         type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: '미선택'
       },
       createdAt: {
         allowNull: false,

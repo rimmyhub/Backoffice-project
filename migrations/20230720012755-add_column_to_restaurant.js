@@ -5,6 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.addColumn('Restaurants', 'total_income', {
       type: Sequelize.INTEGER,
+      allowNull: false,
       defaultValue: 0,
     });
   },

@@ -32,12 +32,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       password: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       address: {
         type: DataTypes.STRING,
@@ -47,12 +50,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       client_image: {
         type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue:
+          'https://issuebombom-awsbucket.s3.ap-northeast-2.amazonaws.com/images/profile/1689841609097_22bc8ad7-0051-4572-8597-616fdb618776',
       },
       introduction: {
         type: DataTypes.STRING,
       },
       point: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1000000,
       },
       createdAt: {
         allowNull: false,
