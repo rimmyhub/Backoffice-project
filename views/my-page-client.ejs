@@ -159,16 +159,28 @@
             <div class="input-wrap">
               <div class="mb-3">
                 <label for="userEditIntroduction" class="form-label">소개</label>
-                <textarea class="form-control" id="userEditIntroduction" rows="3"></textarea>
+                <textarea class="form-control" id="userEditIntroduction" rows="3">
+<%= user.introduction %></textarea
+                >
               </div>
             </div>
             <div class="mb-3">
               <label for="userEditAddress" class="form-label">주소</label>
-              <input type="text" class="form-control" id="userEditAddress" />
+              <input
+                type="text"
+                class="form-control"
+                id="userEditAddress"
+                value="<%= user.address %>"
+              />
             </div>
             <div class="mb-3">
               <label for="userEditPhoneNumber" class="form-label">전화번호</label>
-              <input type="text" class="form-control" id="userEditPhoneNumber" />
+              <input
+                type="text"
+                class="form-control"
+                id="userEditPhoneNumber"
+                value="<%= user.phone_num %>"
+              />
             </div>
           </div>
           <div class="modal-footer">
@@ -250,12 +262,13 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary">수정하기</button>
+            <button type="button" class="btn btn-primary">작성하기</button>
           </div>
         </div>
       </div>
     </div>
     <script>
+      //-- 주문 확인서 불러오기 --//
       const modalOrderConfirm = new bootstrap.Modal(document.getElementById('modalOrderConfirm'));
       const orderButtons = document.querySelectorAll('.order-item button[data-bs-toggle="modal"]');
       orderButtons.forEach((button) => {

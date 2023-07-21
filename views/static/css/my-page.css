@@ -71,7 +71,7 @@ h2 {
 }
 
 .content-title {
-  padding-right: 20px;
+  padding-right: 15px;
   font-size: 18px;
   font-weight: 600;
 }
@@ -92,17 +92,22 @@ h2 {
 .text-wrap p:last-child {
   padding-bottom: 0;
 }
+
 .order-item {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 30px 2% 20px 5%;
+  padding: 30px 3%;
   border-radius: 20px;
   background-color: rgba(252, 248, 209, 0.8);
 }
 
 .order-item + .order-item {
   margin-top: 30px;
+}
+
+.order-item .text-wrap {
+  padding-bottom: 0;
 }
 .menu-list {
   display: flex;
