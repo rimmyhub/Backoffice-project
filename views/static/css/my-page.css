@@ -1,0 +1,65 @@
+body {
+  position: relative;
+}
+
+header {
+  position: sticky;
+  top: 0;
+}
+
+footer {
+  position: relative !important;
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5%;
+}
+
+section {
+  padding: 0 30px;
+}
+
+h2 {
+  padding: 25px 0 30px;
+  font-weight: 700;
+}
+
+.btn-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.profile-wrap {
+  margin-bottom: 15px;
+}
+
+.profile-wrap .img-wrap {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  border-radius: 50%;
+  border: 1px solid #888;
+  overflow: hidden;
+}
+
+.profile-title {
+  padding-bottom: 10px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.content-title {
+  padding-right: 10px;
+  font-weight: 600;
+}
+
+.text-wrap {
+  padding-bottom: 15px;
+}
+
+.text-wrap p {
+  padding-bottom: 10px;
+  line-height: 2;
+}
