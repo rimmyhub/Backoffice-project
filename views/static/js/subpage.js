@@ -1,11 +1,3 @@
-// <body>
-//   <div id="map" style="width: 500px; height: 400px"></div>
-//   <script
-//     type="text/javascript"
-//     src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0dc6fa7c23da75a7487701aef46eb0ed"
-//   ></script>
-//   <script></script>
-
 // 지도
 let mapContainer = mapEl, // 지도를 표시할 div
   mapOption = {

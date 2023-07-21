@@ -6,7 +6,6 @@ class RestaurantsController {
   // 음식점 전체 조회
   getAllRestaurant = async (req, res) => {
     const { foodName, category } = req.query;
-    console.log({ foodName });
     const { code, data } = await this.restaurantsService.getAllRestaurant(foodName, category);
     res.status(code).json({ data });
   };
