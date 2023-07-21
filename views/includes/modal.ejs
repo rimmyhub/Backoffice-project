@@ -1,66 +1,12 @@
-<!-- 모달 : 주문확인서 -->
-<div id="modal-order-confirm" class="modal">
-  <div class="modal-header">
-    <p>주문 확인서</p>
-    <button type="button" class="btn-close-modal">X</button>
-  </div>
-  <p><span class="content-title">주문번호</span><%= order.order_id %></p>
-  <p><span class="content-title">주문자 명</span><%= order.client %></p>
-  <p><span class="content-title">음식점명</span><%= order.restaurant %></p>
-  <p><span class="content-title">주문 메뉴</span></p>
-  <ul>
-    <% order.menuDetails.forEach((menu) => { %>
-    <li><%= menu.menu_name %> - 수량: <%= menu.count %>개</li>
-    <% }) %>
-  </ul>
-  <p><span class="content-title">주문 금액</span><%= order.totalPayment %></p>
-  <p><span class="content-title">주문 시간</span><%= order.order_time %></p>
-  <p><span class="content-title">주문 상태</span><%= order.order_status %></p>
-</div>
-
-<!-- 모달 : 정보 수정(고객) -->
-<div id="modal-user-edit" class="modal">
-  <div class="modal-header">
-    <p>정보 수정</p>
-    <button type="button" class="btn-close-modal">X</button>
-  </div>
-  <div class="profile-wrap">
-    <div class="img-wrap">
-      <img src="" alt="" />
-    </div>
-    <button>사진 변경</button>
-    <button>사진 삭제</button>
-  </div>
-  <div class="input-wrap">
-    <label for="">소개</label>
-    <textarea name="" id="user-edit-introduction" cols="30" rows="10"></textarea>
-  </div>
-  <div class="input-wrap">
-    <label for="">주소</label>
-    <input type="text" id="user-edit-address" />
-  </div>
-  <div class="input-wrap">
-    <input type="text" id="user-edit-phone_number" />
-  </div>
-  <button id="btn-user-edit">수정하기</button>
-</div>
-
-<!-- 모달 : 리뷰 작성(고객) -->
-<div id="modal-review-create" class="modal">
-  <div class="modal-header">
-    <p>정보 수정</p>
-    <button type="button" class="btn-close-modal">X</button>
-  </div>
-  <div class="input-wrap">
-    <label for="">평점</label>
-    <input type="text" id="review-rating" placeholder="1에서부터 5사이의 숫자를 입력해주세요." />
-  </div>
-  <div class="input-wrap">
-    <label for="">소개</label>
-    <textarea name="" id="review-introduction" cols="30" rows="10"></textarea>
-  </div>
-  <button id="btn-review">작성하기</button>
-</div>
+<!-- !!! 지울 파일입니다 -->
+<button
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#modalUserEdit"
+>
+  정보 수정
+</button>
 
 <!-- 모달 : 정보 수정(사장) -->
 <div id="modal-owner-edit" class="modal">

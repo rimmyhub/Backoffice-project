@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 const RestaurantsRepository = require('../repositories/restaurants.repository');
 
 const restaurantsRepository = new RestaurantsRepository();
 
 const UserController = require('../controllers/users.controller');
 const userController = new UserController();
+const OrdersController = require('../controllers/orders.controller');
+const ordersController = new OrdersController();
 
 // 음식점 전체 조회
 router.get('/', async (req, res) => {
@@ -21,7 +24,8 @@ router.get('/', async (req, res) => {
 // 마이 페이지(유저)
 router.get('/my-page-client', async (req, res) => {
   const user = await userController.getUser();
-  res.render('my-page-client', { user });
+  const orders = await ordersController.getOrderClient();
+  res.render('my-page-client', { user, orders });
 });
 
 module.exports = router;
