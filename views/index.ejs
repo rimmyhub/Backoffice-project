@@ -19,20 +19,51 @@
     <script src="../views/static/js/index.js" defer></script>
     <title>배달의 팔족</title>
   </head>
+  <style>
+    /* 상단 영역 */
+    main {
+      display: grid;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .restaurant-card {
+      width: 200px;
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+
+    .restaurant-card a {
+      display: block;
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .restaurant-card span {
+      display: block;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
   <body>
     <!-- header -->
-    <%- include('includes/header') %>
-    <%- include('includes/search') %>
+    <%- include('includes/header') %> <%- include('includes/search') %>
     <main>
       <div class="cards">
         <% data.forEach((restaurant, idx)=> { %>
         <div class="restaurant-card">
-          <a href="/<%= restaurant.restaurant_id %>"><%= restaurant.restaurant_id %></a>
+          <a href="/subpage/<%=restaurant.restaurant_id %>"><%= restaurant.restaurant_id %></a>
           <span><%= restaurant.name %></span>
           <span><%= restaurant.category %></span>
-          </div>
         </div>
-        <% }) %>
+      </div>
+      <% }) %>
+    </main>
     <!-- footer -->
     <%- include('includes/footer') %>
   </body>

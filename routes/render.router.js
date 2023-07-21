@@ -11,8 +11,23 @@ router.get('/', async (req, res) => {
   res.render('index', { data });
 });
 
-// 특정 음식점 조회
+//subpage 진입
+router.get('/subpage/:restaurant_id', async (req, res) => {
+  const restaurant_id = req.params.restaurant_id;
 
-//검색할때 쿼리 스트링
+  const restaurantResult = await restaurantsRepository.getRestaurant({ restaurant_id });
+
+  const data = restaurantResult[0].dataValues;
+  let menus = data.Menus;
+  let reviews = data.Reviews;
+  let restaurant = data;
+
+  menus = menus.map((menu) => menu.dataValues);
+  reviews = reviews.map((review) => review.dataValues);
+
+  console.log(reviews);
+
+  res.render('subpage', { restaurantResult, restaurant, menus, reviews });
+});
 
 module.exports = router;
