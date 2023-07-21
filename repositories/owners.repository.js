@@ -1,4 +1,4 @@
-const { Owner } = require('../models');
+const { Owner, Restaurant, Menu } = require('../models');
 
 class OwnerRepository {
   findAllUsers = async () => {
@@ -7,12 +7,29 @@ class OwnerRepository {
   };
 
   findUserById = async (owner_id) => {
-    const findUserData = await Owner.findByPk(owner_id);
+    const findUserData = await Owner.findByPk(owner_id, {
+      include: [
+        {
+          model: Restaurant,
+          include: Menu,
+        },
+      ],
+    });
+    console.log(findUserData.Restaurant); // 오브젝트 입니다.
+    console.log(findUserData.Restaurant.Menus); // 배열입니다.
     return findUserData;
   };
 
   findUserByEmail = async (email) => {
-    const findUserData = await Owner.findOne({ where: { email } });
+    const findUserData = await Owner.findOne({
+      where: { email },
+      include: [
+        {
+          model: Restaurant,
+          include: Menu,
+        },
+      ],
+    });
     return findUserData;
   };
 
