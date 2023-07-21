@@ -55,6 +55,19 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/views/static'));
 
+// 로그인 페이지(사장)
+app.get('/sign-in/:userType', (req, res) => {
+  const { userType } = req.params;
+  const data = {
+    userType,
+  };
+  res.render('sign-in', data);
+});
+
+
+
+// 회원가입 페이지
+
 app.use('/', [
   userRouter,
   reviewRouter,

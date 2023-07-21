@@ -12,13 +12,11 @@ class RestaurantsController {
 
   // 음식점 조회
   getRestaurant = async (req, res) => {
-    const { restaurant_id } = req.params;
-    const { code, data } = await this.restaurantsService.getRestaurant({
-      restaurant_id,
-      foodName,
-      menuImage,
-    });
-    res.status(code).json({ data });
+    // const { restaurant_id } = req.params;
+    const restaurant_id = 1;
+    const { code, data } = await this.restaurantsService.getRestaurant({ restaurant_id });
+    // res.status(code).json({ data });
+    return data;
   };
 
   // 음식점 등록

@@ -35,7 +35,6 @@ class ReviewsController {
 
   //-- 리뷰 보기 --//
   getReviews = async (req, res, next) => {
-    // TO DO :: 임시
     const { restaurant_id } = req.params;
 
     try {
