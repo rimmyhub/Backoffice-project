@@ -12,6 +12,13 @@
     />
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/my-page.css" />
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
@@ -40,7 +47,7 @@
         </div>
         <div class="profile-content-wrap">
           <div class="text-wrap">
-            <p><span class="content-title">포인트</span><%= user.point %></p>
+            <p><span class="content-title">포인트</span><%= user.point.toLocaleString() %> p</p>
             <p><span class="content-title">주소</span><%= user.address %></p>
             <p><span class="content-title">전화번호</span><%= user.phone_num %></p>
             <p><span class="content-title">이메일</span><%= user.email %></p>
@@ -59,7 +66,7 @@
       </section>
       <hr />
       <section class="order-container">
-        <h2>주문 내역</h2>
+        <h2>📜 주문 내역</h2>
         <ul class="order-list">
           <% orders.forEach((order) => { %>
           <li class="order-item">
@@ -76,6 +83,7 @@
                   class="btn btn-outline-dark"
                   data-bs-toggle="modal"
                   data-bs-target="#modalOrderConfirm"
+                  data-bs-order="<%= JSON.stringify(order) %>"
                   style="
                     --bs-btn-padding-y: 0.25rem;
                     --bs-btn-padding-x: 0.5rem;
@@ -104,7 +112,6 @@
             </div>
             <% } %>
           </li>
-          <hr />
           <% }) %>
         </ul>
       </section>
@@ -131,20 +138,23 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div class="input-group">
-              <input
-                type="file"
-                class="form-control"
-                id="inputGroupFile04"
-                aria-describedby="inputGroupFileAddon04"
-                aria-label="Upload"
-              />
-              <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
-                삭제
-              </button>
-              <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
-                수정하기
-              </button>
+            <div class="mb-3">
+              <label for="userEditImage" class="form-label">이미지</label>
+              <div class="input-group mb-3">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="inputGroupFile04"
+                  aria-describedby="inputGroupFileAddon04"
+                  aria-label="Upload"
+                />
+                <button class="btn btn-outline-secondary" type="button" id="userEditImage">
+                  삭제
+                </button>
+                <button class="btn btn-outline-secondary" type="button" id="userEditImage">
+                  수정하기
+                </button>
+              </div>
             </div>
             <div class="input-wrap">
               <div class="mb-3">
@@ -189,21 +199,21 @@
             ></button>
           </div>
           <div class="modal-body">
-            해당 order는 클릭한 order_id를 토대로 가져와야함
-            <p><span class="content-title">주문번호</span></p>
-            <p><span class="content-title">주문자 명</span></p>
-            <p><span class="content-title">음식점명</span></p>
-            <p><span class="content-title">주문 메뉴</span></p>
-            <ul>
-              <li></li>
-            </ul>
-            <p><span class="content-title">주문 금액</span></p>
-            <p><span class="content-title">주문 시간</span></p>
-            <p><span class="content-title">주문 상태</span></p>
+            <p><span class="content-title">주문번호</span> <span id="orderNumber"></span></p>
+            <p><span class="content-title">주문자 명</span> <span id="orderUserName"></span></p>
+            <p>
+              <span class="content-title">음식점명</span> <span id="orderRestaurantName"></span>
+            </p>
+            <div>
+              <p><span class="content-title">주문 메뉴</span></p>
+              <ul id="orderMenuList"></ul>
+            </div>
+            <p><span class="content-title">주문 금액</span> <span id="orderTotalPrice"></span> p</p>
+            <p><span class="content-title">주문 시간</span> <span id="orderTime"></span></p>
+            <p><span class="content-title">주문 상태</span> <span id="orderStatus"></span></p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary">수정하기</button>
           </div>
         </div>
       </div>
@@ -245,5 +255,39 @@
         </div>
       </div>
     </div>
+    <script>
+      const modalOrderConfirm = new bootstrap.Modal(document.getElementById('modalOrderConfirm'));
+      const orderButtons = document.querySelectorAll('.order-item button[data-bs-toggle="modal"]');
+      orderButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+          const orderData = JSON.parse(event.currentTarget.dataset.bsOrder);
+
+          document.getElementById('orderNumber').textContent = orderData.order_id;
+          document.getElementById('orderUserName').textContent = orderData.user_name;
+          document.getElementById('orderRestaurantName').textContent = orderData.restaurant_name;
+
+          let totalPaymentSum = 0;
+          const orderMenuList = document.getElementById('orderMenuList');
+          orderMenuList.innerHTML = '';
+          orderData.menuDetails.forEach((menuDetail) => {
+            totalPaymentSum += menuDetail.totalPayment;
+
+            const li = document.createElement('li');
+            li.textContent = `${
+              menuDetail.menu_name
+            } - 각 ${menuDetail.totalPayment.toLocaleString()}p`;
+            orderMenuList.appendChild(li);
+          });
+
+          const formattedTotalPayment = totalPaymentSum.toLocaleString();
+          document.getElementById('orderTotalPrice').textContent = formattedTotalPayment;
+
+          document.getElementById('orderTime').textContent = orderData.order_time;
+          document.getElementById('orderStatus').textContent = orderData.order_status;
+
+          modalOrderConfirm.show();
+        });
+      });
+    </script>
   </body>
 </html>

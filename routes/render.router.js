@@ -9,8 +9,6 @@ const OrdersController = require('../controllers/orders.controller');
 const ordersController = new OrdersController();
 const OwnerController = require('../controllers/owners.controller');
 const ownerController = new OwnerController();
-const RestaurantsController = require('../controllers/restaurants.controller');
-const restaurantsController = new RestaurantsController();
 const MenusController = require('../controllers/menus.controller');
 const menusController = new MenusController();
 
@@ -49,12 +47,10 @@ router.get('/my-page-client', async (req, res) => {
 
 // 마이 페이지(사장님)
 router.get('/my-page-owner', async (req, res) => {
-  // TO DO :: owner 로 넣으니까 오류가 떠서 일단 client로 작성함
   const user = await ownerController.getUser();
   const orders = await ordersController.getOrderClient();
-  const data = await restaurantsController.getRestaurant();
   const get = await menusController.getMenu();
-  res.render('my-page-owner', { user, orders, data, get });
+  res.render('my-page-owner', { user, orders, get });
 });
 
 module.exports = router;
