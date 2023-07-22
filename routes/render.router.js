@@ -40,7 +40,8 @@ router.get('/sign-up/:userType', (req, res) => {
 
 // 음식점 전체 조회
 router.get('/', async (req, res) => {
-  const data = await restaurantsRepository.getAllRestaurant();
+  const { foodName, category } = req.query;
+  const data = await restaurantsRepository.getAllRestaurant(foodName, category);
   res.render('index', { data });
 });
 

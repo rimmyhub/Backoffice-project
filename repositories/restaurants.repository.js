@@ -4,23 +4,13 @@ const { Op } = require('sequelize');
 class RestaurantsRepository {
   getAllRestaurant = async (foodName, category) => {
     // foodName search
-    if (foodName) {
+    if (foodName && category) {
       return await Restaurant.findAll({
         include: [
           {
             model: Menu,
-            where: {
-              name: { [Op.like]: '%' + foodName + '%' },
-            },
           },
         ],
-        order: [['createdAt', 'DESC']],
-      });
-    }
-
-    // category search
-    if (category) {
-      return await Restaurant.findAll({
         where: {
           category: { [Op.like]: '%' + category + '%' },
         },
@@ -28,6 +18,17 @@ class RestaurantsRepository {
       });
     }
 
+    // // category search
+    // if (category) {
+    //   return await Restaurant.findAll({
+    //     where: {
+    //       category: { [Op.like]: '%' + category + '%' },
+    //     },
+    //     order: [['createdAt', 'DESC']],
+    //   });
+    // }
+
+    // 조회용
     return await Restaurant.findAll({
       attributes: [
         'restaurant_id',
