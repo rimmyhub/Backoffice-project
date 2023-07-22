@@ -34,6 +34,11 @@ class OwnerService {
       owner_name: findUserData.owner_name,
       owner_number: findUserData.owner_number,
       point: findUserData.point,
+      restaurant_name: findUserData.Restaurant.name,
+      restaurant_address: findUserData.Restaurant.address,
+      restaurant_phone_num: findUserData.Restaurant.phone_num,
+      restaurant_bix_hours: findUserData.Restaurant.biz_hours,
+      restaurant_menus: findUserData.Menus,
     };
   };
 

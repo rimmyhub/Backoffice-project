@@ -15,8 +15,6 @@ class OwnerRepository {
         },
       ],
     });
-    console.log(findUserData.Restaurant); // 오브젝트 입니다.
-    console.log(findUserData.Restaurant.Menus); // 배열입니다.
     return findUserData;
   };
 
