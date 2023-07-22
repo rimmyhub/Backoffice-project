@@ -9,7 +9,7 @@ const ordersController = new OrdersController();
 router.post('/order', authMiddleware, ordersController.order);
 
 //-- 주문조회 (고객)--//
-router.get('/order/clients/:client_id', ordersController.getOrderClient);
+router.get('/order/clients/:client_id', authMiddleware, ordersController.getOrderClient);
 
 //-- 주문조회 (사장)--//
 router.get('/order/owners/:owner_id', authMiddleware, ordersController.getOrderOwner);

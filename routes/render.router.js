@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+
+const authMiddleware = require('../middlewares/auth.middleware');
+
 const RestaurantsRepository = require('../repositories/restaurants.repository');
 const restaurantsRepository = new RestaurantsRepository();
 const UserController = require('../controllers/users.controller');
@@ -69,7 +72,7 @@ router.get('/my-page-client', async (req, res) => {
 });
 
 // 마이 페이지(사장님)
-router.get('/my-page-owner', async (req, res) => {
+router.get('/my-page-owner', authMiddleware, async (req, res) => {
   const user = await ownerController.getUser();
   const orders = await ordersController.getOrderClient();
   const get = await menusController.getMenu();
