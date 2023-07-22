@@ -79,8 +79,7 @@ router.get('/my-page-owner', async (req, res) => {
   await authMiddleware(req, res, async () => {
     const user = await ownerController.getUser(req, res);
     const orders = await ordersController.getOrderOwner(req, res);
-    const get = await menusController.getMenu(req, res);
-    res.render('my-page-owner', { user, orders, get });
+    res.render('my-page-owner', { user, orders });
   });
 });
 
