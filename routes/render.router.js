@@ -68,17 +68,21 @@ router.get('/sub-page/:restaurant_id/order-page', async (req, res) => {
 
 // 마이 페이지(유저)
 router.get('/my-page-client', async (req, res) => {
-  const user = await userController.getUser();
-  const orders = await ordersController.getOrderClient();
-  res.render('my-page-client', { user, orders });
+  await authMiddleware(req, res, async () => {
+    const user = await userController.getUser(req, res);
+    const orders = await ordersController.getOrderClient(req, res);
+    res.render('my-page-client', { user, orders });
+  });
 });
 
 // 마이 페이지(사장님)
-router.get('/my-page-owner', authMiddleware, async (req, res) => {
-  const user = await ownerController.getUser();
-  const orders = await ordersController.getOrderClient();
-  const get = await menusController.getMenu();
-  res.render('my-page-owner', { user, orders, get });
+router.get('/my-page-owner', async (req, res) => {
+  await authMiddleware(req, res, async () => {
+    const user = await ownerController.getUser(req, res);
+    const orders = await ordersController.getOrderOwner(req, res);
+    const get = await menusController.getMenu(req, res);
+    res.render('my-page-owner', { user, orders, get });
+  });
 });
 
 module.exports = router;

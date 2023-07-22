@@ -7,8 +7,7 @@ class MenusController {
 
   // 메뉴 조회
   getMenu = async (req, res) => {
-    // const { restaurant_id } = req.params;
-    const restaurant_id = 1;
+    const { restaurant_id } = res.locals.restaurant;
 
     const { code, data } = await this.menusService.getMenu({ restaurant_id });
     // res.status(code).json({ data });

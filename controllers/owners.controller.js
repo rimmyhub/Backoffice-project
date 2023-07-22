@@ -55,11 +55,10 @@ class OwnerController {
 
   // 유저 개인 정보 조회
   getUser = async (req, res) => {
-    // if (res.locals.user.division !== 'Owner')
-    //   return res.status(412).send({ message: '당신은 사장이 아닙니다.' });
+    if (res.locals.user.division !== 'Owner')
+      return res.status(412).send({ message: '당신은 사장이 아닙니다.' });
     try {
-      // const { owner_id } = res.locals.user; // auth에서 가져옴
-      const owner_id = 101;
+      const { owner_id } = res.locals.user; // auth에서 가져옴
 
       const user = await this.ownerService.findUserCommonData(owner_id);
 
