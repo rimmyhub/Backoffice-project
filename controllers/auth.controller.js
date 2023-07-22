@@ -100,6 +100,7 @@ class AuthController {
     }
   };
 
+  // 로그인
   loginClient = async (req, res) => {
     const { email, password } = req.body;
     const { authorization } = req.cookies;
@@ -107,7 +108,7 @@ class AuthController {
     try {
       const division = 'Client';
       // 클라이언트 정보 가져오기
-      await this.authService.getClient(email, password);
+      const clientInfo = await this.authService.getClient(email, password);
 
       // 로그인상태에서 다시 로그인을 시도했을 경우
       if (authorization) {

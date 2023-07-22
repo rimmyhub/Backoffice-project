@@ -76,15 +76,15 @@
       if (clientLoginBtn) {
         clientLoginBtn.addEventListener('click', async () => {
           const division = 'Client';
-          this.login(division);
+          await this.login(division);
         });
       }
       if (ownerLoginBtn) {
-        ownerLoginBtn.addEventListener('click', () => {
+        ownerLoginBtn.addEventListener('click', async () => {
           console.log('owner btn = ', ownerLoginBtn);
           const division = 'Owner';
           // console.log('오너 로그인');
-          this.login(division);
+          await this.login(division);
         });
       }
 
@@ -104,7 +104,9 @@
             });
             const data = await res.json();
 
-            console.log('errMessage = ', data);
+            if (data.message === '로그인되었습니다.') {
+              window.location.href = '/';
+            }
           } catch (err) {
             console.log(err);
           }
@@ -122,7 +124,10 @@
               }),
             });
             const data = await res.json();
-            console.log('errMessage = ', data);
+
+            if (data.message === '로그인되었습니다.') {
+              window.location.href = '/';
+            }
           } catch (err) {
             console.log(err);
           }

@@ -25,6 +25,7 @@
     <%- include('includes/header') %>
     <!-- main -->
     <main class="sign-page">
+      <!-- <button id="button-id">??</button> -->
       <% if (userType === 'user') { %>
       <h2>회원가입</h2>
       <form id="form-client" onsubmit="return false;">
@@ -58,18 +59,18 @@
           <label for="">비밀번호 확인</label>
           <input type="password" pw="confirmPassword" id="sign-in-pw-confirm" required />
         </div>
-        <button type="submit" id="btn-sign-up" class="btn-primary btn-full">회원가입</button>
+        <button type="submit" id="client-sign-up" class="btn-primary btn-full">회원가입</button>
       </form>
 
       <% } else if (userType === 'owner') { %>
       <h2>사장님 회원가입</h2>
-      <div class="form-inner">
+      <form id="form-owner" onsubmit="return false;">
         <div class="input-box">
           <div class="input-wrap">
             <label for="">이메일(ID)</label>
             <input type="email" id="sign-in-email" required />
           </div>
-          <button>인증번호 전달</button>
+          <button id="sign-up-btn">인증번호 전달</button>
         </div>
         <div class="input-box">
           <div class="input-wrap">
@@ -78,8 +79,8 @@
           </div>
           <span class="confirm-time">3:00</span>
           <div class="btns">
-            <button>재전송</button>
-            <button>인증완료</button>
+            <button id="resend-btn">재전송</button>
+            <button id="confirm-btn">인증완료</button>
           </div>
         </div>
         <div class="input-wrap">
@@ -96,15 +97,15 @@
         </div>
         <div>
           <label for="">사업자등록주소</label>
-          <input type="text" id="sign-in-pw-confirm" required />
+          <input type="text" id="sign-in-owner-name" required />
         </div>
         <div>
           <label for="">사업자등록번호</label>
-          <input type="text" id="sign-in-pw-confirm" required />
+          <input type="text" id="sign-in-owner-num" required />
         </div>
 
-        <button id="btn-sign-up" class="btn-primary btn-full">회원가입</button>
-      </div>
+        <button type="submit" id="owner-sign-up" class="btn-primary btn-full">회원가입</button>
+      </form>
 
       <% } else { %>
       <h2>잘못된 접근이오</h2>
@@ -114,6 +115,10 @@
     <!-- footer -->
     <%- include('includes/footer') %>
     <script>
+      // const buttonId = document.getElementById('button-id');
+      // buttonId.addEventListener('click', () => {
+      //   console.log('??>??/');
+      // });
       const authEmailBtn = document.getElementById('sign-up-btn');
       const inputEmail = document.getElementById('sign-in-email');
 
@@ -122,9 +127,10 @@
 
       const resendBtn = document.getElementById('resend-btn');
 
-      const signUpform = document.getElementById('form-client');
+      const signupClient = document.getElementById('form-client');
+      const signupOwner = document.getElementById('form-owner');
 
-      signUpform.addEventListener('submit', sendClientData);
+      console.log('authEmailBtn = ', authEmailBtn);
 
       // 인증번호를 보내는 버튼
       authEmailBtn.addEventListener('click', () => {
@@ -142,8 +148,23 @@
           this.sendAuthNum(inputEmail.value);
         }
       });
+
+      if (signupClient) {
+        signupClient.addEventListener('submit', sendClientData);
+      }
+      if (signupOwner) {
+        signupOwner.addEventListener('submit', sendOwnerData);
+      }
+
+      // 유저회원가입
+      // if() {
+
+      // }
+      // 오너회원가입
+
       // 이메일인증 api에 전달
       async function sendAuthNum() {
+        console.log('인증번호 보내기');
         const res = await fetch('/auth/mail', {
           method: 'POST',
           headers: {
@@ -157,6 +178,7 @@
         console.log('res = ', data);
       }
       async function authEmail() {
+        console.log('인증번호 확인');
         const res = await fetch('/auth/mail-num', {
           method: 'POST',
           headers: {
@@ -171,6 +193,7 @@
       }
 
       async function sendClientData() {
+        console.log('sendClientData');
         event.preventDefault();
         const name = document.getElementById('sign-in-name');
         const password = document.getElementById('sign-in-pw');
@@ -189,20 +212,41 @@
         });
         const data = await res.json();
         console.log('res = ', data);
+        if (data.message === '회원가입이 완료되었습니다.') {
+          window.location.href = '/sign-in/user';
+        }
+      }
+      async function sendOwnerData() {
+        console.log('sendOwnerData');
+        event.preventDefault();
+        const name = document.getElementById('sign-in-name');
+        const password = document.getElementById('sign-in-pw');
+        const confirmPassword = document.getElementById('sign-in-pw-confirm');
+        const ownerName = document.getElementById('sign-in-owner-name');
+        const ownerNum = document.getElementById('sign-in-owner-num');
+        const res = await fetch('/signup/owner', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: inputEmail.value,
+            name: name.value,
+            password: password.value,
+            confirm: confirmPassword.value,
+            owner_name: ownerName.value,
+            owner_number: ownerNum.value,
+            point: 0,
+          }),
+        });
+        const data = await res.json();
+        console.log('res = ', data);
+        if (data.message === '회원가입이 완료되었습니다.') {
+          window.location.href = '/sign-in/owner';
+        }
       }
 
-      // document.getElementById('form-client')[0].onsubmit = function () {
-      //   console.log('회원가입하기');
-      //   const ipnutEmail = this.email.value;
-      //   const name = this.name.value;
-      //   const password = this.password.value;
-      //   const confirmPassword = this.confirmPassword.value;
-      //   console.log(ipnutEmail, name);
-
-      //   return false;
-      // };
-
-      async function signupOwner() {}
+      // async function signupOwner() {}
     </script>
   </body>
 </html>
