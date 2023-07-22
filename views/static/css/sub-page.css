@@ -1,0 +1,56 @@
+/* 서브페이지랑 연결이 안됨 확인 필요 */
+
+/* 상단 영역 */
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+.restaurant-top {
+  display: flex;
+}
+button {
+  width: 300px;
+}
+
+.restaurant-image img {
+  max-width: 400px;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+h2 {
+  margin-top: 50px;
+}
+
+/* 메뉴 */
+.restaurant-menu {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.restaurant-menu img {
+  max-width: 80px;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+.restaurant-menu p {
+  margin: 0;
+}
+
+/* 리뷰 영역 */
+.user-review {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user-review img {
+  max-width: 50px;
+  margin-right: 20px;
+  border-radius: 10px;
+}

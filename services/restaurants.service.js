@@ -6,7 +6,7 @@ class RestaurantsService {
   // 음식점 전체 조회
   getAllRestaurant = async (foodName, category) => {
     try {
-      const getAll = await this.restaurantsRepository.getAllRestaurant(foodName);
+      const getAll = await this.restaurantsRepository.getAllRestaurant(foodName, category);
       return { code: 200, data: getAll };
     } catch (error) {
       return { code: 500, data: error.message };
