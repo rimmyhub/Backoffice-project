@@ -101,12 +101,14 @@ class AuthController {
   };
 
   loginClient = async (req, res) => {
+    const { email, password } = req.body;
+    const { authorization } = req.cookies;
+    console.log(email, password);
     try {
-      const { email, password } = req.body;
-      const { authorization } = req.cookies;
       const division = 'Client';
       // 클라이언트 정보 가져오기
-      const clientInfo = await this.authService.getClient(email, password);
+      await this.authService.getClient(email, password);
+
       // 로그인상태에서 다시 로그인을 시도했을 경우
       if (authorization) {
         return res.status(412).json({ errorMessage: '현재 로그인 상태입니다.' });
@@ -118,7 +120,7 @@ class AuthController {
       res.cookie('authorization', `Bearer ${token}`);
       return res.status(200).json({ message: '로그인되었습니다.' });
     } catch (error) {
-      return res.status(400).json(error.message);
+      return res.status(400).send({ errMesssage: error.message });
     }
   };
 

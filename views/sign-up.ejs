@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../views/index.ejs" defer></script>
+    <script src="../views/static/js/index.js" defer></script>
+    <script type="text/javascript" src="./static/js/sign-in.js"></script>
+    <title>배달의 팔족</title>
+  </head>
+  <body>
+    <!-- header -->
+    <%- include('includes/header') %>
+    <!-- main -->
+    <main class="sign-page">
+      <% if (userType === 'user') { %>
+      <h2>회원가입</h2>
+      <form id="form-client" onsubmit="return false;">
+        <div class="input-box">
+          <div class="input-wrap">
+            <label for="">이메일(ID)</label>
+            <input type="email" name="email" id="sign-in-email" required />
+          </div>
+          <button id="sign-up-btn">인증번호 전달</button>
+        </div>
+        <div class="input-box">
+          <div class="input-wrap">
+            <label for="">이메일 인증번호</label>
+            <input type="number" id="email-confirm" required />
+          </div>
+          <span class="confirm-time">3:00</span>
+          <div class="btns">
+            <button id="resend-btn">재전송</button>
+            <button id="confirm-btn">인증완료</button>
+          </div>
+        </div>
+        <div class="input-wrap">
+          <label for="">이름</label>
+          <input type="text" name="name" id="sign-in-name" required />
+        </div>
+        <div class="input-wrap">
+          <label for="">비밀번호</label>
+          <input type="password" pw="password" id="sign-in-pw" required />
+        </div>
+        <div class="input-wrap">
+          <label for="">비밀번호 확인</label>
+          <input type="password" pw="confirmPassword" id="sign-in-pw-confirm" required />
+        </div>
+        <button type="submit" id="btn-sign-up" class="btn-primary btn-full">회원가입</button>
+      </form>
+
+      <% } else if (userType === 'owner') { %>
+      <h2>사장님 회원가입</h2>
+      <div class="form-inner">
+        <div class="input-box">
+          <div class="input-wrap">
+            <label for="">이메일(ID)</label>
+            <input type="email" id="sign-in-email" required />
+          </div>
+          <button>인증번호 전달</button>
+        </div>
+        <div class="input-box">
+          <div class="input-wrap">
+            <label for="">이메일 인증번호</label>
+            <input type="number" id="email-confirm" required />
+          </div>
+          <span class="confirm-time">3:00</span>
+          <div class="btns">
+            <button>재전송</button>
+            <button>인증완료</button>
+          </div>
+        </div>
+        <div class="input-wrap">
+          <label for="">이름</label>
+          <input type="text" id="sign-in-name" required />
+        </div>
+        <div class="input-wrap">
+          <label for="">비밀번호</label>
+          <input type="password" id="sign-in-pw" required />
+        </div>
+        <div class="input-wrap">
+          <label for="">비밀번호 확인</label>
+          <input type="password" id="sign-in-pw-confirm" required />
+        </div>
+        <div>
+          <label for="">사업자등록주소</label>
+          <input type="text" id="sign-in-pw-confirm" required />
+        </div>
+        <div>
+          <label for="">사업자등록번호</label>
+          <input type="text" id="sign-in-pw-confirm" required />
+        </div>
+
+        <button id="btn-sign-up" class="btn-primary btn-full">회원가입</button>
+      </div>
+
+      <% } else { %>
+      <h2>잘못된 접근이오</h2>
+
+      <%}%>
+    </main>
+    <!-- footer -->
+    <%- include('includes/footer') %>
+    <script>
+      const authEmailBtn = document.getElementById('sign-up-btn');
+      const inputEmail = document.getElementById('sign-in-email');
+
+      const inputAuthNum = document.getElementById('email-confirm');
+      const confirmBtn = document.getElementById('confirm-btn');
+
+      const resendBtn = document.getElementById('resend-btn');
+
+      const signUpform = document.getElementById('form-client');
+
+      signUpform.addEventListener('submit', sendClientData);
+
+      // 인증번호를 보내는 버튼
+      authEmailBtn.addEventListener('click', () => {
+        this.sendAuthNum();
+      });
+
+      // 인증확인 버튼
+      confirmBtn.addEventListener('click', () => {
+        this.authEmail();
+      });
+
+      // 인증번호 이메일로 다시 보내기
+      resendBtn.addEventListener('click', () => {
+        if (inputEmail.value) {
+          this.sendAuthNum(inputEmail.value);
+        }
+      });
+      // 이메일인증 api에 전달
+      async function sendAuthNum() {
+        const res = await fetch('/auth/mail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: inputEmail.value,
+          }),
+        });
+        const data = await res.json();
+        console.log('res = ', data);
+      }
+      async function authEmail() {
+        const res = await fetch('/auth/mail-num', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            inputAuthNum: inputAuthNum.value,
+          }),
+        });
+        const data = await res.json();
+        console.log('res = ', data);
+      }
+
+      async function sendClientData() {
+        event.preventDefault();
+        const name = document.getElementById('sign-in-name');
+        const password = document.getElementById('sign-in-pw');
+        const confirmPassword = document.getElementById('sign-in-pw-confirm');
+        const res = await fetch('/signup/clients', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: inputEmail.value,
+            name: name.value,
+            password: password.value,
+            confirm: confirmPassword.value,
+          }),
+        });
+        const data = await res.json();
+        console.log('res = ', data);
+      }
+
+      // document.getElementById('form-client')[0].onsubmit = function () {
+      //   console.log('회원가입하기');
+      //   const ipnutEmail = this.email.value;
+      //   const name = this.name.value;
+      //   const password = this.password.value;
+      //   const confirmPassword = this.confirmPassword.value;
+      //   console.log(ipnutEmail, name);
+
+      //   return false;
+      // };
+
+      async function signupOwner() {}
+    </script>
+  </body>
+</html>

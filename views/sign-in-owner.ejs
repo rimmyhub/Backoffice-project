@@ -72,21 +72,17 @@
       const ownerLoginBtn = document.getElementById('btn-sign-in-Owner');
       const inputEmail = document.getElementById('sign-in-email');
       const inputPassword = document.getElementById('sign-in-pw');
-
-      if (clientLoginBtn) {
-        clientLoginBtn.addEventListener('click', async () => {
-          const division = 'Client';
-          this.login(division);
-        });
-      }
-      if (ownerLoginBtn) {
-        ownerLoginBtn.addEventListener('click', () => {
-          console.log('owner btn = ', ownerLoginBtn);
-          const division = 'Owner';
-          // console.log('오너 로그인');
-          this.login(division);
-        });
-      }
+      // 로그인 버튼
+      clientLoginBtn.addEventListener('click', async () => {
+        const division = 'Client';
+        this.login(division);
+      });
+      ownerLoginBtn.addEventListener('click', () => {
+        console.log('owner btn = ', ownerLoginBtn);
+        const division = 'Owner';
+        // console.log('오너 로그인');
+        this.login(division);
+      });
 
       async function login(param) {
         console.log('param = ', param);
