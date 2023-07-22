@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+
+const authMiddleware = require('../middlewares/auth.middleware');
+
 const RestaurantsRepository = require('../repositories/restaurants.repository');
 const restaurantsRepository = new RestaurantsRepository();
 const UserController = require('../controllers/users.controller');
@@ -9,12 +12,33 @@ const OrdersController = require('../controllers/orders.controller');
 const ordersController = new OrdersController();
 const OwnerController = require('../controllers/owners.controller');
 const ownerController = new OwnerController();
-const RestaurantsController = require('../controllers/restaurants.controller');
-const restaurantsController = new RestaurantsController();
 const MenusController = require('../controllers/menus.controller');
 const menusController = new MenusController();
 
-// 메인 페이지 진입, 음식점 리스트 불러오기
+// 로그인 페이지(사장)
+router.get('/sign-in/:userType', (req, res) => {
+  console.log('req.params.userType = ', req.params.userType);
+  const userType = req.params.userType;
+
+  const data = {
+    userType: userType,
+  };
+
+  res.render('sign-in', data);
+});
+
+// 회원가입 페이지
+router.get('/sign-up/:userType', (req, res) => {
+  const userType = req.params.userType;
+
+  const data = {
+    userType: userType,
+  };
+
+  res.render('sign-up', data);
+});
+
+// 음식점 전체 조회
 router.get('/', async (req, res) => {
   const data = await restaurantsRepository.getAllRestaurant();
   res.render('index', { data });
@@ -49,13 +73,11 @@ router.get('/my-page-client', async (req, res) => {
 });
 
 // 마이 페이지(사장님)
-router.get('/my-page-owner', async (req, res) => {
-  // TO DO :: owner 로 넣으니까 오류가 떠서 일단 client로 작성함
+router.get('/my-page-owner', authMiddleware, async (req, res) => {
   const user = await ownerController.getUser();
   const orders = await ordersController.getOrderClient();
-  const data = await restaurantsController.getRestaurant();
   const get = await menusController.getMenu();
-  res.render('my-page-owner', { user, orders, data, get });
+  res.render('my-page-owner', { user, orders, get });
 });
 
 module.exports = router;

@@ -10,19 +10,25 @@
 <header>
   <nav class="navbar navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand" href="/" id="logoLink">
+      <a id="main-page" class="navbar-brand" href="#">
         <img src="/images/logo.png" alt="" width="146" height="48" />
       </a>
 
       <!-- 마이페이지, 로그인(로그아웃) -->
-      <!-- <a class="mypagebtn" href="/my-page-client"> 내 정보 </a> -->
-      <a href="/my-page-owner">내 정보</a>
-      <a class="login" href="">로그아웃</a>
+      <a class="mypagebtn"> 내 정보 </a>
+      <a id="logout" class="logout" href="">로그아웃</a>
       <a class="login" href="/sign-in/user">로그인</a>
     </div>
   </nav>
   <script>
+    const mainPage = document.getElementById('main-page');
+    const logoutBtn = document.getElementById('logout');
     const myPage = document.querySelector('.mypagebtn');
+    mainPage.addEventListener('click', () => {
+      // 새로운 화면으로 이동하는 로직을 추가
+      window.location.href = '/'; // 이동할 URL을 지정
+    });
+
     myPage.addEventListener('click', () => {
       // 새로운 화면으로 이동하는 로직을 추가
       window.location.href = '/mypage/clients'; // 이동할 URL을 지정
@@ -32,6 +38,17 @@
     logIn.addEventListener('click', () => {
       // 새로운 화면으로 이동하는 로직을 추가
       window.location.href = '/signup/client'; // 이동할 URL을 지정
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      event.preventDefault();
+      const res = await fetch('/logout', {
+        method: 'DELETE',
+        headers: {
+          Authorization: localStorage.getItem('access_token'),
+        },
+      });
+      console.log('로그아웃 = ', res);
     });
   </script>
 </header>
