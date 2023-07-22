@@ -34,14 +34,15 @@ class OrdersController {
   //-- 주문조회 (고객) --//
   getOrderClient = async (req, res, next) => {
     // 검사 : 사장/유저 여부 확인
-    if (res.locals.user.division !== 'Client')
-      return res.status(412).send({ message: '너는 고객이 아니다.' });
-    
-    try {
-      const { client_id } = res.locals.user;
+    // if (res.locals.user.division !== 'Client')
+    //   return res.status(412).send({ message: '너는 고객이 아니다.' });
 
-      const orderData = await this.ordersService.getOrderClient(client_id);
-      res.status(200).send({ data: orderData });
+    try {
+      // const { client_id } = res.locals.user;
+      const client_id = 1;
+
+      const orders = await this.ordersService.getOrderClient(client_id);
+      return orders;
     } catch (err) {
       console.error(err.stack);
       return res.status(400).send({ message: `${err.message}` });
@@ -53,12 +54,12 @@ class OrdersController {
     // 검사 : 사장/유저 여부 확인
     if (res.locals.user.division !== 'Owner')
       return res.status(412).send({ message: '너는 사장이 아니다.' });
-    
+
     try {
       const { owner_id } = res.locals.user;
 
       const orderData = await this.ordersService.getOrderOwner(owner_id);
-      console.log(orderData.length)
+      console.log(orderData.length);
       res.status(200).send({ data: orderData });
     } catch (err) {
       console.error(err.stack);

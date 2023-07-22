@@ -32,8 +32,8 @@ class MenusRepository {
   };
 
   // 메뉴 이미지 등록
-  createMenuImage = async (imageUrl, Owner_id) => {
-    const createdMenuImage = await MenuImage.create({ imageUrl, Owner_id });
+  createMenuImage = async (imageUrl, Restaurant_id) => {
+    const createdMenuImage = await MenuImage.create({ imageUrl, Restaurant_id });
     return createdMenuImage;
   };
 

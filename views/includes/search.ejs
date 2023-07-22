@@ -13,6 +13,7 @@
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 10px;
+  width: 500px;
 } 
 </style>
 </head>
@@ -33,7 +34,6 @@
 
   const search = async () => {   
     if (!searchBox.value) return alert("검색어를 입력해 주세요.");
-    // window.location.href = `/search?data=${searchBox.value}&page=1`;
 
     let foodNameResult = await fetch(`/restaurant?foodName=${searchBox.value}`)
     foodNameResult = await foodNameResult.json()

@@ -11,12 +11,15 @@ module.exports = {
       },
       Order_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       Menu_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       count: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

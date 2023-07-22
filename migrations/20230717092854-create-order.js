@@ -11,12 +11,15 @@ module.exports = {
       },
       Restaurant_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       Client_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       status: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         defaultValue: 0,
       },
       createdAt: {

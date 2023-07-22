@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/my-page.css" />
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../views/index.ejs" defer></script>
+    <script src="../views/static/js/mypage.js" defer></script>
+    <title>배달의 팔족</title>
+  </head>
+  <body>
+    <!-- header -->
+    <%- include('includes/header') %>
+    <!-- main -->
+    <main class="my-page">
+      <!-- 사장님 템플릿 -->
+      <section class="profile-container">
+        <div class="profile-wrap">
+          <div class="text-wrap">
+            <!-- user : 사장 데이터 -->
+            <p class="profile-title"><%= user.name %>사장님 반갑습니다!</p>
+            <p><span class="content-title">포인트</span><%= user.point.toLocaleString() %> p</p>
+            <p><span class="content-title">상호명</span><%= user.owner_name %></p>
+            <p><span class="content-title">사업자 등록 번호</span><%= user.owner_number %></p>
+          </div>
+          <div class="btn-right">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-toggle="modal"
+              data-bs-target="#modalUserEdit"
+            >
+              정보 수정
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="profile-content-wrap">
+          <h2>나의 가게</h2>
+          <div class="text-wrap">
+            <p><span class="content-title">가게명</span><%= user.restaurant_name %></p>
+            <p><span class="content-title">주소</span><%= user.restaurant_address %></p>
+            <p><span class="content-title">전화번호</span><%= user.restaurant_phone_num %></p>
+            <p><span class="content-title">영업시간</span><%= user.restaurant_bix_hours %></p>
+          </div>
+          <div class="btn-right">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#modalRestaurantEdit"
+            >
+              가게정보 수정
+            </button>
+          </div>
+        </div>
+      </section>
+      <hr />
+      <section class="menu-container">
+        <h2>메뉴</h2>
+        <ul class="menu-list">
+          <% get.forEach((menu)=>{ %>
+          <li>
+            <div class="img-wrap mb-3">
+              <img src="<%= menu.menu_image %>" alt="" />
+            </div>
+            <div class="text-wrap">
+              <p class="content-title"><%= menu.name %></p>
+              <p><%= menu.price.toLocaleString() %> p</p>
+            </div>
+          </li>
+          <% }) %>
+        </ul>
+        <% if (get.length) { %>
+        <div class="btn-right">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#modalMenusEdit"
+          >
+            메뉴 수정
+          </button>
+        </div>
+        <% } %> <% if (!get.length) { %>
+        <p>등록된 메뉴가 없습니다.</p>
+        <% } %>
+      </section>
+      <hr />
+      <section class="order-container">
+        <h2>📜 주문 내역</h2>
+        <ul class="order-list">
+          <!-- data : 주문 데이터임 (이름 바꾸야할듯) -->
+          <% orders.forEach((order) => { %>
+          <li class="order-item">
+            <div class="text-wrap">
+              <p><span class="content-title">주문 번호</span><%= order.order_id %></p>
+              <p><span class="content-title">음식점 명</span><%= order.restaurant_name %></p>
+              <p>
+                <span class="content-title">주문 메뉴</span>
+                <%= order.menuDetails[0].menu_name %> <% if (order.menuDetails.length > 1) { %> 외
+                <%= order.menuDetails.length - 1 %>개 <% } %>
+                <button
+                  type="button"
+                  class="btn btn-outline-dark"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalOrderConfirm"
+                  data-bs-order="<%= JSON.stringify(order) %>"
+                  style="
+                    --bs-btn-padding-y: 0.25rem;
+                    --bs-btn-padding-x: 0.5rem;
+                    --bs-btn-font-size: 0.75rem;
+                  "
+                >
+                  더보기
+                </button>
+              </p>
+              <p><span class="content-title">주문시간</span><%= order.order_time %></p>
+              <p><span class="content-title">주문상태</span><%= order.order_status %></p>
+            </div>
+            <div class="btn-right">
+              <% if (order.order_status === '접수대기') { %>
+              <button type="button" class="btn btn-danger">접수 승낙하기</button>
+              <% } %> <% if (order.order_status === '접수완료') { %>
+              <button type="button" class="btn btn-danger">배달 완료하기</button>
+              <% } %>
+            </div>
+          </li>
+          <% }) %>
+        </ul>
+      </section>
+    </main>
+    <!-- footer -->
+    <%- include('includes/footer') %>
+    <!-- 모달 : 정보 수정(사장님) -->
+    <div
+      class="modal fade"
+      id="modalUserEdit"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">사장님 정보 수정</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-wrap">
+              <div class="mb-3">
+                <label for="ownerEditName" class="form-label">상호명</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="ownerEditName"
+                  value="<%= user.owner_name %>"
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="ownerEditNnumber" class="form-label">사업자 등록 번호</label>
+              <input
+                type="email"
+                class="form-control"
+                id="ownerEditNnumber"
+                value="<%= user.owner_number %>"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary">수정하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 : 정보 수정(가게 정보) -->
+    <div id="modalRestaurantEdit" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">가게 정보 수정</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="restaurantEditName" class="form-label">가게명</label>
+              <input
+                type="email"
+                class="form-control"
+                id="restaurantEditName"
+                value="<%= user.restaurant_name %>"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="restaurantEditAddress" class="form-label">주소</label>
+              <input
+                type="email"
+                class="form-control"
+                id="restaurantEditAddress"
+                value="<%= user.restaurant_address %>"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="restaurantEditPhomeNumber" class="form-label">전화번호</label>
+              <input
+                type="email"
+                class="form-control"
+                id="restaurantEditPhomeNumber"
+                value="<%= user.restaurant_phone_num %>"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="restaurantEditBizHours" class="form-label">영업시간</label>
+              <input
+                type="email"
+                class="form-control"
+                id="restaurantEditBizHours"
+                value="<%= user.restaurant_bix_hours %>"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary">수정하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모달 : 메뉴 수정 -->
+    <div id="modalMenusEdit" class="modal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">메뉴 수정</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <ul class="menu-edit-list">
+              <% get.forEach((menu)=>{ %>
+              <li>
+                <h3><%= menu.name %></h3>
+                <div class="mb-3">
+                  <label for="" class="form-label">이미지</label>
+                  <div class="img-wrap mb-3">
+                    <img src="<%= menu.menu_image %>" alt="" />
+                  </div>
+                  <div class="input-group">
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="inputGroupFile04"
+                      aria-describedby="inputGroupFileAddon04"
+                      aria-label="Upload"
+                    />
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      id="inputGroupFileAddon04"
+                    >
+                      삭제
+                    </button>
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      id="inputGroupFileAddon04"
+                    >
+                      수정하기
+                    </button>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="menuEditName" class="form-label">음식 이름</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="menuEditName"
+                    value="<%= menu.name %>"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="menuEditName" class="form-label">가격</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="menuEditName"
+                    value="<%= menu.price %>"
+                  />
+                </div>
+              </li>
+              <hr />
+              <% }) %>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary">수정하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 모달 : 주문 확인서 -->
+    <div
+      class="modal fade"
+      id="modalOrderConfirm"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">주문 확인서</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p><span class="content-title">주문 번호</span> <span id="orderNumber"></span></p>
+            <p><span class="content-title">주문자 명</span> <span id="orderUserName"></span></p>
+            <p>
+              <span class="content-title">음식점 명</span> <span id="orderRestaurantName"></span>
+            </p>
+            <div>
+              <p><span class="content-title">주문 메뉴</span></p>
+              <ul id="orderMenuList"></ul>
+            </div>
+            <p><span class="content-title">주문 금액</span> <span id="orderTotalPrice"></span> p</p>
+            <p><span class="content-title">주문 시간</span> <span id="orderTime"></span></p>
+            <p><span class="content-title">주문 상태</span> <span id="orderStatus"></span></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      //-- 주문 확인서 불러오기 --//
+      const modalOrderConfirm = new bootstrap.Modal(document.getElementById('modalOrderConfirm'));
+      const orderButtons = document.querySelectorAll('.order-item button[data-bs-toggle="modal"]');
+      orderButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+          const orderData = JSON.parse(event.currentTarget.dataset.bsOrder);
+
+          document.getElementById('orderNumber').textContent = orderData.order_id;
+          document.getElementById('orderUserName').textContent = orderData.user_name;
+          document.getElementById('orderRestaurantName').textContent = orderData.restaurant_name;
+
+          let totalPaymentSum = 0;
+          const orderMenuList = document.getElementById('orderMenuList');
+          orderMenuList.innerHTML = '';
+          orderData.menuDetails.forEach((menuDetail) => {
+            totalPaymentSum += menuDetail.totalPayment;
+
+            const li = document.createElement('li');
+            li.textContent = `${
+              menuDetail.menu_name
+            } - 각 ${menuDetail.totalPayment.toLocaleString()}p`;
+            orderMenuList.appendChild(li);
+          });
+
+          const formattedTotalPayment = totalPaymentSum.toLocaleString();
+          document.getElementById('orderTotalPrice').textContent = formattedTotalPayment;
+
+          document.getElementById('orderTime').textContent = orderData.order_time;
+          document.getElementById('orderStatus').textContent = orderData.order_status;
+
+          modalOrderConfirm.show();
+        });
+      });
+    </script>
+  </body>
+</html>

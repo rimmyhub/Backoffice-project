@@ -14,3 +14,5 @@ venv.bak/
 .vscode
 .DS_Store
 test.*
+*.csv
+make_dummies.js

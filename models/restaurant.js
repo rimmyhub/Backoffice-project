@@ -37,25 +37,39 @@ module.exports = (sequelize, DataTypes) => {
       },
       Owner_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       address: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       phone_num: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       biz_hours: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       category: {
         type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: '미선택',
       },
       total_income: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         defaultValue: 0,
+      },
+      latitude: {
+        type: DataTypes.STRING,
+      },
+      longitude: {
+        type: DataTypes.STRING,
       },
       createdAt: {
         allowNull: false,

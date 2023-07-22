@@ -51,20 +51,17 @@ class ReviewsRepository {
 
   //-- 리뷰 보기 --//
   getReviews = async (restaurant_id) => {
-    // console.log(restaurant_id);
     try {
       const reviews = await Review.findAll({
         where: {
-          Restaurant_id: restaurant_id,
+          Restaurant_id: restaurant_id.restaurant_id,
         },
         include: {
           model: Client,
-          attributes: ['name'],
+          attributes: ['name', 'client_image'],
         },
       });
-
       if (!reviews.length) return { error: true, message: '해당 음식점의 리뷰가 없습니다.' };
-      console.log(reviews);
       return reviews;
     } catch (err) {
       console.error(err.stack);

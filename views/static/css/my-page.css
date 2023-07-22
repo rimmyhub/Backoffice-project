@@ -1,0 +1,145 @@
+body {
+  position: relative;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.modal-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 100;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+footer {
+  position: relative !important;
+}
+
+main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5%;
+}
+
+section {
+  padding: 0 15px;
+}
+.form-control {
+  border-radius: 5px !important;
+}
+
+h2 {
+  padding: 10px 0 35px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.red-text {
+  color: red !important;
+}
+
+.btn-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.profile-wrap {
+  margin-bottom: 50px;
+}
+
+.profile-wrap .img-wrap {
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  border-radius: 50%;
+  border: 1px solid #888;
+  overflow: hidden;
+}
+
+.profile-title {
+  padding-bottom: 10px !important;
+  font-size: 20px !important;
+  font-weight: 800;
+}
+.profile-wrap .text-wrap {
+  padding-bottom: 0;
+}
+
+.content-title {
+  padding-right: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.content-title::after {
+  content: ':';
+}
+
+.text-wrap {
+  padding-bottom: 15px;
+}
+
+.text-wrap p {
+  padding-bottom: 5px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.text-wrap p:last-child {
+  padding-bottom: 0;
+}
+
+.order-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 3%;
+  border-radius: 20px;
+  background-color: rgba(252, 248, 209, 0.8);
+}
+
+.order-item + .order-item {
+  margin-top: 30px;
+}
+
+.order-item .text-wrap {
+  padding-bottom: 0;
+}
+.menu-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px 1.5%;
+}
+
+.menu-list li {
+  width: calc(25% - 1.2%);
+}
+
+.menu-list li .img-wrap {
+  width: 100%;
+  aspect-ratio: 1.5;
+}
+
+#modalOrderConfirm .modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-edit-list .img-wrap {
+  width: 200px;
+  height: 150px;
+}
+
+.menu-edit-list h3 {
+  padding-bottom: 10px;
+}
+
+.menu-edit-list .form-label {
+  font-size: 18px;
+  font-weight: 600;
+}

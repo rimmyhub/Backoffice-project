@@ -11,18 +11,23 @@ module.exports = {
       },
       Restaurant_id: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       menu_image: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       price: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       sold_out: {
         type: Sequelize.BOOLEAN,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

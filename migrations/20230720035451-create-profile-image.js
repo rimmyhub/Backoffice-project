@@ -11,9 +11,11 @@ module.exports = {
       },
       imageUrl: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       Client_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
     });
   },

@@ -25,21 +25,28 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       password: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       owner_name: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       owner_number: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       point: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

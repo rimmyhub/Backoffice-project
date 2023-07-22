@@ -35,8 +35,8 @@ class MenusService {
   };
 
   // 메뉴 사진 업로드
-  uploadMenuImage = async (imageUrl, owner_id) => {
-    const uploadedMenuImage = await this.menusRepository.createMenuImage(imageUrl, owner_id);
+  uploadMenuImage = async (imageUrl, restaurant_id) => {
+    const uploadedMenuImage = await this.menusRepository.createMenuImage(imageUrl, restaurant_id);
     return uploadedMenuImage;
   };
 

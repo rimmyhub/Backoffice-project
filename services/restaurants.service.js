@@ -6,7 +6,6 @@ class RestaurantsService {
   // 음식점 전체 조회
   getAllRestaurant = async (foodName, category) => {
     try {
-      console.log({ foodName });
       const getAll = await this.restaurantsRepository.getAllRestaurant(foodName);
       return { code: 200, data: getAll };
     } catch (error) {
@@ -17,7 +16,24 @@ class RestaurantsService {
   // 음식점 조회
   getRestaurant = async ({ restaurant_id }) => {
     try {
-      const get = await this.restaurantsRepository.getRestaurant({ restaurant_id });
+      const get = await this.restaurantsRepository.getRestaurant({
+        restaurant_id,
+      });
+
+      if (!get) {
+        return { code: 404, data: '해당 음식점을 찾을 수 없습니다.' };
+      }
+
+      return { code: 200, data: get };
+    } catch (error) {
+      return { code: 500, data: error.message };
+    }
+  };
+
+  // 음식점 조회
+  getRestaurantByOwner = async (owner_id) => {
+    try {
+      const get = await this.restaurantsRepository.getRestaurantByOwner(owner_id);
 
       if (!get) {
         return { code: 404, data: '해당 음식점을 찾을 수 없습니다.' };

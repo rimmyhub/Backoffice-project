@@ -11,7 +11,7 @@ const upload = new UploadBucket();
 
 // userRouter.get('/clients', userController.getUsers); // 테스트용: 서비스 제공할 필요 없음
 userRouter.post('/signup/clients', userController.signupClient);
-userRouter.get('/mypage/clients', authMiddleware, userController.getUser);
+userRouter.get('/mypage/clients', userController.getUser);
 userRouter.put('/mypage/clients', authMiddleware, userController.modifyUserInfo);
 userRouter.put('/mypage/clients/password', authMiddleware, userController.modifyUserPassword);
 
