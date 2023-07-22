@@ -52,14 +52,13 @@
         <!-- 유저 로그인 -->
 
         <button id="btn-sign-in-user" class="btn-primary btn-full">유저 로그인</button>
-        <a href="sign-up.html" class="link-text">회원가입 하기 ></a>
+        <a href="/sign-up/user" class="link-text">회원가입 하기 ></a>
         <a href="/sign-in/owner">사장님으로 로그인 하기</a>
 
         <% } else if (userType === 'owner') { %>
-
         <!-- 사장 로그인 -->
         <button id="btn-sign-in-Owner" class="btn-primary btn-full">사장님 로그인</button>
-        <a href="sign-up.html" class="link-text">회원가입 하기 ></a>
+        <a href="/sign-up/owner" class="link-text">회원가입 하기 ></a>
         <% } else { %>
         <p>잘못된 접근입니다.</p>
 
@@ -69,7 +68,71 @@
     <!-- footer -->
     <%- include('includes/footer') %>
     <script>
-      
+      const clientLoginBtn = document.getElementById('btn-sign-in-user');
+      const ownerLoginBtn = document.getElementById('btn-sign-in-Owner');
+      const inputEmail = document.getElementById('sign-in-email');
+      const inputPassword = document.getElementById('sign-in-pw');
+
+      if (clientLoginBtn) {
+        clientLoginBtn.addEventListener('click', async () => {
+          const division = 'Client';
+          await this.login(division);
+        });
+      }
+      if (ownerLoginBtn) {
+        ownerLoginBtn.addEventListener('click', async () => {
+          console.log('owner btn = ', ownerLoginBtn);
+          const division = 'Owner';
+          // console.log('오너 로그인');
+          await this.login(division);
+        });
+      }
+
+      async function login(param) {
+        console.log('param = ', param);
+        if (param === 'Client') {
+          try {
+            const res = await fetch('/login/client', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: inputEmail.value,
+                password: inputPassword.value,
+              }),
+            });
+            const data = await res.json();
+
+            if (data.message === '로그인되었습니다.') {
+              window.location.href = '/';
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        } else if (param === 'Owner') {
+          console.log('Owner Login');
+          try {
+            const res = await fetch('/login/owner', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: inputEmail.value,
+                password: inputPassword.value,
+              }),
+            });
+            const data = await res.json();
+
+            if (data.message === '로그인되었습니다.') {
+              window.location.href = '/';
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
     </script>
   </body>
 </html>

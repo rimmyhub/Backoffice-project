@@ -5,6 +5,7 @@ class AuthService {
   // 클라이언트 정보 가져오기
   getClient = async (email, password) => {
     const clientInfo = await this.authRepository.getClient(email);
+    console.log('clientInfo = ', clientInfo);
     // 일치하는 회원이 없을 때
     if (!clientInfo) throw new Error('일치하는 회원정보가 없습니다. ');
 
