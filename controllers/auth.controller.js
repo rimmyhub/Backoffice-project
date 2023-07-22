@@ -148,6 +148,7 @@ class AuthController {
 
   logout = async (req, res) => {
     try {
+      console.log('로그아웃');
       const { authorization } = req.cookies;
       // authorization가 없으면
       if (!authorization) {
