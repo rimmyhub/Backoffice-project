@@ -1,6 +1,6 @@
 // 예시입니다!
 const jwt = require('jsonwebtoken');
-const { Client, Owner } = require('../models');
+const { Client, Owner, Restaurant } = require('../models');
 require('dotenv').config();
 
 module.exports = async (req, res, next) => {
@@ -44,11 +44,13 @@ module.exports = async (req, res, next) => {
     let user;
     if (division === 'Owner') {
       user = await Owner.findOne({ where: { owner_id: userId } });
+      const restaurant = await Restaurant.findOne({ where: { Owner_id: user.owner_id } });
       res.locals.user = { owner_id: user.owner_id };
+      res.locals.restaurant = { restaurant_id: restaurant.restaurant_id };
       res.locals.user.division = division;
     } else if (division === 'Client') {
       user = await Client.findOne({ where: { client_id: userId } });
-      res.locals.user = { client_id: user.client_id }
+      res.locals.user = { client_id: user.client_id };
       res.locals.user.division = division;
     }
     if (!user) return res.status(412).json({ errMessage: '존재하지 않는 회원입니다.' });
