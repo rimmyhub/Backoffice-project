@@ -37,7 +37,7 @@
     }
 
     .restaurant-image img {
-      max-width: 400px;
+      width: 300px;
       margin-right: 20px;
       border-radius: 10px;
     }
@@ -67,6 +67,7 @@
       align-items: center;
       margin-bottom: 10px;
     }
+
     .user-review img {
       max-width: 50px;
       margin-right: 20px;
@@ -87,7 +88,7 @@
           <p>주소:<%= restaurant.address %></p>
           <p>전화 번호: <%= restaurant.phone_num %></p>
           <p>영업 시간: <%= restaurant.biz_hours %></p>
-          <button type="button" class="btn btn-info">주문하기</button>
+          <button type="button" class="btn btn-primary" id="orderButton">주문하기</button>
         </div>
       </div>
       <h2>메뉴</h2>
@@ -106,10 +107,10 @@
       <h2>리뷰</h2>
       <% reviews.forEach((review, idx)=> { %>
       <div class="user-review">
-        <img
-          src="https://media.istockphoto.com/id/1197796372/ko/%EB%B2%A1%ED%84%B0/%EC%82%AC%EB%9E%8C-%EB%B2%A1%ED%84%B0-%EC%95%84%EC%9D%B4%EC%BD%98%EC%9E%85%EB%8B%88%EB%8B%A4-%EC%82%AC%EB%9E%8C-%EC%95%84%EC%9D%B4%EC%BD%98.jpg?s=1024x1024&w=is&k=20&c=RN7LQT8MIBwCuA8FnjRUT6w7i-qmq6EFhzL18D1tdw8="
-          alt="사용자 이미지"
-        />
+        <div>
+          <img src="<%=review.Client.client_image%>" alt="사용자 이미지" />
+          <p><%= review.Client.name %></p>
+        </div>
         <div>
           <p><%= "⭐️".repeat(review.rating) %></p>
           <p><%= review.content %></p>
@@ -121,6 +122,10 @@
     <%- include('includes/footer') %>
   </body>
   <script>
-    console.log('<%= restaurantResult %>');
+    const orderPage = document.querySelector('#orderButton');
+    orderPage.addEventListener('click', () => {
+      // 새로운 화면으로 이동하는 로직을 추가
+      window.location.href = '/sub-page/:restaurant_id/order-page'; // 이동할 URL을 지정
+    });
   </script>
 </html>

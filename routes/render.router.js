@@ -40,28 +40,29 @@ router.get('/sign-up/:userType', (req, res) => {
 
 // 음식점 전체 조회
 router.get('/', async (req, res) => {
-  // /restaurants?foodName=오리지널 버거 콤보
   const data = await restaurantsRepository.getAllRestaurant();
   res.render('index', { data });
 });
 
-//subpage 진입
-router.get('/subpage/:restaurant_id', async (req, res) => {
+// 서브 페이지 진입,
+router.get('/sub-page/:restaurant_id', async (req, res) => {
   const restaurant_id = req.params.restaurant_id;
-
   const restaurantResult = await restaurantsRepository.getRestaurant({ restaurant_id });
 
   const data = restaurantResult[0].dataValues;
-  let menus = data.Menus;
-  let reviews = data.Reviews;
   let restaurant = data;
 
-  menus = menus.map((menu) => menu.dataValues);
-  reviews = reviews.map((review) => review.dataValues);
+  let menus = data.Menus.map((menu) => menu.dataValues);
+  let reviews = data.Reviews.map((review) => review.dataValues);
 
-  console.log(reviews);
+  res.render('sub-page', { restaurant, menus, reviews });
+});
 
-  res.render('subpage', { restaurantResult, restaurant, menus, reviews });
+// 주문 정보 가져오기
+router.get('/sub-page/:restaurant_id/order-page', async (req, res) => {
+  const client = await userController.getUser();
+  const menus = await menusController.getMenu();
+  res.render('order-page', { menus, client });
 });
 
 // 마이 페이지(유저)

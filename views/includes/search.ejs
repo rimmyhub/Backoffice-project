@@ -1,57 +1,82 @@
-<!-- 검색 영역 -->
-<style>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Example</title>
+    <style>
+      .search {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 50px;
+      }
 
-.search {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: 50px;
-  }
-
-  #searchBox {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  width: 500px;
-} 
-</style>
-</head>
-<body>
-  <header>
+      #searchBox {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        width: 500px;
+      }
+    </style>
+  </head>
+  <body>
     <div class="search">
-    <form action="/" method="GET">
-      <input placeholder="음식, 음식 카테고리를 검색해보세요" id="searchBox" type="text" />
-      <i class="fa fa-search searchBtn" aria-hidden="true"></i>
-    </form>
+      <form action="/" method="GET">
+        <input placeholder="음식, 음식 카테고리를 검색해보세요" id="searchBox" type="text" />
+        <i class="fa fa-search searchBtn" aria-hidden="true"></i>
+      </form>
     </div>
-  </header>
+    <div class="result-container">
+      <!-- 검색 결과를 표시할 영역 -->
+    </div>
 
-  <script>
-  const searchBtn = document.querySelector(".searchBtn");
-  const searchBox = document.getElementById("searchBox");
-  
+    <script>
+      const searchBtn = document.querySelector('.searchBtn');
+      const searchBox = document.getElementById('searchBox');
+      const resultContainer = document.querySelector('.result-container');
 
-  const search = async () => {   
-    if (!searchBox.value) return alert("검색어를 입력해 주세요.");
+      const search = async () => {
+        if (!searchBox.value) return alert('검색어를 입력해 주세요.');
+        try {
+          let foodNameResult = await fetch(`/restaurant?foodName=${searchBox.value}`);
+          foodNameResult = await foodNameResult.json();
+          // console.log({ foodNameResult });
 
-    let foodNameResult = await fetch(`/restaurant?foodName=${searchBox.value}`)
-    foodNameResult = await foodNameResult.json()
-    console.log({foodNameResult})
+          let categoryResult = await fetch(`/restaurant?category=${searchBox.value}`);
+          categoryResult = await categoryResult.json();
+          // console.log({ categoryResult });
 
-    let categoryResult = await fetch(`/restaurant?category=${searchBox.value}`)
-    categoryResult = await categoryResult.json()
-    console.log({categoryResult})
-  };
+          // 검색 결과를 표시하는 함수 호출
+          displayResults(foodNameResult, categoryResult);
 
-  searchBtn.addEventListener("click", search);
-  searchBox.addEventListener("keypress", (e) => {
-    e.preventDefault();
-    if (e.key === "Enter") search();
-  });
-  searchBox.focus();
+          console.log(displayResults);
+        } catch (error) {
+          console.error('검색에 실패했습니다:', error.message);
+          alert('검색에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        }
+      };
 
-  
-  </script>
-</body>
+      const displayResults = (foodNameResult, categoryResult) => {
+        // 검색 결과를 화면에 표시
+        resultContainer.innerHTML = `
+          <h2>음식 이름 검색 결과</h2>
+          <ul>
+            ${foodNameResult.map((foodname) => `<li>${foodname.data}</li>`).join('')}
+          </ul>
+          <h2>카테고리 검색 결과</h2>
+          <ul>
+            ${categoryResult.map((category) => `<li>${category.data}</li>`).join('')}
+          </ul>
+        `;
+      };
+
+      searchBtn.addEventListener('click', search);
+      searchBox.addEventListener('keypress', (e) => {
+        e.preventDefault();
+        if (e.key === 'Enter') search();
+      });
+      searchBox.focus();
+    </script>
+  </body>
 </html>
