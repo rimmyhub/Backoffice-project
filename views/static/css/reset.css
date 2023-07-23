@@ -1,5 +1,98 @@
 @charset "utf-8";
+/* common */
+body {
+  position: relative;
+  font-family: 'Noto Sans KR', sans-serif;
+}
 
+.modal-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 100;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+header a {
+  font-weight: 700;
+}
+
+.header-utils {
+  display: flex;
+  gap: 40px;
+}
+
+footer {
+  position: relative !important;
+}
+
+main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+section {
+  padding: 0 15px;
+}
+
+#searchBox {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: block;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.sign-page {
+  width: 550px;
+  margin: 50px auto;
+}
+
+.sign-page h2 {
+  padding-bottom: 50px;
+  font-weight: 700;
+  text-align: center;
+}
+.btn.full {
+  width: 100%;
+}
+
+.btn-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.input-wrap {
+  margin-bottom: 10px;
+}
+.input-wrap label {
+  margin-bottom: 2px;
+}
+
+.flex-box {
+  display: flex;
+  gap: 5px;
+}
+
+.flex-box button {
+  min-width: 100px;
+}
+
+.content-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* reset */
 html,
 body {
   min-height: 100%;

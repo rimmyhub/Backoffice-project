@@ -1,134 +1,202 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-      crossorigin="anonymous"
-    ></script>
-    <script src="../views/static/js/subpage.js" defer></script>
-    <title>배달의 팔족</title>
-  </head>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../css/reset.css" />
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <title>배달의 팔족</title>
   <style>
-    /* 상단 영역 */
-    main {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      padding-left: 100px;
-      padding-right: 100px;
-      margin-top: 50px;
-      margin-bottom: 50px;
-    }
-    .restaurant-top {
-      display: flex;
-    }
-    button {
-      width: 300px;
-    }
-
-    .restaurant-image img {
-      width: 300px;
-      margin-right: 20px;
-      border-radius: 10px;
-    }
-
-    h2 {
-      margin-top: 50px;
-    }
-
-    /* 메뉴 */
-    .restaurant-menu {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .restaurant-menu img {
-      max-width: 80px;
-      margin-right: 10px;
-      border-radius: 10px;
-    }
-    .restaurant-menu p {
-      margin: 0;
-    }
-
-    /* 리뷰 영역 */
-    .user-review {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .user-review img {
-      max-width: 50px;
-      margin-right: 20px;
-      border-radius: 10px;
+    h1 {
+      padding-bottom: 30px;
+      font-weight: 800;
     }
   </style>
-  <body>
-    <!-- header -->
-    <%- include('includes/header') %>
+</head>
+<style>
+  /* 상단 영역 */
+  main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 100px;
+    padding-right: 100px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .restaurant-top {
+    display: flex;
+  }
+
+  button {
+    width: 300px;
+  }
+
+  #map {
+    border: 1px solid #dfdfdf;
+  }
+
+  .restaurant-image img {
+    width: 300px;
+    margin-right: 20px;
+    border-radius: 10px;
+  }
+
+  h2 {
+    margin-top: 80px;
+    margin-bottom: 30px;
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  h2::before {
+    content: '✔️';
+    padding-right: 10px;
+    font-size: 17px;
+  }
+
+  /* 메뉴 */
+  .restaurant-menu {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .restaurant-menu img {
+    width: 170px;
+    height: 120px;
+    margin-right: 10px;
+    border-radius: 10px;
+  }
+
+  .restaurant-menu p {
+    margin: 0;
+  }
+
+  /* 리뷰 영역 */
+  .user-review {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  .user-review-profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 30px;
+  }
+
+  .user-review img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+    border-radius: 50%;
+    border: 1px solid #888;
+  }
+
+  .user-review-profile p {
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .restaurant-menus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .restaurant-menu {
+    width: 318px;
+  }
+</style>
+
+<body>
+  <!-- header -->
+  <%- include('includes/header') %>
 
     <main>
       <div class="restaurant-top">
         <div class="restaurant-image">
           <img src="<%= menus[0].menu_image %>" alt="음식 이미지" />
         </div>
-        <div class="restaurant-info">
-          <h1><%= restaurant.name %></h1>
-          <p>주소:<%= restaurant.address %></p>
-          <p>전화 번호: <%= restaurant.phone_num %></p>
-          <p>영업 시간: <%= restaurant.biz_hours %></p>
-          <button type="button" class="btn btn-primary" id="orderButton" onclick=orderBtn(<%= restaurant.restaurant_id %>)>주문하기</button>
+        <div class="restaurant-info" data-id="<%= restaurant.restaurant_id %>">
+          <h1>
+            <%= restaurant.name %>
+          </h1>
+          <p><span class="content-title">주소:</span>
+            <%= restaurant.address %>
+          </p>
+          <p><span class="content-title">전화 번호:</span>
+            <%= restaurant.phone_num %>
+          </p>
+          <p><span class="content-title">영업 시간:</span>
+            <%= restaurant.biz_hours %>
+          </p>
+          <button type="button" class="btn btn-primary mt-4" id="orderButton">주문하기</button>
         </div>
       </div>
       <h2>메뉴</h2>
-      <% menus.forEach((menu, idx)=> { %>
-      <div class="restaurant-menu">
-        <img src="<%= menu.menu_image %>" alt="음식 이미지" />
-        <div>
-          <p>음식 이름: <%= menu.name %></p>
-          <p>가격: <%= menu.price %></p>
-        </div>
+      <div class="restaurant-menus">
+        <% menus.forEach((menu, idx)=> { %>
+          <div class="restaurant-menu">
+            <img src="<%= menu.menu_image %>" alt="음식 이미지" />
+            <div>
+              <p><span class="content-title">이름:</span>
+                <%= menu.name %>
+              </p>
+              <p><span class="content-title">가격:</span>
+                <%= menu.price.toLocaleString() %>p
+              </p>
+            </div>
+          </div>
+          <% }) %>
       </div>
-      <% }) %>
 
       <h2>장소</h2>
       <div id="map" style="width: 1000px; height: 400px"></div>
       <h2>리뷰</h2>
       <% reviews.forEach((review, idx)=> { %>
-      <div class="user-review">
-        <div>
-          <img src="<%=review.Client.client_image%>" alt="사용자 이미지" />
-          <p><%= review.Client.name %></p>
+        <div class="user-review">
+          <div class="user-review-profile">
+            <img src="<%=review.Client.client_image%>" alt="사용자 이미지" />
+            <p>
+              <%= review.Client.name %>
+            </p>
+          </div>
+          <div>
+            <p>
+              <%= "⭐️" .repeat(review.rating) %>
+            </p>
+            <p>
+              <%= review.content %>
+            </p>
+          </div>
         </div>
-        <div>
-          <p><%= "⭐️".repeat(review.rating) %></p>
-          <p><%= review.content %></p>
-        </div>
-      </div>
-      <% }) %>
+        <% }) %>
     </main>
     <!-- footer -->
     <%- include('includes/footer') %>
-  </body>
-  <script>
-    // const orderPage = document.querySelector('#orderButton');
-    // orderPage.addEventListener('click', () => {
-    //   // 새로운 화면으로 이동하는 로직을 추가
-    //   window.location.href = '/sub-page/:restaurant_id/order-page'; // 이동할 URL을 지정
-    // });
-    function orderBtn(restaurent_id) {
-      window.location.href = `/sub-page/${restaurent_id}/order-page`; // 이동할 URL을 지정
-    }
-  </script>
+</body>
+<script>
+  const orderPage = document.querySelector('#orderButton');
+  const restaurant_id = document.querySelector(".restaurant-info").getAttribute('data-id')
+  orderPage.addEventListener('click', () => {
+    // 새로운 화면으로 이동하는 로직을 추가
+    window.location.href = `/sub-page/${restaurant_id}/order-page`; // 이동할 URL을 지정
+  });
+</script>
+
 </html>

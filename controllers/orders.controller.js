@@ -12,8 +12,6 @@ class OrdersController {
 
     const { client_id } = res.locals.user;
     const { restaurant_id, order_items } = req.body;
-    console.log(restaurant_id)
-    console.log(order_items)
     /**
      * @param {Array} order_items - [{menu_id:1, count:3}, {menu_id:2, count:2}, {menu_id:3, count:4}]
      */
@@ -26,7 +24,7 @@ class OrdersController {
       // orderData -> { restaurant_id, order_items, client_id, totalPayment }
       const responseData = { ...orderData.dataValues, Owner_id: orderData.Owner_id };
       // responseData -> { restaurant_id, order_items, client_id, totalPayment, Owner_id}
-      res.status(200).send({ data: responseData });
+      res.status(200).send({ message: '주문 완료' });
     } catch (err) {
       console.error(err.stack);
       return res.status(400).send({ message: `${err.message}` });
@@ -36,8 +34,8 @@ class OrdersController {
   //-- 주문조회 (고객) --//
   getOrderClient = async (req, res, next) => {
     // 검사 : 사장/유저 여부 확인
-    // if (res.locals.user.division !== 'Client')
-    //   return res.status(412).send({ message: '너는 고객이 아니다.' });
+    if (res.locals.user.division !== 'Client')
+      return res.status(412).send({ message: '너는 고객이 아니다.' });
 
     try {
       const { client_id } = res.locals.user;

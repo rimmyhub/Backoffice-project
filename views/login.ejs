@@ -1,126 +1,136 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-      crossorigin="anonymous"
-    ></script>
-    <script src="../views/index.ejs" defer></script>
-    <script src="../views/static/js/index.js" defer></script>
-    <title>배달의 팔족</title>
-  </head>
-  <body>
-    <!-- header -->
-    <%- include('includes/header') %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../css/reset.css" />
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <title>배달의 팔족</title>
+</head>
+
+<body>
+  <!-- header -->
+  <%- include('includes/header') %>
     <!-- main -->
     <main class="sign-page">
+      <% if (userType==='clients') { %>
+
       <!-- 유저 로그인 -->
-      <% if (userType === 'clients') { %>
-      <h2>유저 로그인</h2>
+      <h2 class="mb-3">유저 로그인</h2>
+      <% } else if (userType==='owners') { %>
 
       <!-- 사장 로그인 -->
-      <% } else if (userType === 'owners') { %>
+
       <h2>사장님 로그인</h2>
-      <%}%>
+      <% } %>
 
       <div class="form-inner">
         <div class="input-wrap">
           <label for="">이메일(ID)</label>
-          <input type="email" id="sign-in-email" required />
+          <input type="email" id="sign-in-email" class="form-control" required />
         </div>
         <div class="input-wrap">
           <label for="">password</label>
-          <input type="password" id="sign-in-pw" required />
+          <input type="password" id="sign-in-pw" class="form-control" required />
         </div>
 
-        <% if (userType === 'clients') { %>
+        <% if (userType==='clients') { %>
         <!-- 고객 로그인 -->
-        <button id="btn-sign-in-user" class="btn-primary btn-full">고객 로그인</button>
-        <a href="/join/clients" class="link-text">회원가입 하기 ></a>
-        <a href="/login/owners">사장님 로그인 페이지 이동</a>
+        <button id="btn-sign-in-user" class="btn-primary btn full btn-primary">고객 로그인</button>
+        <div class="btn-right">
+          <a href="/join/clients" class="link-text mt-1" style="font-size: 14px; color: #252525">회원가입 하기 ></a>
+        </div>
+        <a href="/login/owners" class="btn full btn-outline-secondary mt-3 btn-sm">사장 로그인 하기</a>
 
-        <% } else if (userType === 'owners') { %>
+        <% } else if (userType==='owners') { %>
         <!-- 사장 로그인 -->
-        <button id="btn-sign-in-Owner" class="btn-primary btn-full">사장님 로그인</button>
-        <a href="/join/owners" class="link-text">회원가입 하기 ></a>
-        <a href="/login/clients">고객 로그인 페이지 이동</a>
+        <button id="btn-sign-in-Owner" class="btn-primary btn full btn-primary">사장 로그인</button>
+        <div class="btn-right">
+          <a href="/join/owners" class="link-text mt-1" style="font-size: 14px; color: #252525">회원가입 하기></a>
+        </div>
+        <a href="/login/clients" class="btn full btn-outline-secondary mt-3 btn-sm">고객 로그인 하기</a>
         <% } %>
       </div>
     </main>
     <!-- footer -->
     <%- include('includes/footer') %>
-    <script>
-      const clientLoginBtn = document.getElementById('btn-sign-in-user');
-      const ownerLoginBtn = document.getElementById('btn-sign-in-Owner');
-      const inputEmail = document.getElementById('sign-in-email');
-      const inputPassword = document.getElementById('sign-in-pw');
+      <script>
+        const clientLoginBtn = document.getElementById('btn-sign-in-user');
+        const ownerLoginBtn = document.getElementById('btn-sign-in-Owner');
+        const inputEmail = document.getElementById('sign-in-email');
+        const inputPassword = document.getElementById('sign-in-pw');
 
-      if (clientLoginBtn) {
-        clientLoginBtn.addEventListener('click', async () => {
-          login('Client');
-        });
-      }
-      if (ownerLoginBtn) {
-        ownerLoginBtn.addEventListener('click', async () => {
-          login('Owner');
-        });
-      }
+        if (clientLoginBtn) {
+          clientLoginBtn.addEventListener('click', async () => {
+            const division = 'Client';
+            login(division);
+          });
+        }
+        if (ownerLoginBtn) {
+          ownerLoginBtn.addEventListener('click', async () => {
+            const division = 'Owner';
+            login(division);
+          });
+        }
 
-      async function login(userType) {
-        if (userType === 'Client') {
-          // window.localStorage.setItem('division', userType);
-          try {
-            const res = await fetch('/login/clients', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                email: inputEmail.value,
-                password: inputPassword.value,
-              }),
-            });
+        async function login(param) {
+          if (param === 'Client') {
+            window.localStorage.setItem('division', param);
+            try {
+              const res = await fetch('/login/clients', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  email: inputEmail.value,
+                  password: inputPassword.value,
+                }),
+              });
+              const data = await res.json();
 
-            if (res.ok) {
-              alert('로그인 성공')
-              window.location.href = '/';
+              if (data.message === '로그인되었습니다.') {
+                window.location.href = '/';
+              }
+            } catch (err) {
+              console.log(err);
             }
-          } catch (err) {
-            console.log(err);
-          }
-        } else if (userType === 'Owner') {
-          // window.localStorage.setItem('division', userType);
-          try {
-            const res = await fetch('/login/owners', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                email: inputEmail.value,
-                password: inputPassword.value,
-              }),
-            });
-            const data = await res.json();
+          } else if (param === 'Owner') {
+            window.localStorage.setItem('division', param);
+            console.log('Owner Login');
+            try {
+              const res = await fetch('/login/owners', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  email: inputEmail.value,
+                  password: inputPassword.value,
+                }),
+              });
+              const data = await res.json();
 
-            if (data.message === '로그인되었습니다.') {
-              window.location.href = '/';
+              if (data.message === '로그인되었습니다.') {
+                window.location.href = '/';
+              }
+            } catch (err) {
+              console.log(err);
             }
-          } catch (err) {
-            console.log(err);
           }
         }
-      }
-    </script>
-  </body>
+      </script>
+</body>
+
 </html>

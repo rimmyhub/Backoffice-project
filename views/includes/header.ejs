@@ -19,14 +19,15 @@
       <a id="main-page" class="navbar-brand" href="/">
         <img src="/images/logo.png" alt="" width="146" height="48" />
       </a>
-      <!-- 마이페이지, 로그인(로그아웃) -->
-      <a class="mypagebtn" href="/mypage">마이 페이지</a>
-      <a id="logout" class="logout">로그아웃</a>
-      <a id="login" class="login" href="/login/clients">로그인</a>
+      <div class="header-utils">
+        <!-- 마이페이지, 로그인(로그아웃) -->
+        <a class="mypagebtn" href="/mypage">마이 페이지</a>
+        <a id="logout" class="logout">로그아웃</a>
+        <a id="login" class="login" href="/login/clients">로그인</a>
+      </div>
     </div>
   </nav>
   <script>
-    let userInfo;
     const loginBtn = document.getElementById('login');
     const logoutBtn = document.getElementById('logout');
 

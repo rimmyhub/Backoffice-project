@@ -1,34 +1,3 @@
-body {
-  position: relative;
-  font-family: 'Noto Sans KR', sans-serif;
-}
-.modal-header {
-  position: sticky;
-  top: 0;
-  background-color: #fff;
-  z-index: 100;
-}
-
-header {
-  position: sticky;
-  top: 0;
-  z-index: 200;
-}
-
-footer {
-  position: relative !important;
-}
-
-main {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5%;
-}
-
-section {
-  padding: 0 15px;
-}
 .form-control {
   border-radius: 5px !important;
 }
@@ -41,11 +10,6 @@ h2 {
 
 .red-text {
   color: red !important;
-}
-
-.btn-right {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .profile-wrap {
@@ -72,8 +36,6 @@ h2 {
 
 .content-title {
   padding-right: 15px;
-  font-size: 18px;
-  font-weight: 600;
 }
 .content-title::after {
   content: ':';

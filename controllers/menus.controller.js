@@ -10,7 +10,7 @@ class MenusController {
     const { restaurant_id } = req.params;
 
     const { code, data } = await this.menusService.getMenu({ restaurant_id });
-    res.status(code).json({ data });
+    return data
   };
 
   // 메뉴 등록

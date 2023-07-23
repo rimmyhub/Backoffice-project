@@ -1,37 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Example</title>
+    <style>
+      .search {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 30px 0 0;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search Example</title>
-  <style>
-    .search {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 50px;
-    }
-
-    #searchBox {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      width: 500px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="search">
-    <form action="/" method="GET">
-      <input placeholder="음식, 음식 카테고리를 검색해보세요" id="searchBox" type="text" />
-      <i class="fa fa-search searchBtn" aria-hidden="true"></i>
-    </form>
-  </div>
-  <div class="result-container">
-    <!-- 검색 결과를 표시할 영역 -->
-  </div>
+      #searchBox {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        width: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="search">
+      <form action="/" method="GET">
+        <input placeholder="🔍  음식, 음식 카테고리를 검색해보세요" id="searchBox" type="text" />
+        <i class="fa fa-search searchBtn" aria-hidden="true"></i>
+      </form>
+    </div>
+    <div class="result-container">
+      <!-- 검색 결과를 표시할 영역 -->
+    </div>
 
   <script>
     const searchBtn = document.querySelector('.searchBtn');
@@ -42,19 +40,6 @@
       if (!searchBox.value) return alert('검색어를 입력해 주세요.');
       try {
         document.location.href = `/?foodName=${searchBox.value}&category=${searchBox.value}`
-        // data = await result.json();
-        // console.log({ data });
-
-        // let categoryResult = await fetch(`/restaurant?category=${searchBox.value}`);
-        // categoryResult = await categoryResult.json();
-        // console.log({ categoryResult });
-
-        // res.render('/', {
-        // })
-        // 검색 결과를 표시하는 함수 호출
-        // displayResults(foodNameResult, categoryResult);
-
-        // console.log(displayResults);
       } catch (error) {
         console.error('검색에 실패했습니다:', error.message);
         alert('검색에 실패했습니다. 잠시 후 다시 시도해주세요.');

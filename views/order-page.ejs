@@ -7,15 +7,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
 </head>
 <style>
   /* CSS 스타일을 추가하여 페이지 디자인을 설정합니다. */
-  body {
-    font-family: Arial, sans-serif;
-  }
 
   /* 메뉴 */
   .restaurant-menu {
@@ -174,10 +176,12 @@
       menusElement.forEach((menu) => {
         const menu_id = menu.getAttribute('data-id');
         const count = menu.querySelector('#quantity').value;
-        order_items.push({ menu_id, count });
+        if (Number(count) !== 0) {
+          order_items.push({ menu_id, count });
+        }
       });
+      console.log(order_items)
       const data = { restaurant_id, order_items };
-      console.log(data);
       // fetch 쓰기
       const response = await fetch('/order', {
         method: 'POST',
@@ -186,7 +190,9 @@
         },
         body: JSON.stringify(data)
       });
-      // const data = await response.json();
+      const result = await response.json();
+      alert(result.message);
+      // document.location.href = '/mypage';
     }
   </script>
 </body>
