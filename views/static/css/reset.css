@@ -1,5 +1,54 @@
 @charset "utf-8";
+/* common */
+body {
+  position: relative;
+  font-family: 'Noto Sans KR', sans-serif;
+}
 
+.modal-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 100;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 20px 20px rgba(red, green, blue, alpha);
+}
+
+.header-utils {
+  display: flex;
+  gap: 40px;
+}
+
+footer {
+  position: relative !important;
+}
+
+main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5%;
+}
+
+section {
+  padding: 0 15px;
+}
+
+#searchBox {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: block;
+  width: 500px;
+  margin: 0 auto;
+}
+
+/* reset */
 html,
 body {
   min-height: 100%;

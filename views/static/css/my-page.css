@@ -1,34 +1,4 @@
-body {
-  position: relative;
-  font-family: 'Noto Sans KR', sans-serif;
-}
-.modal-header {
-  position: sticky;
-  top: 0;
-  background-color: #fff;
-  z-index: 100;
-}
 
-header {
-  position: sticky;
-  top: 0;
-  z-index: 200;
-}
-
-footer {
-  position: relative !important;
-}
-
-main {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5%;
-}
-
-section {
-  padding: 0 15px;
-}
 .form-control {
   border-radius: 5px !important;
 }
