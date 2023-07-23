@@ -164,23 +164,29 @@
 
     async function buy() {
       const menusElement = document.querySelectorAll('.restaurant-menu');
-      const clientElement = document.querySelector('.client')
-      const restaurantElement = document.querySelector('.purchase-details')
-      
-      const client_id = clientElement.getAttribute('data-id')
-      const restaurant_id = restaurantElement.getAttribute('data-id')
-      console.log(restaurant_id)
-      const order_items = []
+      const clientElement = document.querySelector('.client');
+      const restaurantElement = document.querySelector('.purchase-details');
+
+      const client_id = clientElement.getAttribute('data-id');
+      const restaurant_id = restaurantElement.getAttribute('data-id');
+      const order_items = [];
 
       menusElement.forEach((menu) => {
         const menu_id = menu.getAttribute('data-id');
-        const count = menu.querySelector('#quantity').value
-        order_items.push({menu_id, count})
+        const count = menu.querySelector('#quantity').value;
+        order_items.push({ menu_id, count });
       });
-      
+      const data = { restaurant_id, order_items };
+      console.log(data);
       // fetch 쓰기
-      // console.log(client_id, restaurant_id, order_items)
-
+      const response = await fetch('/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      // const data = await response.json();
     }
   </script>
 </body>

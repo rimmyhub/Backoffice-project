@@ -12,6 +12,8 @@ class OrdersController {
 
     const { client_id } = res.locals.user;
     const { restaurant_id, order_items } = req.body;
+    console.log(restaurant_id)
+    console.log(order_items)
     /**
      * @param {Array} order_items - [{menu_id:1, count:3}, {menu_id:2, count:2}, {menu_id:3, count:4}]
      */

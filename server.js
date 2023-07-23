@@ -1,6 +1,7 @@
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const bodyParser = require('body-parser');
 const Memorystore = require('memorystore')(session);
 const express = require('express');
 const path = require('path');
@@ -28,6 +29,9 @@ const app = express();
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: false }));
 app.use(cookieParser());
+// body-parser 미들웨어 등록
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const http = Server(app);
 const io = socketIo(http, {

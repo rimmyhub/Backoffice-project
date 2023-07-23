@@ -61,9 +61,11 @@ router.get('/sub-page/:restaurant_id', async (req, res) => {
 
 // 주문 정보 가져오기
 router.get('/sub-page/:restaurant_id/order-page', async (req, res) => {
-  const client = await userController.getUser();
-  const menus = await menusController.getMenu();
-  res.render('order-page', { menus, client });
+  await authMiddleware(req, res, async () => {
+    const client = await userController.getUser(req, res);
+    const menus = await menusController.getMenu(req, res);
+    res.render('order-page', { menus, client });
+  });
 });
 
 // 마이 페이지(유저)
