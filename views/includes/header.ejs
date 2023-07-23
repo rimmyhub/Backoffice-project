@@ -5,6 +5,12 @@
     align-items: center;
     justify-content: center;
   }
+
+  a {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
 </style>
 
 <header>
@@ -13,17 +19,65 @@
       <a id="main-page" class="navbar-brand" href="#">
         <img src="/images/logo.png" alt="" width="146" height="48" />
       </a>
-
       <!-- 마이페이지, 로그인(로그아웃) -->
       <a class="mypagebtn"> 내 정보 </a>
       <a id="logout" class="logout" href="">로그아웃</a>
-      <a class="login" href="/sign-in/user">로그인</a>
+      <a id="login" class="login" href="/sign-in/user">로그인</a>
     </div>
   </nav>
   <script>
+    let isLogin = false;
+    let userInfo;
     const mainPage = document.getElementById('main-page');
     const logoutBtn = document.getElementById('logout');
+    const loginBtn = document.getElementById('login');
     const myPage = document.querySelector('.mypagebtn');
+
+    // 쿠키값 가져오기
+    window.onload = async function () {
+      console.log('window onload');
+      const key = 'authorization';
+      const cookieKey = key + '=';
+      const cookieArr = document.cookie.split(';');
+
+      let result = '';
+      for (let idx = 0; idx < cookieArr.length; idx++) {
+        if (cookieArr[idx][0] === ' ') {
+          cookieArr[idx] = cookieArr[idx].substring(1);
+        }
+        if (cookieArr[idx].indexOf(cookieKey) === 0) {
+          result = cookieArr[idx].slice(cookieKey.length, cookieArr[idx].length);
+          if (result) isLogin = true;
+        }
+      }
+
+      if (isLogin) {
+        logoutBtn.style.display = 'block';
+        loginBtn.style.display = 'none';
+        if (!userInfo) {
+          await this.getUserInfo();
+        }
+      } else if (!isLogin) {
+        logoutBtn.style.display = 'none';
+        loginBtn.style.display = 'block';
+      }
+    };
+
+    // 유저의 정보가져오기
+    async function getUserInfo() {
+      const division = window.localStorage.getItem('division');
+      let res = '';
+      if (division === 'Client') {
+        res = await fetch('/mypage/clients', {
+          method: 'GET',
+        });
+      } else if (division === 'Owner') {
+        res = await fetch('/mypage/owners', {
+          method: 'GET',
+        });
+      }
+    }
+
     mainPage.addEventListener('click', () => {
       // 새로운 화면으로 이동하는 로직을 추가
       window.location.href = '/'; // 이동할 URL을 지정
@@ -48,7 +102,14 @@
           Authorization: localStorage.getItem('access_token'),
         },
       });
-      console.log('로그아웃 = ', res);
+      if (res.status === 200) {
+        alert('로그아웃되었습니다.');
+
+        window.localStorage.removeItem('division');
+        window.location.href = '/';
+      } else if (res.status === 401) {
+        alert('로그인상태가 아닙니다.');
+      }
     });
   </script>
 </header>

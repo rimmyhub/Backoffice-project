@@ -91,6 +91,7 @@
       async function login(param) {
         console.log('param = ', param);
         if (param === 'Client') {
+          window.localStorage.setItem('division', param);
           try {
             const res = await fetch('/login/client', {
               method: 'POST',
@@ -111,6 +112,7 @@
             console.log(err);
           }
         } else if (param === 'Owner') {
+          window.localStorage.setItem('division', param);
           console.log('Owner Login');
           try {
             const res = await fetch('/login/owner', {

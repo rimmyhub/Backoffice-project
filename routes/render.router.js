@@ -17,7 +17,6 @@ const menusController = new MenusController();
 
 // 로그인 페이지(사장)
 router.get('/sign-in/:userType', (req, res) => {
-  console.log('req.params.userType = ', req.params.userType);
   const userType = req.params.userType;
 
   const data = {
