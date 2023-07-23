@@ -4,8 +4,10 @@ const path = require('path');
 
 const authMiddleware = require('../middlewares/auth.middleware');
 
-const RestaurantsRepository = require('../repositories/restaurants.repository');
-const restaurantsRepository = new RestaurantsRepository();
+// const RestaurantsRepository = require('../repositories/restaurants.repository');
+// const restaurantsRepository = new RestaurantsRepository();
+const RestaurantsController = require('../controllers/restaurants.controller');
+const restaurantsController = new RestaurantsController();
 const UserController = require('../controllers/users.controller');
 const userController = new UserController();
 const OrdersController = require('../controllers/orders.controller');
@@ -15,46 +17,30 @@ const ownerController = new OwnerController();
 const MenusController = require('../controllers/menus.controller');
 const menusController = new MenusController();
 
-// 로그인 페이지(사장)
-router.get('/sign-in/:userType', (req, res) => {
-  const userType = req.params.userType;
-
-  const data = {
-    userType: userType,
-  };
-
-  res.render('sign-in', data);
-});
-
-// 회원가입 페이지
-router.get('/sign-up/:userType', (req, res) => {
-  const userType = req.params.userType;
-
-  const data = {
-    userType: userType,
-  };
-
-  res.render('sign-up', data);
-});
-
-// 음식점 전체 조회
+// 메인 페이지 이동
 router.get('/', async (req, res) => {
   const { foodName, category } = req.query;
-  const data = await restaurantsRepository.getAllRestaurant(foodName, category);
+  const data = await restaurantsController.getAllRestaurant(req, res);
   res.render('index', { data });
+});
+
+// 로그인 페이지 이동
+router.get('/login/:userType', (req, res) => {
+  const userType = req.params.userType;
+  res.render('login', { userType });
+});
+
+// 회원가입 페이지 이동
+router.get('/join/:userType', (req, res) => {
+  const userType = req.params.userType;
+  res.render('join', { userType });
 });
 
 // 서브 페이지 진입,
 router.get('/sub-page/:restaurant_id', async (req, res) => {
-  const restaurant_id = req.params.restaurant_id;
-  const restaurantResult = await restaurantsRepository.getRestaurant({ restaurant_id });
-
-  const data = restaurantResult[0].dataValues;
-  let restaurant = data;
-
-  let menus = data.Menus.map((menu) => menu.dataValues);
-  let reviews = data.Reviews.map((review) => review.dataValues);
-
+  const restaurant = await restaurantsController.getRestaurant(req, res);
+  const menus = restaurant.Menus;
+  const reviews = restaurant.Reviews;
   res.render('sub-page', { restaurant, menus, reviews });
 });
 
@@ -67,21 +53,18 @@ router.get('/sub-page/:restaurant_id/order-page', async (req, res) => {
   });
 });
 
-// 마이 페이지(유저)
-router.get('/my-page-client', async (req, res) => {
+// 마이 페이지 이동
+router.get('/mypage', async (req, res) => {
   await authMiddleware(req, res, async () => {
-    const user = await userController.getUser(req, res);
-    const orders = await ordersController.getOrderClient(req, res);
-    res.render('my-page-client', { user, orders });
-  });
-});
-
-// 마이 페이지(사장님)
-router.get('/my-page-owner', async (req, res) => {
-  await authMiddleware(req, res, async () => {
-    const user = await ownerController.getUser(req, res);
-    const orders = await ordersController.getOrderOwner(req, res);
-    res.render('my-page-owner', { user, orders });
+    if (res.locals.user.division === 'Client') {
+      const user = await userController.getUser(req, res);
+      const orders = await ordersController.getOrderClient(req, res);
+      res.render('my-page-client', { user, orders });
+    } else if (res.locals.user.division === 'Owner') {
+      const user = await ownerController.getUser(req, res);
+      const orders = await ordersController.getOrderOwner(req, res);
+      res.render('my-page-owner', { user, orders });
+    }
   });
 });
 

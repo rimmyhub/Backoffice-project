@@ -24,18 +24,13 @@
     <%- include('includes/header') %>
     <!-- main -->
     <main class="sign-page">
-      <% if (userType === 'user') { %>
-
       <!-- 유저 로그인 -->
+      <% if (userType === 'clients') { %>
       <h2>유저 로그인</h2>
-      <% } else if (userType === 'owner') { %>
 
       <!-- 사장 로그인 -->
-
+      <% } else if (userType === 'owners') { %>
       <h2>사장님 로그인</h2>
-      <% } else { %>
-      <h2>잘못된 접근이오</h2>
-
       <%}%>
 
       <div class="form-inner">
@@ -48,21 +43,18 @@
           <input type="password" id="sign-in-pw" required />
         </div>
 
-        <% if (userType === 'user') { %>
-        <!-- 유저 로그인 -->
+        <% if (userType === 'clients') { %>
+        <!-- 고객 로그인 -->
+        <button id="btn-sign-in-user" class="btn-primary btn-full">고객 로그인</button>
+        <a href="/join/clients" class="link-text">회원가입 하기 ></a>
+        <a href="/login/owners">사장님 로그인 페이지 이동</a>
 
-        <button id="btn-sign-in-user" class="btn-primary btn-full">유저 로그인</button>
-        <a href="/sign-up/user" class="link-text">회원가입 하기 ></a>
-        <a href="/sign-in/owner">사장님으로 로그인 하기</a>
-
-        <% } else if (userType === 'owner') { %>
+        <% } else if (userType === 'owners') { %>
         <!-- 사장 로그인 -->
         <button id="btn-sign-in-Owner" class="btn-primary btn-full">사장님 로그인</button>
-        <a href="/sign-up/owner" class="link-text">회원가입 하기 ></a>
-        <% } else { %>
-        <p>잘못된 접근입니다.</p>
-
-        <%}%>
+        <a href="/join/owners" class="link-text">회원가입 하기 ></a>
+        <a href="/login/clients">고객 로그인 페이지 이동</a>
+        <% } %>
       </div>
     </main>
     <!-- footer -->
@@ -75,25 +67,20 @@
 
       if (clientLoginBtn) {
         clientLoginBtn.addEventListener('click', async () => {
-          const division = 'Client';
-          await this.login(division);
+          login('Client');
         });
       }
       if (ownerLoginBtn) {
         ownerLoginBtn.addEventListener('click', async () => {
-          console.log('owner btn = ', ownerLoginBtn);
-          const division = 'Owner';
-          // console.log('오너 로그인');
-          await this.login(division);
+          login('Owner');
         });
       }
 
-      async function login(param) {
-        console.log('param = ', param);
-        if (param === 'Client') {
-          window.localStorage.setItem('division', param);
+      async function login(userType) {
+        if (userType === 'Client') {
+          // window.localStorage.setItem('division', userType);
           try {
-            const res = await fetch('/login/client', {
+            const res = await fetch('/login/clients', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -103,19 +90,18 @@
                 password: inputPassword.value,
               }),
             });
-            const data = await res.json();
 
-            if (data.message === '로그인되었습니다.') {
+            if (res.ok) {
+              alert('로그인 성공')
               window.location.href = '/';
             }
           } catch (err) {
             console.log(err);
           }
-        } else if (param === 'Owner') {
-          window.localStorage.setItem('division', param);
-          console.log('Owner Login');
+        } else if (userType === 'Owner') {
+          // window.localStorage.setItem('division', userType);
           try {
-            const res = await fetch('/login/owner', {
+            const res = await fetch('/login/owners', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

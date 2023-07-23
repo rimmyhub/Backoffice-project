@@ -6,10 +6,10 @@ const RestaurantsController = require('../controllers/restaurants.controller');
 const restaurantsController = new RestaurantsController();
 
 // 음식점 전체 조회
-restaurantRouter.get('/restaurant', restaurantsController.getAllRestaurant);
+// restaurantRouter.get('/restaurant', restaurantsController.getAllRestaurant);
 
 // 음식점 조회
-restaurantRouter.get('/restaurant/:restaurant_id', restaurantsController.getRestaurant);
+// restaurantRouter.get('/restaurant/:restaurant_id', restaurantsController.getRestaurant);
 
 // 음식점 등록
 restaurantRouter.post('/restaurant', authMiddleware, restaurantsController.postRestaurant);

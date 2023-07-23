@@ -104,7 +104,6 @@ class AuthController {
   loginClient = async (req, res) => {
     const { email, password } = req.body;
     const { authorization } = req.cookies;
-    console.log(email, password);
     try {
       const division = 'Client';
       // 클라이언트 정보 가져오기
@@ -116,7 +115,6 @@ class AuthController {
       }
 
       const token = await this.accessToken(clientInfo.client_id, email, division);
-      // refresh토큰 DB에 저장
       // bearer타입으로 클라이언트에 token을 전달
       res.cookie('authorization', `Bearer ${token}`);
       return res.status(200).json({ message: '로그인되었습니다.' });
@@ -148,7 +146,6 @@ class AuthController {
 
   logout = async (req, res) => {
     try {
-      console.log('로그아웃');
       const { authorization } = req.cookies;
       // authorization가 없으면
       if (!authorization) {

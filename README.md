@@ -36,3 +36,13 @@
 | 리뷰 작성            | `[post]`   | '/review/:order_id'                        |
 | 리뷰 수정            | `[put]`    | '/review/:order_id'                        |
 | 리뷰 삭제            | `[delete]` | '/review/:order_id'                        |
+
+## Render page
+
+
+## Feedback
+- 로그인 페이지로 이동하는데 sign-in/user와 sign-in/owner를 썼습니다. 저희 팀은 줄곧 고객은 client로 통해왔기 때문에 client라는 단어를 계속 고수해야 할 것 같습니다.
+- REST API에서는 user, owner, client, post와 같은 특정 대상을 지칭하는 명사는 늘 복수형으로 작성할 것을 강조해 왔습니다.
+- 로그인 ejs에서 login 함수의 파라미터명으로 'param'을 쓰면 함수만 봤을 때 param이 무엇을 지칭하는지 알 수 없습니다.
+- 클라이언트와 오너 작동 분리 과정을 좀 더 고민하셔서 동일한 코드가 최대한 반복 작성되지 않도록 시도해 보시는 것을 추천합니다.
+

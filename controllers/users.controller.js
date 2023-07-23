@@ -25,7 +25,6 @@ class UserController {
     
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
-      // const client_id = 1;
       const user = await this.userService.findUserCommonData(client_id);
 
       // 유저 정보 없음
