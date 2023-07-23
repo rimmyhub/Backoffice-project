@@ -59,8 +59,10 @@ class OwnerController {
       return res.status(412).send({ message: '당신은 사장이 아닙니다.' });
     try {
       const { owner_id } = res.locals.user; // auth에서 가져옴
+      const { restaurant_id } = res.locals.restaurant;
 
       const user = await this.ownerService.findUserCommonData(owner_id);
+      user.restaurant_id = restaurant_id;
 
       // 유저 정보 없음
       if (!user) return res.status(404).send({ message: '유저 정보 없음' });

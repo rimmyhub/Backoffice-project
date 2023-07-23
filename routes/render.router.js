@@ -17,7 +17,6 @@ const menusController = new MenusController();
 
 // 로그인 페이지(사장)
 router.get('/sign-in/:userType', (req, res) => {
-  console.log('req.params.userType = ', req.params.userType);
   const userType = req.params.userType;
 
   const data = {
@@ -82,8 +81,7 @@ router.get('/my-page-owner', async (req, res) => {
   await authMiddleware(req, res, async () => {
     const user = await ownerController.getUser(req, res);
     const orders = await ordersController.getOrderOwner(req, res);
-    const get = await menusController.getMenu(req, res);
-    res.render('my-page-owner', { user, orders, get });
+    res.render('my-page-owner', { user, orders });
   });
 });
 
