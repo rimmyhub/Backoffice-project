@@ -10,7 +10,7 @@
       integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="../css/reset.css" />
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,7 +35,7 @@
       <% if (userType === 'user') { %>
 
       <!-- 유저 로그인 -->
-      <h2>유저 로그인</h2>
+      <h2 class="mb-3">유저 로그인</h2>
       <% } else if (userType === 'owner') { %>
 
       <!-- 사장 로그인 -->
@@ -49,24 +49,36 @@
       <div class="form-inner">
         <div class="input-wrap">
           <label for="">이메일(ID)</label>
-          <input type="email" id="sign-in-email" required />
+          <input type="email" id="sign-in-email" class="form-control" required />
         </div>
         <div class="input-wrap">
           <label for="">password</label>
-          <input type="password" id="sign-in-pw" required />
+          <input type="password" id="sign-in-pw" class="form-control" required />
         </div>
 
         <% if (userType === 'user') { %>
         <!-- 유저 로그인 -->
 
-        <button id="btn-sign-in-user" class="btn-primary btn-full">유저 로그인</button>
-        <a href="/sign-up/user" class="link-text">회원가입 하기 ></a>
-        <a href="/sign-in/owner">사장님으로 로그인 하기</a>
+        <button id="btn-sign-in-user" class="btn-primary btn full btn-primary">유저 로그인</button>
+        <div class="btn-right">
+          <a href="/sign-up/user" class="link-text mt-1" style="font-size: 14px; color: #252525"
+            >회원가입 하기 ></a
+          >
+        </div>
+        <a href="/sign-in/owner" class="btn full btn-outline-secondary mt-3 btn-sm"
+          >사장님으로 로그인 하기</a
+        >
 
         <% } else if (userType === 'owner') { %>
         <!-- 사장 로그인 -->
-        <button id="btn-sign-in-Owner" class="btn-primary btn-full">사장님 로그인</button>
-        <a href="/sign-up/owner" class="link-text">회원가입 하기 ></a>
+        <button id="btn-sign-in-Owner" class="btn-primary btn full btn-primary">
+          사장님 로그인
+        </button>
+        <div class="btn-right">
+          <a href="/sign-up/owner" class="link-text mt-1" style="font-size: 14px; color: #252525"
+            >회원가입 하기 ></a
+          >
+        </div>
         <% } else { %>
         <p>잘못된 접근입니다.</p>
 

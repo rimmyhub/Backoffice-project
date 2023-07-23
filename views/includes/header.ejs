@@ -85,9 +85,15 @@
       window.location.href = '/'; // 이동할 URL을 지정
     });
 
+    // TO DO :: 로그인 상태에 따라 내 정보로 이동할 수 있도록 수정해두었습니다
     myPage.addEventListener('click', () => {
-      // 새로운 화면으로 이동하는 로직을 추가
-      window.location.href = '/mypage/clients'; // 이동할 URL을 지정
+      const division = window.localStorage.getItem('division');
+      let res = '';
+      if (division === 'Client') {
+        window.location.href = 'my-page-client';
+      } else if (division === 'Owner') {
+        window.location.href = 'my-page-owner';
+      }
     });
 
     const logIn = document.querySelector('.login');

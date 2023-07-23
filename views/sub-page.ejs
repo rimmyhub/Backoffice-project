@@ -10,7 +10,7 @@
       integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="../css/reset.css" />
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,6 +25,12 @@
     ></script>
     <script src="../views/static/js/subpage.js" defer></script>
     <title>배달의 팔족</title>
+    <style>
+      h1 {
+        padding-bottom: 30px;
+        font-weight: 800;
+      }
+    </style>
   </head>
   <style>
     /* 상단 영역 */
@@ -44,6 +50,10 @@
       width: 300px;
     }
 
+    #map {
+      border: 1px solid #dfdfdf;
+    }
+
     .restaurant-image img {
       width: 300px;
       margin-right: 20px;
@@ -51,7 +61,16 @@
     }
 
     h2 {
-      margin-top: 50px;
+      margin-top: 80px;
+      margin-bottom: 30px;
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    h2::before {
+      content: '✔️';
+      padding-right: 10px;
+      font-size: 17px;
     }
 
     /* 메뉴 */
@@ -61,7 +80,8 @@
       margin-bottom: 10px;
     }
     .restaurant-menu img {
-      max-width: 80px;
+      width: 170px;
+      height: 120px;
       margin-right: 10px;
       border-radius: 10px;
     }
@@ -73,13 +93,37 @@
     .user-review {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 50px;
+    }
+
+    .user-review-profile {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 30px;
     }
 
     .user-review img {
-      max-width: 50px;
-      margin-right: 20px;
-      border-radius: 10px;
+      width: 50px;
+      height: 50px;
+      margin-bottom: 8px;
+      border-radius: 50%;
+      border: 1px solid #888;
+    }
+
+    .user-review-profile p {
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .restaurant-menus {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .restaurant-menu {
+      width: 318px;
     }
   </style>
   <body>
@@ -93,29 +137,31 @@
         </div>
         <div class="restaurant-info">
           <h1><%= restaurant.name %></h1>
-          <p>주소:<%= restaurant.address %></p>
-          <p>전화 번호: <%= restaurant.phone_num %></p>
-          <p>영업 시간: <%= restaurant.biz_hours %></p>
-          <button type="button" class="btn btn-primary" id="orderButton">주문하기</button>
+          <p><span class="content-title">주소:</span> <%= restaurant.address %></p>
+          <p><span class="content-title">전화 번호:</span> <%= restaurant.phone_num %></p>
+          <p><span class="content-title">영업 시간:</span> <%= restaurant.biz_hours %></p>
+          <button type="button" class="btn btn-primary mt-4" id="orderButton">주문하기</button>
         </div>
       </div>
       <h2>메뉴</h2>
-      <% menus.forEach((menu, idx)=> { %>
-      <div class="restaurant-menu">
-        <img src="<%= menu.menu_image %>" alt="음식 이미지" />
-        <div>
-          <p>음식 이름: <%= menu.name %></p>
-          <p>가격: <%= menu.price %></p>
+      <div class="restaurant-menus">
+        <% menus.forEach((menu, idx)=> { %>
+        <div class="restaurant-menu">
+          <img src="<%= menu.menu_image %>" alt="음식 이미지" />
+          <div>
+            <p><span class="content-title">이름:</span> <%= menu.name %></p>
+            <p><span class="content-title">가격:</span> <%= menu.price.toLocaleString() %>p</p>
+          </div>
         </div>
+        <% }) %>
       </div>
-      <% }) %>
 
       <h2>장소</h2>
       <div id="map" style="width: 1000px; height: 400px"></div>
       <h2>리뷰</h2>
       <% reviews.forEach((review, idx)=> { %>
       <div class="user-review">
-        <div>
+        <div class="user-review-profile">
           <img src="<%=review.Client.client_image%>" alt="사용자 이미지" />
           <p><%= review.Client.name %></p>
         </div>
