@@ -47,9 +47,9 @@ router.get('/sub-page/:restaurant_id', async (req, res) => {
 // 주문 정보 가져오기
 router.get('/sub-page/:restaurant_id/order-page', async (req, res) => {
   await authMiddleware(req, res, async () => {
-    const client = await userController.getUser(req, res);
+    const clientData = await userController.getUser(req, res);
     const menus = await menusController.getMenu(req, res);
-    res.render('order-page', { menus, client });
+    res.render('order-page', { menus, clientData });
   });
 });
 
@@ -63,7 +63,7 @@ router.get('/mypage', async (req, res) => {
     } else if (res.locals.user.division === 'Owner') {
       const user = await ownerController.getUser(req, res);
       const orders = await ordersController.getOrderOwner(req, res);
-      const menus = await menusController.getMenu(req, res)
+      const menus = await menusController.getMenu(req, res);
       res.render('my-page-owner', { user, orders, menus });
     }
   });
