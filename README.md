@@ -39,6 +39,15 @@
 
 ## Render page
 
+| Page                      | Path                                  |
+| ------------------------- | ------------------------------------- |
+| 메인페이지                | '/'                                   |
+| 회원가입 (고객/사장)      | '/join/:userType'                     |
+| 로그인 페이지 (고객/사장) | '/login/:userType'                    |
+| 마이페이지 (고객/사장)    | '/mypage'                             |
+| 상세 페이지 (음식점 메뉴) | '/sub-page/:restaurant_id'            |
+| 주문 정보                 | '/sub-page/:restaurant_id/order-page' |
+
 ## Feedback
 
 - 로그인 페이지로 이동하는데 sign-in/user와 sign-in/owner를 썼었는데, 저희 팀은 줄곧 고객은 client로 통해왔기 때문에 client라는 단어를 계속 고수해야 할 것 같습니다.
