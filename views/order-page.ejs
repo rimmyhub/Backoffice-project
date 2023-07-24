@@ -92,24 +92,16 @@
   </style>
 
   <body>
-    <header>
-      <!-- header -->
-      <nav class="navbar navbar-light bg-light">
-        <div class="container">
-          <a class="navbar-brand" href="/" id="logoLink">
-            <img src="/images/logo.png" alt="" width="146" height="48" />
-          </a>
-        </div>
-      </nav>
-    </header>
-    <main class="client" data-id="<%= client.client_id %>">
+    <!-- header -->
+    <%- include('includes/header') %>
+    <main class="client" data-id="<%= clientData.Client_id %>">
       <div class="purchase-details" data-id="<%= menus[0].dataValues.restaurant_id %>">
         <h1>주문하기</h1>
         <h3>구매자 정보</h3>
         <form>
           <div class="form-group">
-            <p>이름 : <%= client.name %></p>
-            <p>주소 : <%= client.address %></p>
+            <p>이름 : <%= clientData.name %></p>
+            <p>주소 : <%= clientData.address %></p>
           </div>
           <h3>선택 메뉴</h3>
           <% menus.forEach((menu, idx)=> { %>
@@ -140,7 +132,7 @@
           <% }) %>
 
           <h3>사용 가능 포인트</h3>
-          <h1><%= client.point.toLocaleString() %> Point</h1>
+          <h1><%= clientData.point.toLocaleString() %> Point</h1>
 
           <h3>총 결제 금액</h3>
           <h1 id="totalAmount">Point</h1>
