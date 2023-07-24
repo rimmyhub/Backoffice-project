@@ -59,7 +59,6 @@ class OrdersController {
       const { owner_id } = res.locals.user;
 
       const orderData = await this.ordersService.getOrderOwner(owner_id);
-      console.log(orderData.length);
       // res.status(200).send({ data: orderData });
       return orderData;
     } catch (err) {

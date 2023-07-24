@@ -4,9 +4,9 @@ class MenusService {
   menusRepository = new MenusRepository();
 
   // 음식점 메뉴 조회
-  getMenu = async ({ restaurant_id }) => {
+  getMenu = async (restaurant_id) => {
     try {
-      const get = await this.menusRepository.getMenu({ restaurant_id });
+      const get = await this.menusRepository.getMenu(restaurant_id);
 
       return { code: 200, data: get };
     } catch (error) {
@@ -15,7 +15,7 @@ class MenusService {
   };
 
   // 음식점 메뉴 등록
-  postMenu = async ({ restaurant_id, name, menu_image, price, sold_out }) => {
+  postMenu = async (restaurant_id, name, menu_image, price, sold_out) => {
     try {
       const postMenu = await this.menusRepository.postMenu({
         restaurant_id,
@@ -41,7 +41,7 @@ class MenusService {
   };
 
   // 메뉴 수정
-  putMenu = async ({ menu_id, name, menu_image, price, sold_out }) => {
+  putMenu = async (menu_id, name, menu_image, price, sold_out) => {
     // 댓글을 조회합니다.
 
     try {
@@ -70,7 +70,7 @@ class MenusService {
     }
   };
 
-  deleteMenu = async ({ menu_id }) => {
+  deleteMenu = async (menu_id) => {
     try {
       const existsMenu = await this.menusRepository.findById({
         menu_id,

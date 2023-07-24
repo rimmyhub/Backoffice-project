@@ -63,7 +63,8 @@ router.get('/mypage', async (req, res) => {
     } else if (res.locals.user.division === 'Owner') {
       const user = await ownerController.getUser(req, res);
       const orders = await ordersController.getOrderOwner(req, res);
-      res.render('my-page-owner', { user, orders });
+      const menus = await menusController.getMenu(req, res)
+      res.render('my-page-owner', { user, orders, menus });
     }
   });
 });

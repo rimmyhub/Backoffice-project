@@ -76,7 +76,24 @@
       <hr />
       <section class="menu-container">
         <h2>메뉴</h2>
-        <ul class="menu-list" id="menu-list"></ul>
+        <ul class="menu-list" id="menu-list">
+          <% menus.forEach((menuItem)=> { %>
+            <li>
+              <div class="img-wrap mb-3">
+                <img src="<%= menuItem.menu_image %>" alt="" />
+              </div>
+              <div class="text-wrap">
+                <p class="content-title">
+                  <%= menuItem.name %>
+                </p>
+                <p>
+                  <%= menuItem.price %> p
+                </p>
+              </div>
+            </li>
+            <% }); %>
+
+        </ul>
         <div class="btn-right">
           <button
             type="button"
@@ -306,87 +323,87 @@
     </div>
     <script>
       //-- 메뉴 불러오기 --//
-      const fetchMenu = async () => {
-        try {
-          const restaurantId = document.querySelector('[data-id]').getAttribute('data-id');
-          // console.log(restaurantId);
-          const response = await fetch(`/restaurant/${restaurantId}/menu`);
-          const data = await response.json();
-          const menuList = document.querySelector('#menu-list');
+      // const fetchMenu = async () => {
+      //   try {
+      //     const restaurantId = document.querySelector('[data-id]').getAttribute('data-id');
+      //     // console.log(restaurantId);
+          // const response = await fetch(`/restaurant/${restaurantId}/menu`);
+      //     const data = await response.json();
+      //     const menuList = document.querySelector('#menu-list');
 
-          // 메뉴
-          menuList.innerHTML = data.data
-            .map(
-              (menuItem) => `
-          <li>
-            <div class="img-wrap mb-3">
-              <img src="${menuItem.menu_image}" alt="" />
-            </div>
-            <div class="text-wrap">
-              <p class="content-title">${menuItem.name}</p>
-              <p>${menuItem.price} p</p>
-            </div>
-          </li>
-        `
-            )
-            .join('');
+      //     // 메뉴
+      //     menuList.innerHTML = data.data
+      //       .map(
+      //         (menuItem) => `
+      //     <li>
+      //       <div class="img-wrap mb-3">
+      //         <img src="${menuItem.menu_image}" alt="" />
+      //       </div>
+      //       <div class="text-wrap">
+      //         <p class="content-title">${menuItem.name}</p>
+      //         <p>${menuItem.price} p</p>
+      //       </div>
+      //     </li>
+      //   `
+      //       )
+      //       .join('');
 
-          // 메뉴 수정
-          const menuEditListElement = document.querySelector('.menu-edit-list');
-          // 메뉴 수정
-          menuEditListElement.innerHTML = data.data
-            .map(
-              (menuItem) => `
-  <h3>${menuItem.name}</h3>
-  <div class="mb-3">
-    <label for="" class="form-label">이미지</label>
-    <div class="img-wrap mb-3">
-      <img src="${menuItem.menu_image}" alt="" />
-    </div>
-    <div class="input-group">
-      <input
-        type="file"
-        class="form-control"
-        id="inputGroupFile04"
-        aria-describedby="inputGroupFileAddon04"
-        aria-label="Upload"
-      />
-      <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
-        삭제
-      </button>
-      <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
-        수정하기
-      </button>
-    </div>
-  </div>
-  <div class="mb-3">
-    <label for="menuEditName" class="form-label">음식 이름</label>
-    <input
-      type="email"
-      class="form-control"
-      id="menuEditName"
-      value="${menuItem.name}"
-    />
-  </div>
-  <div class="mb-3">
-    <label for="menuEditName" class="form-label">가격</label>
-    <input
-      type="email"
-      class="form-control"
-      id="menuEditName"
-      value="${menuItem.price}"
-    />
-  </div>
-  <hr />
-`
-            )
-            .join('');
-        } catch (error) {
-          console.error('메뉴 불러오기 실패', error);
-        }
-      };
+//       // 메뉴 수정
+//       const menuEditListElement = document.querySelector('.menu-edit-list');
+//       // 메뉴 수정
+//       menuEditListElement.innerHTML = data.data
+//         .map(
+//           (menuItem) => `
+//   <h3>${menuItem.name}</h3>
+//   <div class="mb-3">
+//     <label for="" class="form-label">이미지</label>
+//     <div class="img-wrap mb-3">
+//       <img src="${menuItem.menu_image}" alt="" />
+//     </div>
+//     <div class="input-group">
+//       <input
+//         type="file"
+//         class="form-control"
+//         id="inputGroupFile04"
+//         aria-describedby="inputGroupFileAddon04"
+//         aria-label="Upload"
+//       />
+//       <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
+//         삭제
+//       </button>
+//       <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">
+//         수정하기
+//       </button>
+//     </div>
+//   </div>
+//   <div class="mb-3">
+//     <label for="menuEditName" class="form-label">음식 이름</label>
+//     <input
+//       type="email"
+//       class="form-control"
+//       id="menuEditName"
+//       value="${menuItem.name}"
+//     />
+//   </div>
+//   <div class="mb-3">
+//     <label for="menuEditName" class="form-label">가격</label>
+//     <input
+//       type="email"
+//       class="form-control"
+//       id="menuEditName"
+//       value="${menuItem.price}"
+//     />
+//   </div>
+//   <hr />
+// `
+//             )
+//             .join('');
+//         } catch (error) {
+//           console.error('메뉴 불러오기 실패', error);
+//         }
+//       };
 
-      window.onload = fetchMenu;
+//       window.onload = fetchMenu;
 
       //-- 주문 확인서 불러오기 --//
       const modalOrderConfirm = new bootstrap.Modal(document.getElementById('modalOrderConfirm'));

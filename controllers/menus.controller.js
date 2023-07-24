@@ -7,10 +7,13 @@ class MenusController {
 
   // 메뉴 조회
   getMenu = async (req, res) => {
-    const { restaurant_id } = req.params;
-
-    const { code, data } = await this.menusService.getMenu({ restaurant_id });
-    return data
+    if (Object.keys(req.params).length === 0) {
+      const { restaurant_id } = req.params;
+    } else {
+      const restaurant_id = res.locals.restaurant;
+    }
+    const { code, data } = await this.menusService.getMenu(restaurant_id);
+    return data;
   };
 
   // 메뉴 등록
@@ -22,7 +25,7 @@ class MenusController {
 
     // 메뉴 생성 권한 확인 (음식점 사장과 미들웨어 사장 id 비교)
     try {
-      const { code, data } = await this.restaurantsService.getRestaurant({ restaurant_id });
+      const { code, data } = await this.restaurantsService.getRestaurant(restaurant_id);
       if (data[0].dataValues.Owner_id !== owner_id)
         return res.status(412).send({ message: '해당 메뉴 생성 권한 없음' });
     } catch (err) {
@@ -79,7 +82,7 @@ class MenusController {
 
     // 메뉴 수정 권한 확인 (음식점 사장과 미들웨어 사장 id 비교)
     try {
-      const { code, data } = await this.restaurantsService.getRestaurant({ restaurant_id });
+      const { code, data } = await this.restaurantsService.getRestaurant(restaurant_id);
       if (data[0].dataValues.Owner_id !== owner_id)
         return res.status(412).send({ message: '해당 메뉴 수정 권한 없음' });
     } catch (err) {
@@ -91,13 +94,13 @@ class MenusController {
 
     // 메뉴 수정
     try {
-      const { code, data } = await this.menusService.putMenu({
+      const { code, data } = await this.menusService.putMenu(
         menu_id,
         name,
         menu_image,
         price,
-        sold_out,
-      });
+        sold_out
+      );
       res.status(code).json({ data });
     } catch (err) {
       console.error(err.name, ':', err.message);
@@ -113,7 +116,7 @@ class MenusController {
 
     // 메뉴 삭제 권한 확인 (음식점 사장과 미들웨어 사장 id 비교)
     try {
-      const { code, data } = await this.restaurantsService.getRestaurant({ restaurant_id });
+      const { code, data } = await this.restaurantsService.getRestaurant(restaurant_id);
       if (data[0].dataValues.Owner_id !== owner_id)
         return res.status(412).send({ message: '해당 메뉴 삭제 권한 없음' });
     } catch (err) {
@@ -123,9 +126,7 @@ class MenusController {
 
     // 메뉴 삭제
     try {
-      const { code, data } = await this.menusService.deleteMenu({
-        menu_id,
-      });
+      const { code, data } = await this.menusService.deleteMenu(menu_id);
       res.status(code).json({ data });
     } catch (err) {
       console.error(err.name, ':', err.message);
