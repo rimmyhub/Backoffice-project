@@ -189,8 +189,9 @@
             order_items.push({ menu_id, count });
           }
         });
-        console.log(order_items);
         const data = { restaurant_id, order_items };
+        console.log('data = ', data);
+
         // fetch 쓰기
         const response = await fetch('/order', {
           method: 'POST',
