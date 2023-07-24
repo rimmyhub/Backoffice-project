@@ -7,13 +7,17 @@ class MenusController {
 
   // 메뉴 조회
   getMenu = async (req, res) => {
-    if (Object.keys(req.params).length === 0) {
+    if (Object.keys(req.params).length !== 0) {
       const { restaurant_id } = req.params;
+      const { code, data } = await this.menusService.getMenu(restaurant_id);
+      return data;
     } else {
-      const restaurant_id = res.locals.restaurant;
+      const { restaurant_id } = res.locals.restaurant;
+      const { code, data } = await this.menusService.getMenu(restaurant_id);
+      return data;
     }
-    const { code, data } = await this.menusService.getMenu(restaurant_id);
-    return data;
+    // const { code, data } = await this.menusService.getMenu(restaurant_id);
+    // return data;
   };
 
   // 메뉴 등록

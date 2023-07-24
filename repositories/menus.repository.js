@@ -6,16 +6,6 @@ class MenusRepository {
   getMenu = async (Restaurant_id) => {
     return await Menu.findAll({
       where: { Restaurant_id },
-      attributes: [
-        'menu_id',
-        'restaurant_id',
-        'name',
-        'menu_image',
-        'price',
-        'sold_out',
-        'createdAt',
-        'updatedAt',
-      ],
       order: [['createdAt', 'DESC']],
     });
   };

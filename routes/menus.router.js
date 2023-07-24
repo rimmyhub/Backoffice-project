@@ -9,7 +9,7 @@ const UploadBucket = require('../middlewares/bucket.middleware');
 const upload = new UploadBucket();
 
 // 메뉴 조회
-menuRouter.get('/restaurant/:restaurant_id/menu', menusController.getMenu);
+menuRouter.get('/restaurant/:restaurant_id/menu', authMiddleware, menusController.getMenu);
 
 // 메뉴 등록
 menuRouter.post('/restaurant/:restaurant_id/menu', authMiddleware, menusController.postMenu);
