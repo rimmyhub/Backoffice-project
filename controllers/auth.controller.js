@@ -46,9 +46,9 @@ class AuthController {
           console.log('[SUCCESS] - Nodemailer');
         }
       });
-      console.log('transporter = ');
+
       await transporter.sendMail(mailOptions);
-      // authNumber = authNum;
+
       // 쿠키로 담아서 보내주자
       const authNumber = jwt.sign({ authNumber: authNum }, process.env.AUTHNUM_KEY, {
         expiresIn: '5m',
@@ -57,7 +57,7 @@ class AuthController {
       // 인증번호를 jwt로 숨기자
       return res.status(200).json({ message: '인증번호가 전송되었습니다.' });
     } catch (error) {
-      return res.status(400).json(error.message);
+      return res.status(400).send({ messsage: error.message });
     }
   };
 
@@ -65,13 +65,14 @@ class AuthController {
   validAuthNum = async (req, res) => {
     const { inputAuthNum } = req.body;
     const { authNumber } = req.cookies;
+    console.log('authNumber = ', authNumber);
     if (!inputAuthNum || !authNumber) {
-      return res.status(401).json({ errorMessage: '인증번호를 입력해주세요.' });
+      return res.status(401).json({ message: '인증번호를 입력해주세요.' });
     }
     const [tokenType, token] = authNumber.split(' ');
 
     if (tokenType !== 'Bearer' || !token) {
-      return res.status(401).json({ errorMessage: '인증번호를 입력해주세요.' });
+      return res.status(401).json({ message: '인증번호를 입력해주세요.' });
     }
     try {
       let tokenErr = false;
@@ -93,10 +94,10 @@ class AuthController {
         return decoded;
       });
       if (inputAuthNum !== checkAuthNum.authNumber)
-        return res.status(412).json({ errMesasge: '인증번호가 일치하지 않습니다.', data: false });
+        return res.status(412).json({ message: '인증번호가 일치하지 않습니다.', data: false });
       return res.status(200).json({ message: '인증되었습니다.', data: true });
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).send({ message: error.message });
     }
   };
 
@@ -119,7 +120,7 @@ class AuthController {
       res.cookie('authorization', `Bearer ${token}`);
       return res.status(200).json({ message: '로그인되었습니다.' });
     } catch (error) {
-      return res.status(400).send({ errMesssage: error.message });
+      return res.status(400).send({ message: error.message });
     }
   };
 
@@ -155,7 +156,7 @@ class AuthController {
       res.clearCookie('authorization');
       return res.status(200).json({ message: '로그아웃되었습니다.' });
     } catch (error) {
-      return res.status(400).json({ errorMessage: '로그인상태가 아닙니다.' });
+      return res.status(400).json({ message: '로그인상태가 아닙니다.' });
     }
   };
 

@@ -22,7 +22,7 @@ class UserController {
   getUser = async (req, res) => {
     if (res.locals.user.division !== 'Client')
       return res.status(412).send({ message: '당신은 고객이 아닙니다.' });
-    
+
     try {
       const { client_id } = res.locals.user; // auth에서 가져옴
       const user = await this.userService.findUserCommonData(client_id);
@@ -157,7 +157,7 @@ class UserController {
       await this.userService.createUser(payLoad);
       return res.status(200).json({ message: '회원가입이 완료되었습니다.' });
     } catch (error) {
-      return res.status(400).json(error.message);
+      return res.status(400).json({ message: error.message });
     }
   };
 }
