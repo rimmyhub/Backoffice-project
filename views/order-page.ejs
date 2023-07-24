@@ -1,117 +1,136 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../../css/reset.css" />
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <style>
+    /* CSS 스타일을 추가하여 페이지 디자인을 설정합니다. */
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
-  <!-- font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
-    rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-    crossorigin="anonymous"></script>
-</head>
-<style>
-  /* CSS 스타일을 추가하여 페이지 디자인을 설정합니다. */
+    /* 메뉴 */
+    .restaurant-menu {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
 
-  /* 메뉴 */
-  .restaurant-menu {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
+    .restaurant-menu img {
+      max-width: 100px;
+      margin-right: 10px;
+      border-radius: 10px;
+    }
 
-  .restaurant-menu img {
-    max-width: 100px;
-    margin-right: 10px;
-    border-radius: 10px;
-  }
+    .restaurant-menu p {
+      margin: 0;
+    }
 
-  .restaurant-menu p {
-    margin: 0;
-  }
+    h3 {
+      margin-top: 50px;
+      margin-bottom: 10px;
+      font-size: 20px;
+      border-bottom: 1px solid #e2e2e2;
+    }
 
-  h3 {
-    margin-top: 50px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #e2e2e2;
-  }
+    h1 {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      font-size: 25px;
+    }
 
-  h1 {
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
+    h1:first-of-type {
+      font-size: 28px;
+      font-weight: 700;
+    }
 
-  /* 예시 스타일, 여러분의 실제 스타일에 맞게 수정해주세요. */
-  .purchase-details {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
+    /* 예시 스타일, 여러분의 실제 스타일에 맞게 수정해주세요. */
+    .purchase-details {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-  .form-group {
-    margin-bottom: 20px;
-  }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-  .restaurant-menu button {
-    border: 1px solid #e2e2e2;
-    border-radius: 5px;
-    width: 30px;
-  }
+    .restaurant-menu button {
+      border: 1px solid #e2e2e2;
+      border-radius: 5px;
+      width: 30px;
+    }
 
-  input {
-    border: 1px solid #e2e2e2;
-    border-radius: 5px;
-    width: 50px;
-  }
+    input {
+      border: 1px solid #e2e2e2;
+      border-radius: 5px;
+      width: 50px;
+    }
 
-  .btn.btn-primary {
-    width: 300px;
-  }
-</style>
+    .btn.btn-primary {
+      width: 300px;
+    }
+  </style>
 
-<body>
-  <header>
-    <!-- header -->
-    <nav class="navbar navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="/" id="logoLink">
-          <img src="/images/logo.png" alt="" width="146" height="48" />
-        </a>
-      </div>
-    </nav>
-  </header>
-  <main class="client" data-id="<%= client.client_id %>">
-    <div class="purchase-details" data-id="<%= menus[0].dataValues.restaurant_id %>">
-      <h1>주문하기</h1>
-      <h3>구매자 정보</h3>
-      <form>
-        <div class="form-group">
-          <p>이름 : <%= client.name %>
-          </p>
-          <p>주소 : <%= client.address %>
-          </p>
+  <body>
+    <header>
+      <!-- header -->
+      <nav class="navbar navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="/" id="logoLink">
+            <img src="/images/logo.png" alt="" width="146" height="48" />
+          </a>
         </div>
-        <h3>선택 메뉴</h3>
-        <% menus.forEach((menu, idx)=> { %>
+      </nav>
+    </header>
+    <main class="client" data-id="<%= client.client_id %>">
+      <div class="purchase-details" data-id="<%= menus[0].dataValues.restaurant_id %>">
+        <h1>주문하기</h1>
+        <h3>구매자 정보</h3>
+        <form>
+          <div class="form-group">
+            <p>이름 : <%= client.name %></p>
+            <p>주소 : <%= client.address %></p>
+          </div>
+          <h3>선택 메뉴</h3>
+          <% menus.forEach((menu, idx)=> { %>
           <div class="restaurant-menu" data-id="<%= menu.menu_id %>">
             <img src="<%= menu.menu_image %>" alt="음식 이미지" />
             <div>
-              <p>음식 이름: <%= menu.name %>
-              </p>
-              <p>가격: <%= menu.price %>
-              </p>
+              <p>음식 이름: <%= menu.name %></p>
+              <p>가격: <%= menu.price %></p>
               <div class="form-group">
                 <button type="button" data-price="<%= menu.price %>" class="decreaseButton">
                   -
                 </button>
-                <input type="number" id="quantity" name="quantity" value="0" min="0" max="10" required />
+                <input
+                  type="number"
+                  id="quantity"
+                  name="quantity"
+                  value="0"
+                  min="0"
+                  max="10"
+                  required
+                />
                 <button type="button" data-price="<%= menu.price %>" class="increaseButton">
                   +
                 </button>
@@ -120,81 +139,78 @@
           </div>
           <% }) %>
 
-            <h3>사용 가능 포인트</h3>
-            <h1>
-              <%= client.point %> Point
-            </h1>
+          <h3>사용 가능 포인트</h3>
+          <h1><%= client.point.toLocaleString() %> Point</h1>
 
-            <h3>총 결제 금액</h3>
-            <h1 id="totalAmount">Point</h1>
+          <h3>총 결제 금액</h3>
+          <h1 id="totalAmount">Point</h1>
 
-            <button type="button" class="btn btn-primary" onclick=buy()>구매하기</button>
-      </form>
-    </div>
-  </main>
-  <script>
-    const client = document.querySelector('.client');
-    client.addEventListener('click', (e) => {
-      if (e.target.classList.contains('increaseButton')) {
-        const beforeValue = e.target.parentNode.querySelector('input').value;
-        e.target.parentNode.querySelector('input').value = Number(beforeValue) + 1;
-        const price = Number(e.target.getAttribute('data-price'));
-        pointChange(price, 1);
-      }
-      if (e.target.classList.contains('decreaseButton')) {
-        if (e.target.parentNode.querySelector('input').value == 0) {
-          return;
+          <button type="button" class="btn btn-primary" onclick="buy()">구매하기</button>
+        </form>
+      </div>
+    </main>
+    <script>
+      const client = document.querySelector('.client');
+      client.addEventListener('click', (e) => {
+        if (e.target.classList.contains('increaseButton')) {
+          const beforeValue = e.target.parentNode.querySelector('input').value;
+          e.target.parentNode.querySelector('input').value = Number(beforeValue) + 1;
+          const price = Number(e.target.getAttribute('data-price'));
+          pointChange(price, 1);
         }
-        const beforeValue = e.target.parentNode.querySelector('input').value;
-        e.target.parentNode.querySelector('input').value = Number(beforeValue) - 1;
-        const price = Number(e.target.getAttribute('data-price'));
-        pointChange(price, 0);
-      }
-    });
-
-    let totalPrice = 0;
-    const totalPoint = document.querySelector('#totalAmount');
-    const pointChange = (price, num) => {
-      if (num) {
-        totalPrice = totalPrice + price;
-        totalPoint.innerText = `${totalPrice} Point`;
-      } else {
-        totalPrice = totalPrice - price;
-        totalPoint.innerText = `${totalPrice} Point`;
-      }
-    };
-
-    async function buy() {
-      const menusElement = document.querySelectorAll('.restaurant-menu');
-      const clientElement = document.querySelector('.client');
-      const restaurantElement = document.querySelector('.purchase-details');
-
-      const client_id = clientElement.getAttribute('data-id');
-      const restaurant_id = restaurantElement.getAttribute('data-id');
-      const order_items = [];
-
-      menusElement.forEach((menu) => {
-        const menu_id = menu.getAttribute('data-id');
-        const count = menu.querySelector('#quantity').value;
-        if (Number(count) !== 0) {
-          order_items.push({ menu_id, count });
+        if (e.target.classList.contains('decreaseButton')) {
+          if (e.target.parentNode.querySelector('input').value == 0) {
+            return;
+          }
+          const beforeValue = e.target.parentNode.querySelector('input').value;
+          e.target.parentNode.querySelector('input').value = Number(beforeValue) - 1;
+          const price = Number(e.target.getAttribute('data-price'));
+          pointChange(price, 0);
         }
       });
-      console.log(order_items)
-      const data = { restaurant_id, order_items };
-      // fetch 쓰기
-      const response = await fetch('/order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json();
-      alert(result.message);
-      // document.location.href = '/mypage';
-    }
-  </script>
-</body>
 
+      let totalPrice = 0;
+      const totalPoint = document.querySelector('#totalAmount');
+      const pointChange = (price, num) => {
+        if (num) {
+          totalPrice = totalPrice + price;
+          totalPoint.innerText = `${totalPrice.toLocaleString()} Point`;
+        } else {
+          totalPrice = totalPrice - price;
+          totalPoint.innerText = `${totalPrice.toLocaleString()} Point`;
+        }
+      };
+
+      async function buy() {
+        const menusElement = document.querySelectorAll('.restaurant-menu');
+        const clientElement = document.querySelector('.client');
+        const restaurantElement = document.querySelector('.purchase-details');
+
+        const client_id = clientElement.getAttribute('data-id');
+        const restaurant_id = restaurantElement.getAttribute('data-id');
+        const order_items = [];
+
+        menusElement.forEach((menu) => {
+          const menu_id = menu.getAttribute('data-id');
+          const count = menu.querySelector('#quantity').value;
+          if (Number(count) !== 0) {
+            order_items.push({ menu_id, count });
+          }
+        });
+        console.log(order_items);
+        const data = { restaurant_id, order_items };
+        // fetch 쓰기
+        const response = await fetch('/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        const result = await response.json();
+        alert(result.message);
+        // document.location.href = '/mypage';
+      }
+    </script>
+  </body>
 </html>
