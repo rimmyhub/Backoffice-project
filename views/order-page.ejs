@@ -92,8 +92,8 @@
   </style>
 
   <body>
-    <header>
-      <!-- header -->
+    <!-- header -->
+    <!-- <header>
       <nav class="navbar navbar-light bg-light">
         <div class="container">
           <a class="navbar-brand" href="/" id="logoLink">
@@ -101,9 +101,10 @@
           </a>
         </div>
       </nav>
-    </header>
+    </header> -->
+    <%- include('includes/header.ejs') %>
     <main class="client" data-id="<%= client.client_id %>">
-      <div class="purchase-details" data-id="<%= menus[0].dataValues.restaurant_id %>">
+      <div class="purchase-details" data-id="<%= menus[0].dataValues.Restaurant_id %>">
         <h1>주문하기</h1>
         <h3>구매자 정보</h3>
         <form>
@@ -197,8 +198,9 @@
             order_items.push({ menu_id, count });
           }
         });
-        console.log(order_items);
         const data = { restaurant_id, order_items };
+        console.log('data = ', data);
+
         // fetch 쓰기
         const response = await fetch('/order', {
           method: 'POST',
