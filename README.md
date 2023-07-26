@@ -88,18 +88,6 @@ getMenu = async ({ restaurant_id }) => {
 ---
 
 ```javascript
-getMenu = async ({ restaurant_id }) => {
-  return Menu.findAll({
-    order: [['createdAt', 'DESC']],
-  });
-};
-```
-
-- Menu.findAll() 메서드는 메뉴 테이블에 있는 모든 데이터(row)를 가져오겠다는 의미입니다. 즉 where 조건이 필요하지 않습니다. 왜냐하면 전부 다 가져오는 메서드이기 때문입니다. 그래서 findAll 메서드는 정렬 조건만 넣으셔도 됩니다.
-
----
-
-```javascript
 getMenu = ({ restaurant_id }) => {
   ...
 }
